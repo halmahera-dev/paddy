@@ -25,9 +25,9 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
       </div>
       <div className="relative col-span-5 m-4 hidden rounded-4xl bg-muted lg:block">
         <img
-          src="/magic.webp"
+          src="/ascii-magic.webp"
           alt=""
-          className="absolute inset-0 h-full w-full rounded-4xl object-cover object-right dark:brightness-[0.6]"
+          className="absolute inset-0 h-full w-full rounded-4xl object-cover object-center dark:brightness-[0.6]"
         />
       </div>
     </div>

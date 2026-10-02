@@ -222,7 +222,7 @@ Reduced transparency settings remove blur and use solid fills for these material
 
 The app mark is [logo.png](apps/web/public/logo.png). The shared logo component displays it at 24×24px.
 
-Painted images include [daisies.webp](apps/web/public/daisies.webp) and [magic.webp](apps/web/public/magic.webp). Images use cover cropping where needed. Dark mode can reduce image brightness. Cream text and deep teal overlays support text on imagery.
+Painted images include [daisies.webp](apps/web/public/daisies.webp) and [ascii-magic.webp](apps/web/public/ascii-magic.webp). Images use cover cropping where needed. Dark mode can reduce image brightness. Cream text and deep teal overlays support text on imagery.
 
 Hugeicons are used in shared controls and app navigation. Some existing controls and charts use Lucide or Tabler icons. Standard button icons are 16px, small button icons are 12px, and badge icons are 12px.
 

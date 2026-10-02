@@ -1,6 +1,8 @@
 import { SidebarTrigger } from "@paddy-field/ui/components/sidebar";
 import { cn } from "@paddy-field/ui/lib/utils";
 
+import NotificationButton from "./notification-button";
+
 function PageHeader({
   className,
   title,
@@ -25,13 +27,17 @@ function PageHeader({
         // asynchronously) remounts and fades in rather than teleporting.
         <span
           key={typeof title === "string" ? title : undefined}
-          className="truncate font-medium text-sm opacity-100 starting:opacity-0 transition-opacity duration-200 ease-out motion-reduce:duration-0"
+          className="truncate text-sm font-medium opacity-100 transition-opacity duration-200 ease-out motion-reduce:duration-0 starting:opacity-0"
         >
           {title}
         </span>
       )}
 
       {children}
+
+      <div className="ml-auto">
+        <NotificationButton />
+      </div>
     </header>
   );
 }
