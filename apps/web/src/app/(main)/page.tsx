@@ -9,14 +9,14 @@ export const metadata: Metadata = {
   title: "Overview",
 };
 
-export default function HomePage({ searchParams }: { searchParams: Promise<{ farm?: string }> }) {
+export default function HomePage({ searchParams }: { searchParams: Promise<{ field?: string }> }) {
   return (
-    <div className="@container/main overview-art flex min-h-0 flex-1 flex-col overflow-y-auto">
+    <div className="overview-art @container/main flex min-h-0 flex-1 flex-col overflow-y-auto">
       <PageHeader title="Overview" />
 
       <Suspense fallback={<FarmOverviewSkeleton />}>
-        {searchParams.then(({ farm }) => {
-          return <FarmOverview farmId={farm} />;
+        {searchParams.then(({ field }) => {
+          return <FarmOverview fieldId={field} />;
         })}
       </Suspense>
     </div>

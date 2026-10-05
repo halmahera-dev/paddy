@@ -1,0 +1,204 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap');
+#paddy-design { --pd-bg:light-dark(#f5f4ed,#181d19); --pd-surface:light-dark(#fffef9,#222a23); --pd-text:light-dark(#23392d,#e4eee4); --pd-muted:light-dark(#657063,#b0bcae); --pd-line:light-dark(#dce0d3,#3b463c); --pd-green:light-dark(#315b3f,#b1d7a8); --pd-selected:light-dark(#eaf1e3,#324533); --pd-amber:light-dark(#80531d,#e6bd79); --pd-amber-bg:light-dark(#faf0dc,#3e3323); font-family:'DM Sans',sans-serif; color:var(--pd-text); background:var(--pd-bg); border:1px solid var(--pd-line); border-radius:16px; overflow:hidden; font-size:14px; line-height:1.45; }
+#paddy-design * { box-sizing:border-box; }
+#paddy-design button,#paddy-design select { font:inherit; color:inherit; cursor:pointer; }
+#paddy-design button { border:1px solid var(--pd-line); background:var(--pd-surface); padding:9px 12px; border-radius:8px; min-height:40px; }
+#paddy-design button:hover { background:var(--pd-selected); }
+#paddy-design button[aria-pressed=true] { background:var(--pd-selected); border-color:var(--pd-green); }
+#paddy-design .pd-primary { background:var(--pd-green); color:var(--pd-bg); border-color:var(--pd-green); }
+#paddy-design .pd-primary:hover { opacity:.9; background:var(--pd-green); }
+#paddy-design .pd-top { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:18px 24px; border-bottom:1px solid var(--pd-line); background:var(--pd-surface); flex-wrap:wrap; }
+#paddy-design .pd-brand { display:flex; align-items:center; gap:9px; font-weight:700; letter-spacing:-.5px; font-size:20px; }
+#paddy-design .pd-demo { font-size:12px; color:var(--pd-muted); }
+#paddy-design .pd-shell { display:grid; grid-template-columns:164px minmax(0,1fr); }
+#paddy-design .pd-side { padding:24px 12px; border-right:1px solid var(--pd-line); background:var(--pd-surface); }
+#paddy-design .pd-side button { display:flex; align-items:center; gap:8px; width:100%; text-align:left; margin-bottom:7px; border-color:transparent; font-size:13px; }
+#paddy-design .pd-side button[aria-pressed=true] { font-weight:600; border-color:transparent; }
+#paddy-design .pd-side small { display:block; padding:22px 10px; color:var(--pd-muted); font-size:12px; }
+#paddy-design .pd-main { padding:26px; min-width:0; }
+#paddy-design .pd-kicker { font-size:11px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; color:var(--pd-muted); }
+#paddy-design h1 { font-family:'Newsreader',serif; font-weight:400; font-size:34px; line-height:1.1; letter-spacing:-.7px; margin:7px 0 8px; }
+#paddy-design h2 { font-size:17px; font-weight:600; margin:0; }
+#paddy-design h3 { font-size:16px; margin:9px 0; }
+#paddy-design p { margin:0; }
+#paddy-design .pd-sub { color:var(--pd-muted); font-size:13px; }
+#paddy-design .pd-inputs { display:grid; grid-template-columns:1.15fr 1fr; gap:18px; margin-top:24px; padding:18px; background:var(--pd-surface); border:1px solid var(--pd-line); border-radius:12px; }
+#paddy-design label { display:block; font-size:12px; font-weight:600; margin-bottom:7px; }
+#paddy-design select { width:100%; min-width:0; padding:10px; min-height:42px; border:1px solid var(--pd-line); border-radius:8px; background:var(--pd-bg); }
+#paddy-design .pd-goal { grid-column:1/-1; }
+#paddy-design .pd-pills { display:flex; gap:7px; flex-wrap:wrap; }
+#paddy-design .pd-pills button { flex:1; white-space:normal; font-size:12px; }
+#paddy-design .pd-soil-help { font-size:12px; color:var(--pd-muted); margin-top:6px; }
+#paddy-design .pd-weather { display:flex; gap:18px; justify-content:space-between; padding:16px 0; margin:4px 0 18px; border-bottom:1px solid var(--pd-line); flex-wrap:wrap; }
+#paddy-design .pd-weather p { font-size:12px; color:var(--pd-muted); }
+#paddy-design .pd-section-head { display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap; margin:22px 0 14px; }
+#paddy-design .pd-plan-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+#paddy-design .pd-plan { border:1px solid var(--pd-line); border-radius:12px; background:var(--pd-surface); overflow:hidden; min-width:0; }
+#paddy-design .pd-plan.pd-first { border-color:var(--pd-green); }
+#paddy-design .pd-plan-head { padding:15px; min-height:136px; border-bottom:1px solid var(--pd-line); }
+#paddy-design .pd-badge { display:inline-block; font-size:11px; border-radius:5px; padding:4px 6px; background:var(--pd-selected); color:var(--pd-green); }
+#paddy-design .pd-baseline { background:var(--pd-bg); color:var(--pd-muted); }
+#paddy-design .pd-sequence { font-size:12px; font-weight:500; line-height:1.6; }
+#paddy-design .pd-season { padding:13px 15px; border-bottom:1px solid var(--pd-line); }
+#paddy-design .pd-season-top { display:flex; justify-content:space-between; gap:6px; font-size:11px; color:var(--pd-muted); }
+#paddy-design .pd-crop { display:flex; align-items:center; gap:6px; font-weight:600; margin:8px 0; }
+#paddy-design .pd-cover { padding:0; border:0; border-radius:0; background:transparent; display:block; width:100%; text-align:left; min-height:0; }
+#paddy-design .pd-cover strong { font-size:20px; font-weight:500; font-variant-numeric:tabular-nums; }
+#paddy-design .pd-cover span { font-size:11px; color:var(--pd-muted); }
+#paddy-design .pd-track { height:4px; background:var(--pd-line); margin:6px 0; border-radius:4px; overflow:hidden; }
+#paddy-design .pd-track b { display:block; height:100%; background:var(--pd-green); }
+#paddy-design .pd-risk .pd-track b { background:var(--pd-amber); }
+#paddy-design .pd-note { font-size:11px; color:var(--pd-muted); margin-top:5px; min-height:32px; }
+#paddy-design .pd-plan-footer { padding:13px 15px; }
+#paddy-design .pd-risk-label { color:var(--pd-amber); font-size:11px; display:block; margin-bottom:10px; }
+#paddy-design .pd-plan-footer button { width:100%; font-size:12px; }
+#paddy-design .pd-evidence { background:var(--pd-amber-bg); border:1px solid var(--pd-line); border-radius:10px; padding:16px; margin:14px 0; }
+#paddy-design .pd-evidence p { font-size:12px; margin-top:8px; }
+#paddy-design .pd-detail-head { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+#paddy-design .pd-action { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; background:var(--pd-selected); border-radius:12px; padding:18px; margin-top:16px; }
+#paddy-design .pd-action p { font-size:12px; margin-top:4px; }
+#paddy-design .pd-action-buttons { display:flex; gap:8px; flex-wrap:wrap; }
+#paddy-design .pd-foot { margin-top:18px; color:var(--pd-muted); font-size:11px; }
+#paddy-design .pd-district-grid { display:grid; grid-template-columns:1.3fr 1fr; gap:18px; margin-top:20px; }
+#paddy-design .pd-list { border:1px solid var(--pd-line); border-radius:12px; background:var(--pd-surface); overflow:hidden; }
+#paddy-design .pd-list-head { padding:14px; background:var(--pd-bg); font-size:12px; color:var(--pd-muted); }
+#paddy-design .pd-area-row { display:grid; grid-template-columns:26px 1fr 55px; align-items:center; gap:8px; width:100%; border:0; border-bottom:1px solid var(--pd-line); border-radius:0; padding:14px; text-align:left; }
+#paddy-design .pd-area-row small { display:block; color:var(--pd-muted); font-size:11px; margin-top:3px; }
+#paddy-design .pd-area-row strong { text-align:right; font-size:19px; font-weight:500; }
+#paddy-design .pd-area-detail { padding:20px; background:var(--pd-surface); border:1px solid var(--pd-line); border-radius:12px; align-self:start; }
+#paddy-design .pd-large { font-family:'Newsreader',serif; font-size:54px; line-height:1.1; margin:15px 0 4px; }
+#paddy-design .pd-mini-seasons { display:flex; justify-content:space-between; gap:8px; padding:16px 0; margin:14px 0; border-top:1px solid var(--pd-line); border-bottom:1px solid var(--pd-line); }
+#paddy-design .pd-mini-seasons span { display:block; color:var(--pd-muted); font-size:11px; }
+#paddy-design [hidden] { display:none!important; }
+@media(max-width:850px) { #paddy-design .pd-shell { grid-template-columns:1fr; } #paddy-design .pd-side { border-right:0; border-bottom:1px solid var(--pd-line); padding:10px 16px; display:flex; flex-wrap:wrap; gap:5px; } #paddy-design .pd-side button { width:auto; margin:0; } #paddy-design .pd-side small { display:none; } }
+@media(max-width:600px) { #paddy-design .pd-top { padding:14px 16px; } #paddy-design .pd-main { padding:20px 16px; } #paddy-design h1 { font-size:30px; } #paddy-design .pd-inputs,#paddy-design .pd-plan-grid,#paddy-design .pd-district-grid { grid-template-columns:1fr; } #paddy-design .pd-goal { grid-column:auto; } #paddy-design .pd-plan-head { min-height:0; } #paddy-design .pd-note { min-height:0; } #paddy-design button { min-height:44px; } #paddy-design .pd-cover { min-height:44px; } #paddy-design .pd-season-top { font-size:12px; } #paddy-design .pd-pills button { min-width:90px; } }
+</style>
+<div id="paddy-design" aria-label="One Field dashboard design">
+  <header class="pd-top"><div class="pd-brand"><i data-lucide="sprout" aria-hidden="true"></i> One Field</div><div class="pd-demo">Contoh tampilan · semua angka ilustrasi</div></header>
+  <div class="pd-shell">
+    <nav class="pd-side" aria-label="Menu utama">
+      <button type="button" data-view="farmer" aria-pressed="true"><i data-lucide="sprout" aria-hidden="true"></i> Rencana tanam</button>
+      <button type="button" data-view="district" aria-pressed="false"><i data-lucide="map" aria-hidden="true"></i> Prioritas wilayah</button>
+      <button type="button" data-view="saved" aria-pressed="false"><i data-lucide="bookmark" aria-hidden="true"></i> Tersimpan</button>
+      <small>Data tingkat kecamatan.<br><br>Tanpa akun.</small>
+    </nav>
+    <main class="pd-main">
+      <section data-panel="farmer">
+        <div class="pd-kicker">Untuk petani & pemilik lahan</div>
+        <h1>Tiga musim. Pilihan yang lebih jelas.</h1>
+        <p class="pd-sub">Bandingkan kebutuhan air dan pengaruh tanaman pada tanah.</p>
+        <div class="pd-inputs">
+          <div><label for="pd-location">Lokasi lahan</label><select id="pd-location"><option>Gabus · Pati · Jawa Tengah</option><option>Jaken · Pati · Jawa Tengah</option><option>Winong · Pati · Jawa Tengah</option></select><p class="pd-soil-help">Data untuk wilayah Anda.</p></div>
+          <div><label for="pd-soil">Jenis tanah</label><select id="pd-soil"><option value="clay">Liat</option><option value="loam">Lempung</option><option value="sand">Berpasir</option><option value="unknown">Belum tahu</option></select><p class="pd-soil-help" id="pd-soil-help">Terasa lengket saat basah; menahan air.</p></div>
+          <div class="pd-goal"><label>Tujuan utama</label><div class="pd-pills"><button type="button" data-priority="water" aria-pressed="true">Hemat air</button><button type="button" data-priority="soil" aria-pressed="false">Perbaiki tanah</button><button type="button" data-priority="rice" aria-pressed="false">Pertahankan padi</button></div></div>
+        </div>
+        <div class="pd-weather"><div><strong>Hujan saja</strong><p>Air irigasi belum dihitung.</p></div><div><strong>Jadwal musim bawaan</strong><p>Entri KATAM belum tersedia dalam contoh.</p></div></div>
+        <div class="pd-section-head"><div><h2>Rencana untuk dipertimbangkan</h2><p class="pd-sub" id="pd-sort">Diurutkan untuk tujuan hemat air.</p></div><span class="pd-demo">Nov 2026 – Okt 2027</span></div>
+        <div class="pd-plan-grid" id="pd-plans"></div>
+        <section class="pd-evidence" id="pd-evidence" hidden aria-label="Bukti data"><div class="pd-detail-head"><h2>Bukti di balik angka</h2><button type="button" id="pd-close-evidence">Tutup</button></div><div id="pd-evidence-body"></div></section>
+        <section class="pd-action" id="pd-selection" hidden aria-label="Rencana pilihan"><div><strong id="pd-selected-name"></strong><p>Rencana untuk dipertimbangkan; belum diperiksa di lahan Anda.</p></div><div class="pd-action-buttons"><button type="button" class="pd-primary" id="pd-save">Simpan rencana</button><button type="button" id="pd-share">Bagikan</button></div></section>
+        <p class="pd-foot">Angka contoh, bukan hasil analisis. Pilih angka untuk melihat bentuk bukti sumber.</p>
+      </section>
+      <section data-panel="district" hidden>
+        <div class="pd-kicker">Untuk dinas pertanian</div><h1>Mulai dari wilayah yang paling perlu.</h1><p class="pd-sub">Kecamatan dengan cakupan hujan terendah untuk padi pada MK2.</p>
+        <div class="pd-inputs"><div><label for="pd-province">Provinsi</label><select id="pd-province"><option>Jawa Tengah</option></select></div><div><label for="pd-district">Kabupaten</label><select id="pd-district"><option>Pati</option></select></div></div>
+        <div class="pd-section-head"><div><h2>Urutan prioritas MK2</h2><p class="pd-sub">Cakupan hujan terendah lebih dulu · angka ilustrasi</p></div></div>
+        <div class="pd-district-grid"><div class="pd-list"><div class="pd-list-head">Kecamatan <span style="float:right">Hujan / kebutuhan padi</span></div><div id="pd-areas"></div></div><div class="pd-area-detail" id="pd-area-detail"></div></div>
+        <p class="pd-foot">Periode contoh: MK2 2001–2025. Metode: hujan normal ÷ kebutuhan air tanaman. Bukti satu sel ditandai; data tidak tersedia berada di akhir daftar.</p>
+      </section>
+      <section data-panel="saved" hidden><div class="pd-kicker">Rencana Anda</div><h1>Untuk dibahas bersama.</h1><p class="pd-sub">Rencana tersimpan dalam contoh tampilan ini.</p><div id="pd-saved-list" style="margin-top:22px"></div></section>
+      <p id="pd-message" role="status" aria-live="polite" class="pd-sub" style="margin-top:12px"></p>
+    </main>
+  </div>
+</div>
+<script>
+(function () {
+  const root = document.getElementById('paddy-design');
+  const plans = [
+    {id:'mixed',name:'Ganti tanaman saat kering',crops:['Padi','Jagung','Kedelai'],cover:[92,72,58],notes:['Tanaman musim hujan.','Jeda dari penanaman padi.','Legum dapat menambah nitrogen.']},
+    {id:'rest',name:'Beri tanah jeda',crops:['Padi','Kedelai','Bera'],cover:[92,86,null],notes:['Tanaman musim hujan.','Legum dapat menambah nitrogen.','Lahan tidak ditanami musim ini.']},
+    {id:'baseline',name:'Padi setiap musim',crops:['Padi','Padi','Padi'],cover:[92,48,24],notes:['Tanaman musim hujan.','Padi kedua berturut-turut.','Padi ketiga; tanah tanpa jeda.']}
+  ];
+  const areas = [{name:'Jaken',cover:20,shared:true},{name:'Gabus',cover:24,shared:true},{name:'Winong',cover:31,shared:false},{name:'Tambakromo',cover:38,shared:false},{name:'Wilayah tanpa data',cover:null,shared:false}];
+  const state = {view:'farmer',priority:'water',soil:'clay',location:0,selected:null,saved:[],area:0};
+  const design = {radius:12,compact:false};
+  const seasonNames = ['MH','MK1','MK2'];
+  const dates = ['Nov–Feb','Mar–Jun','Jul–Okt'];
+  const descriptions = {clay:'Terasa lengket saat basah; menahan air.',loam:'Campuran pasir, debu, dan liat.',sand:'Terasa berbutir; air cepat lewat.',unknown:'Kesesuaian belum pasti; lihat pengaruh tiap jenis tanah.'};
+  function restore(snapshot) {
+    const saved = snapshot && snapshot.privateContent;
+    if (!saved) return;
+    if (['farmer','district','saved'].includes(saved.view)) state.view=saved.view;
+    if (['water','soil','rice'].includes(saved.priority)) state.priority=saved.priority;
+    if (Object.hasOwn(descriptions,saved.soil)) state.soil=saved.soil;
+    if ([0,1,2].includes(saved.location)) state.location=saved.location;
+    if (plans.some(function(p){return p.id===saved.selected;})) state.selected=saved.selected;
+    if (Array.isArray(saved.saved)) state.saved=saved.saved.filter(function(p){return plans.some(function(q){return q.id===p.id;}) && Object.hasOwn(descriptions,p.soil) && [0,1,2].includes(p.location);});
+    if (Number.isInteger(saved.area) && areas[saved.area]) state.area=saved.area;
+  }
+  function persist() {
+    if (window.openai && window.openai.setWidgetState) window.openai.setWidgetState({modelContent:{view:state.view,priority:state.priority,soil:state.soil,selectedPlan:state.selected,illustrativeData:true},privateContent:state}).catch(function(){});
+  }
+  function fit(crop) {
+    if(crop==='Bera') return 'Kesesuaian tanah: tidak berlaku.';
+    if(state.soil==='unknown') return 'Tanah belum pasti: liat menahan air; lempung lebih seimbang; pasir cepat melepas air.';
+    return 'Kesesuaian tanah: perlu aturan agronomi yang diperiksa.';
+  }
+  function renderPlans() {
+    const order = state.priority==='rice' ? ['baseline','mixed','rest'] : state.priority==='soil' ? ['rest','mixed','baseline'] : ['rest','mixed','baseline'];
+    root.querySelector('#pd-sort').textContent='Diurutkan untuk tujuan '+({water:'hemat air',soil:'perbaiki tanah',rice:'pertahankan produksi padi'}[state.priority])+'.';
+    root.querySelector('#pd-soil-help').textContent=descriptions[state.soil];
+    root.querySelector('#pd-plans').innerHTML=order.map(function(id,position){
+      const p=plans.find(function(item){return item.id===id;});
+      const min = Math.min.apply(null,p.cover.filter(function(v){return v!==null;}));
+      const risk=p.cover.indexOf(min);
+      const badge=id==='baseline'?'Pembanding padi':position===0?'Sesuai tujuan Anda':'Pilihan lain';
+      return '<article class="pd-plan '+(position===0?'pd-first':'')+'"><div class="pd-plan-head"><span class="pd-badge '+(id==='baseline'?'pd-baseline':'')+'">'+badge+'</span><h3>'+p.name+'</h3><div class="pd-sequence">'+p.crops.join(' → ')+'</div></div>'+p.crops.map(function(crop,i){
+        const value=p.cover[i];
+        return '<div class="pd-season '+(i===risk?'pd-risk':'')+'"><div class="pd-season-top"><span>'+seasonNames[i]+'</span><span>'+dates[i]+'</span></div><div class="pd-crop"><i data-lucide="'+(crop==='Bera'?'pause':'sprout')+'" aria-hidden="true"></i>'+crop+'</div>'+(value===null?'<p class="pd-sub">Tanpa tanaman</p><p class="pd-note">Cakupan hujan tidak berlaku.</p>':'<button type="button" class="pd-cover" data-evidence="'+p.id+':'+i+'" aria-label="Bukti cakupan hujan '+crop+' '+seasonNames[i]+' '+value+' persen"><strong>'+value+'%</strong> <span>kebutuhan dari hujan ↗</span><div class="pd-track"><b style="width:'+Math.min(100,value)+'%"></b></div><span>'+(i===risk?'Hujan paling kurang dalam rencana':'Hujan belum menutup kebutuhan')+'</span></button>')+'<p class="pd-note">'+p.notes[i]+'</p><p class="pd-note">'+fit(crop)+'</p></div>';
+      }).join('')+'<div class="pd-plan-footer"><span class="pd-risk-label">Risiko air terbesar: '+seasonNames[risk]+'</span><button type="button" '+(state.selected===id?'class="pd-primary"':'')+' data-plan="'+id+'">'+(state.selected===id?'Dipilih ✓':'Pilih rencana')+'</button></div></article>';
+    }).join('');
+    const selected=plans.find(function(p){return p.id===state.selected;});
+    root.querySelector('#pd-selection').hidden=!selected;
+    if(selected) root.querySelector('#pd-selected-name').textContent=selected.crops.join(' → ');
+    if(globalThis.lucide) globalThis.lucide.createIcons();
+  }
+  function renderAreas() {
+    root.querySelector('#pd-areas').innerHTML=areas.map(function(a,i){return '<button type="button" class="pd-area-row" data-area="'+i+'" aria-pressed="'+(i===state.area)+'"><span>'+(a.cover===null?'—':i+1)+'</span><span>'+a.name+'<small>'+(a.cover===null?'Data belum tersedia':a.shared?'Bukti satu sel hujan':'Data tingkat wilayah')+'</small></span><strong>'+(a.cover===null?'—':a.cover+'%')+'</strong></button>';}).join('');
+    const a=areas[state.area];
+    root.querySelector('#pd-area-detail').innerHTML='<div class="pd-kicker">Kecamatan terpilih</div><h3>'+a.name+'</h3>'+(a.cover===null?'<p class="pd-sub">Ringkasan hujan belum tersedia. Nilai tidak ditampilkan sebagai nol.</p>':'<div class="pd-large">'+a.cover+'%</div><p class="pd-sub">Kebutuhan air padi yang ditutup hujan pada MK2 · ilustrasi</p><div class="pd-mini-seasons"><div><span>MH</span>92%</div><div><span>MK1</span>48%</div><div><span>MK2</span>'+a.cover+'%</div></div><p class="pd-sub">'+(a.shared?'Bukti hujan dibagi dengan kecamatan lain dalam satu sel.':'Data mewakili wilayah, bukan pengukuran lahan.')+'</p><button type="button" id="pd-open-area" class="pd-primary" style="width:100%;margin-top:18px">Bandingkan rencana tanam</button>');
+  }
+  function renderSaved() {
+    root.querySelector('#pd-saved-list').innerHTML=state.saved.length?state.saved.map(function(s){const p=plans.find(function(item){return item.id===s.id;});return '<article class="pd-area-detail" style="margin-bottom:12px"><h3>'+p.crops.join(' → ')+'</h3><p class="pd-sub">'+root.querySelector('#pd-location').options[s.location].text+' · '+({clay:'Liat',loam:'Lempung',sand:'Berpasir',unknown:'Belum tahu'}[s.soil])+'</p><p class="pd-foot">Angka ilustrasi. Belum diperiksa di lahan Anda.</p></article>';}).join(''):'<div class="pd-area-detail"><h3>Belum ada rencana tersimpan</h3><p class="pd-sub">Pilih rencana pada Rencana tanam, lalu simpan.</p></div>';
+  }
+  function render() {
+    root.querySelectorAll('[data-panel]').forEach(function(el){el.hidden=el.dataset.panel!==state.view;});
+    root.querySelectorAll('[data-view]').forEach(function(el){el.setAttribute('aria-pressed',String(el.dataset.view===state.view));});
+    root.querySelectorAll('[data-priority]').forEach(function(el){el.setAttribute('aria-pressed',String(el.dataset.priority===state.priority));});
+    root.querySelector('#pd-soil').value=state.soil;
+    root.querySelector('#pd-location').selectedIndex=state.location;
+    renderPlans();renderAreas();renderSaved();
+  }
+  root.addEventListener('click',function(event){
+    const button=event.target.closest('button'); if(!button)return;
+    root.querySelector('#pd-message').textContent='';
+    if(button.dataset.view){state.view=button.dataset.view;render();}
+    if(button.dataset.priority){state.priority=button.dataset.priority;render();}
+    if(button.dataset.plan){state.selected=button.dataset.plan;render();}
+    if(button.dataset.area){state.area=Number(button.dataset.area);renderAreas();}
+    if(button.dataset.evidence){const bits=button.dataset.evidence.split(':');const p=plans.find(function(q){return q.id===bits[0];});const i=Number(bits[1]);root.querySelector('#pd-evidence').hidden=false;root.querySelector('#pd-evidence-body').innerHTML='<p><strong>'+p.crops[i]+' · '+seasonNames[i]+' · '+p.cover[i]+'% (ilustrasi)</strong></p><p>Format sumber: IMERG Final V07 · rata-rata '+seasonNames[i]+' 2001–2025 · grid 0,1° (sekitar 10 km), dirata-rata menurut luas kecamatan.</p><p>Kebutuhan air: POWER + koefisien tanaman bersumber. Periode dan aturan tanaman harus tersedia pada versi produk.</p><p>Ini contoh bentuk bukti. Angka belum dihitung dari sumber tersebut; tanggal kondisi SMAP belum tersedia.</p>';}
+    if(button.id==='pd-close-evidence')root.querySelector('#pd-evidence').hidden=true;
+    if(button.id==='pd-open-area'){const index=['Gabus','Jaken','Winong'].indexOf(areas[state.area].name);state.location=index>=0?index:0;state.view='farmer';state.selected=null;render();root.querySelector('#pd-message').textContent=index<0?'Lokasi contoh terdekat ditampilkan; area ini belum ada dalam pilihan contoh.':'';}
+    if(button.id==='pd-save' && state.selected){if(!state.saved.some(function(s){return s.id===state.selected&&s.soil===state.soil&&s.location===state.location;}))state.saved.push({id:state.selected,soil:state.soil,location:state.location});renderSaved();root.querySelector('#pd-message').textContent='Rencana disimpan dalam contoh ini. Lihat menu Tersimpan.';}
+    if(button.id==='pd-share')root.querySelector('#pd-message').textContent='Contoh alur berbagi: tautan berisi lokasi, jenis tanah, tujuan, rencana, dan tanggal sumber. Belum ada tautan yang dibuat.';
+    persist();
+  });
+  root.querySelector('#pd-soil').addEventListener('change',function(event){state.soil=event.target.value;render();persist();});
+  root.querySelector('#pd-location').addEventListener('change',function(event){state.location=event.target.selectedIndex;state.selected=null;root.querySelector('#pd-evidence').hidden=true;render();persist();});
+  restore(window.openai && window.openai.widgetState);render();
+  window.addEventListener('openai:set_globals',function(event){restore(event.detail && event.detail.globals && event.detail.globals.widgetState);render();});
+  function renderDesign() { root.querySelectorAll('.pd-plan,.pd-inputs,.pd-area-detail').forEach(function(el){el.style.borderRadius=design.radius+'px';});root.querySelector('.pd-main').style.padding=design.compact?'18px':'26px'; }
+  if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:renderDesign});tweak.addSlider(design,'radius',{label:'Corner radius',min:0,max:20,unit:'px'});tweak.addToggle(design,'compact',{label:'Compact spacing'});}
+})();
+</script>

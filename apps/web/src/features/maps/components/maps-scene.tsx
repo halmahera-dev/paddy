@@ -1,62 +1,65 @@
 "use client";
 
-import { Button } from "@paddy-field/ui/components/button";
+import { Label } from "@paddy-field/ui/components/label";
+import { Switch } from "@paddy-field/ui/components/switch";
+import Link from "next/link";
 import { useState } from "react";
 
-import { Map, MapControls, MapGeoJSON, useMap } from "@/components/ui/map";
+import type { AreaProperties } from "@/features/maps/maps-queries";
 
-type Coordinate = [number, number];
-const layerPoint: Coordinate = [107.9, -6.35];
+import {
+  Map,
+  MapControls,
+  MapGeoJSON,
+  MapMarker,
+  MarkerContent,
+  MarkerLabel,
+} from "@/components/ui/map";
 
-function polygon(vertices: Coordinate[]): GeoJSON.Feature<GeoJSON.Polygon> {
-  return {
-    type: "Feature",
-    properties: {},
-    geometry: { type: "Polygon", coordinates: [[...vertices, vertices[0]]] },
-  };
-}
-
-const fields: GeoJSON.FeatureCollection<GeoJSON.Polygon> = {
-  type: "FeatureCollection",
-  features: Array.from({ length: 16 }, function parcel(_, index) {
-    const row = Math.floor(index / 4);
-    const column = index % 4;
-    const west = layerPoint[0] - 0.003 + column * 0.0016;
-    const south = layerPoint[1] - 0.0025 + row * 0.0013;
-    const width = 0.00115 + (index % 3) * 0.0001;
-    const height = 0.0008 + (index % 2) * 0.0002;
-    const skew = ((index % 3) - 1) * 0.00015;
-    return {
-      ...polygon([
-        [west, south],
-        [west + width, south + skew],
-        [west + width + skew, south + height],
-        [west + skew, south + height],
-      ]),
-      id: `ftw-${index + 1}`,
-      properties: { year: 2025 },
-    };
-  }),
+export type FieldPin = {
+  id: string;
+  name: string;
+  center: [longitude: number, latitude: number];
+  needsAttention: boolean;
 };
 
-const rain = polygon([
-  [layerPoint[0] - 0.018, layerPoint[1] - 0.018],
-  [layerPoint[0] + 0.018, layerPoint[1] - 0.018],
-  [layerPoint[0] + 0.018, layerPoint[1] + 0.018],
-  [layerPoint[0] - 0.018, layerPoint[1] + 0.018],
-]);
-
-export default function MapsScene() {
+export default function MapsScene({ fields }: { fields: FieldPin[] }) {
+  const longitudes = fields.map((field) => field.center[0]);
+  const latitudes = fields.map((field) => field.center[1]);
   return (
     <div className="relative flex h-full min-h-0 flex-col bg-background text-foreground">
       <div className="relative min-h-80 flex-1">
         <Map
           center={[107.6191, -6.9175]}
           zoom={9}
+          bounds={
+            fields.length === 0
+              ? undefined
+              : [
+                  [Math.min(...longitudes), Math.min(...latitudes)],
+                  [Math.max(...longitudes), Math.max(...latitudes)],
+                ]
+          }
+          fitBoundsOptions={{
+            padding: { top: 240, right: 120, bottom: 120, left: 360 },
+            maxZoom: 12,
+          }}
           styles={{ light: "https://tiles.openfreemap.org/styles/bright" }}
           renderWorldCopies
         >
-          <MapLayers />
+          <AreaLayer />
+          {fields.map((field) => (
+            <MapMarker key={field.id} longitude={field.center[0]} latitude={field.center[1]}>
+              <MarkerContent>
+                <Link
+                  href={`/fields/${field.id}`}
+                  aria-label={`Open ${field.name}`}
+                  className={`block size-4 rounded-full border-2 border-background shadow-lg ${field.needsAttention ? "bg-destructive" : "bg-primary"}`}
+                />
+                <MarkerLabel>{field.name}</MarkerLabel>
+              </MarkerContent>
+            </MapMarker>
+          ))}
           <MapControls
             position="bottom-left"
             showZoom
@@ -69,73 +72,42 @@ export default function MapsScene() {
   );
 }
 
-function MapLayers() {
-  const [showFields, setShowFields] = useState(true);
-  const [showRain, setShowRain] = useState(true);
-  const { map } = useMap();
+function AreaLayer() {
+  const [showAreas, setShowAreas] = useState(true);
+  const [hoveredArea, setHoveredArea] = useState<AreaProperties | null>(null);
+
   return (
     <>
-      {showRain && (
-        <MapGeoJSON
-          id="nasa-weather"
-          data={rain}
-          fillPaint={{ "fill-opacity": 0.18 }}
-          linePaint={{ "line-width": 1, "line-opacity": 0.35 }}
+      {showAreas && (
+        <MapGeoJSON<AreaProperties>
+          id="areas"
+          data="/api/areas"
+          promoteId="code"
+          interactive
+          fillPaint={{ "fill-color": "#0ea5e9", "fill-opacity": 0.06 }}
+          fillHoverPaint={{ "fill-opacity": 0.3 }}
+          linePaint={{ "line-color": "#0ea5e9", "line-width": 1, "line-opacity": 0.7 }}
+          onHover={function showAreaName(event) {
+            setHoveredArea(event ? event.feature.properties : null);
+          }}
         />
       )}
-      {showFields && (
-        <MapGeoJSON
-          id="ftw-fields"
-          data={fields}
-          fillPaint={{ "fill-opacity": 0.28 }}
-          linePaint={{ "line-width": 2 }}
-        />
-      )}
-      <div
-        className="absolute top-4 right-4 z-20 flex max-w-xs flex-col gap-2 rounded-xl border border-border bg-background p-3 shadow-sm"
-        aria-label="Map layers"
-      >
-        <div className="flex flex-wrap gap-2">
-          <Button
-            size="lg"
-            variant="outline"
-            aria-pressed={showFields}
-            onClick={function toggleFields() {
-              setShowFields(!showFields);
+      <div className="absolute top-4 right-4 z-20 flex flex-col items-end gap-2">
+        <div className="flex items-center gap-3 rounded-xl border border-border bg-background px-3 py-2 shadow-sm">
+          <Label htmlFor="areas-switch">Areas</Label>
+          <Switch
+            id="areas-switch"
+            checked={showAreas}
+            onCheckedChange={function toggleAreas(checked) {
+              setShowAreas(checked);
+              setHoveredArea(null);
             }}
-          >
-            FTW fields
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            aria-pressed={showRain}
-            onClick={function toggleRain() {
-              setShowRain(!showRain);
-            }}
-          >
-            NASA rain
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={function viewLayers() {
-              map?.fitBounds(
-                [
-                  [layerPoint[0] - 0.02, layerPoint[1] - 0.02],
-                  [layerPoint[0] + 0.02, layerPoint[1] + 0.02],
-                ],
-                { padding: 48, duration: 0 },
-              );
-            }}
-          >
-            View layers
-          </Button>
+          />
         </div>
-        {showFields && <p className="text-xs text-muted-foreground">FTW predicted fields · 2025</p>}
-        {showRain && (
-          <p className="text-xs text-muted-foreground">
-            IMERG Late · 42 mm · 2 September–1 October 2026. Area estimate.
+        {showAreas && hoveredArea && (
+          <p className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs shadow-sm">
+            {hoveredArea.name} ·{" "}
+            <span className="text-muted-foreground">{hoveredArea.province}</span>
           </p>
         )}
       </div>

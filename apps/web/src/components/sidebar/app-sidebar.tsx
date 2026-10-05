@@ -20,7 +20,7 @@ import { AppLogo } from "@/components/app-logo";
 
 const items = [
   { title: "Overview", to: "/", icon: Home01Icon },
-  { title: "Maps", to: "/maps", icon: MapsGlobal02Icon },
+  { title: "Fields", to: "/maps", icon: MapsGlobal02Icon },
   { title: "Plan", to: "/plan", icon: ChessKnightIcon },
 ] as const;
 

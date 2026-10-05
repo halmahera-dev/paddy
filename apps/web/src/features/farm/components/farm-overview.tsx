@@ -1,21 +1,28 @@
 import { Badge } from "@paddy-field/ui/components/badge";
+import { Card, CardHeader, CardTitle } from "@paddy-field/ui/components/card";
 import { Skeleton } from "@paddy-field/ui/components/skeleton";
 
 import { cropName, describeElapsedDays, estimateCropProgress } from "../crop-progress";
-import { getFarm, getFarms } from "../farm-queries";
+import { getFarms } from "../farm-queries";
+import { adviseField, byAttentionFirst } from "../field-advice";
 import { ChosenPlanCard } from "./chosen-plan-card";
 import { FarmAlertsTable } from "./farm-alerts-table";
 import { FarmMetricCards } from "./farm-metric-cards";
 import { FarmRecordCard } from "./farm-record-card";
-import { FarmSwitcher } from "./farm-switcher";
+import { FieldFilter } from "./field-filter";
 import { RainDemandCard } from "./rain-demand-card";
 
 const cardStyle =
   "**:data-[slot=card]:bg-gradient-to-t **:data-[slot=card]:from-primary/5 **:data-[slot=card]:to-card **:data-[slot=card]:shadow-xs";
 
-export async function FarmOverview({ farmId }: { farmId: string | undefined }) {
-  const [farm, farms] = await Promise.all([getFarm(farmId), getFarms()]);
+export async function FarmOverview({ fieldId }: { fieldId: string | undefined }) {
+  const farms = (await getFarms()).toSorted(byAttentionFirst);
+  const farm = farms.find((candidate) => candidate.id === fieldId) ?? farms[0];
+  const advice = adviseField(farm);
   const elapsedDays = describeElapsedDays(estimateCropProgress(farm.cropRecord, farm.asOf));
+  const fieldOptions = farms.map(function toOption(candidate) {
+    return { id: candidate.id, name: candidate.name };
+  });
 
   return (
     <div className={`flex flex-col gap-4 px-4 py-4 md:gap-6 md:py-6 lg:px-6 ${cardStyle}`}>
@@ -29,7 +36,17 @@ export async function FarmOverview({ farmId }: { farmId: string | undefined }) {
           {farm.subdistrict}, {farm.province}
         </p>
       </div>
-      <FarmSwitcher farms={farms} farmId={farm.id} />
+      <FieldFilter fields={fieldOptions} fieldId={farm.id} />
+      <Card>
+        <CardHeader>
+          <Badge variant={advice.needsAttention ? "destructive" : "secondary"}>
+            {advice.needsAttention ? "Needs attention" : "Today"}
+          </Badge>
+          <CardTitle className="text-2xl">{advice.headline}</CardTitle>
+          <p className="text-sm text-secondary-foreground">{advice.detail}</p>
+          {advice.action && <p className="mt-2 text-sm font-medium">{advice.action}</p>}
+        </CardHeader>
+      </Card>
       <FarmMetricCards farm={farm} />
       <RainDemandCard farm={farm} />
       <FarmAlertsTable farm={farm} />

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Paddy turns satellite data into a farm plan</title>
+<style>
+  body {
+    margin: 0;
+    padding: 32px 24px 48px;
+    background: #101012;
+    background-image: radial-gradient(#2a2a2e 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: #fff;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  h1 { margin: 0 0 8px; font-size: 28px; }
+  p { margin: 0 0 24px; color: #aab0ba; font-size: 17px; max-width: 70ch; }
+  svg { display: block; width: 100%; height: auto; }
+  .edge {
+    fill: none;
+    stroke: #cfd3da;
+    stroke-width: 2;
+    stroke-dasharray: 6 6;
+    animation: flow 1.2s linear infinite;
+  }
+  @keyframes flow { to { stroke-dashoffset: -12; } }
+  @media (prefers-reduced-motion: reduce) { .edge { animation: none; } }
+  .node { fill: #111113; stroke: #2c2c30; stroke-width: 2; }
+  .node.you { stroke: #f5b942; }
+  .node.out { stroke: #4ade80; }
+  .divider { stroke: #2c2c30; stroke-width: 2; }
+  .title { font-size: 20px; font-weight: 600; fill: #fff; }
+  .line { font-size: 14px; fill: #aab0ba; }
+  .head { font-size: 15px; font-weight: 600; fill: #8a909b; letter-spacing: 0.08em; text-transform: uppercase; }
+  .port { fill: #9aa0ab; }
+  .note { margin: 24px 0 0; font-size: 15px; }
+</style>
+</head>
+<body>
+<h1>How Paddy turns satellite data into a plan for your farm</h1>
+<p>Read from left to right. Data goes in on the left. Each step prepares it. On the right is what the farmer or landowner sees.</p>
+
+<svg id="flow" viewBox="0 0 1650 1000" role="img" aria-label="Flow from data sources, to preparation, to calculation, to what the farmer sees"></svg>
+
+<p class="note">Satellite numbers describe your area, not your exact field. Plans are ideas to consider. We did not check them on your field.</p>
+
+<script>
+const svgNS = "http://www.w3.org/2000/svg";
+const NODE_WIDTH = 330;
+const NODE_HEIGHT = 118;
+const columnX = [30, 450, 870, 1290];
+const columnHeads = ["1. Data we use", "2. Get ready", "3. Work out", "4. What you see"];
+
+const nodes = {
+  rain: { col: 0, cy: 149, title: "Rain", from: [],
+    lines: ["NASA satellite rain estimates.", "One value for each 10 km square."] },
+  wetness: { col: 0, cy: 275, title: "Soil wetness", from: [],
+    lines: ["NASA model of how wet the soil is.", "One value for each 9 km square."] },
+  heat: { col: 0, cy: 401, title: "Temperature", from: [],
+    lines: ["NASA weather data for hot and", "cool days. Wide area, about 50 km."] },
+  crops: { col: 0, cy: 527, title: "Crop facts", from: [],
+    lines: ["Water need and soil effect of rice,", "maize, and soybean. From FAO guides."] },
+  maps: { col: 0, cy: 653, title: "Maps", from: [],
+    lines: ["Official district borders.", "Predicted field outlines."] },
+  calendar: { col: 0, cy: 779, title: "Planting calendar", from: [],
+    lines: ["Government calendar (KATAM).", "Best planting months for each area."] },
+  you: { col: 0, cy: 905, title: "You tell us", kind: "you", from: [],
+    lines: ["Where your field is, your soil type,", "your crop, and your planting date."] },
+
+  area: { col: 1, cy: 780, title: "Find your area", from: ["maps", "calendar", "you"],
+    lines: ["Match your field to its district", "and to its planting calendar."] },
+  normal: { col: 1, cy: 400, title: "Learn what is normal", from: ["rain", "heat", "crops"],
+    lines: ["24 years of rain give the normal", "for each season. Crop facts give", "the normal water need."] },
+  latest: { col: 1, cy: 215, title: "Read the latest days", from: ["rain", "wetness", "heat"],
+    lines: ["Collect the last days of rain,", "soil wetness, and heat.", "Each value keeps its date."] },
+
+  compare: { col: 2, cy: 640, title: "Compare crop plans", from: ["area", "normal"],
+    lines: ["For 3 seasons: how much water each", "crop needs against normal rain.", "Rice, rice, rice is the baseline."] },
+  changes: { col: 2, cy: 300, title: "Spot changes", from: ["latest", "normal"],
+    lines: ["Fixed rules compare the latest days", "with normal. AI only explains the", "result in plain words."] },
+
+  scene: { col: 3, cy: 160, title: "3D farm", kind: "out", from: ["changes"],
+    lines: ["An illustrated view of your farm", "and the latest conditions."] },
+  alerts: { col: 3, cy: 330, title: "Alerts and advice", kind: "out", from: ["changes"],
+    lines: ["Dry, very wet, or low soil wetness.", "A short reason and a check to do."] },
+  cards: { col: 3, cy: 520, title: "Six farm cards", kind: "out", from: ["compare", "changes"],
+    lines: ["Crop progress, rain, soil wetness,", "temperature, water need, plans."] },
+  plans: { col: 3, cy: 700, title: "Plans to consider", kind: "out", from: ["compare"],
+    lines: ["3 or 4 plans for the next 3 seasons.", "You choose one."] },
+};
+
+function element(name, attributes, text) {
+  const created = document.createElementNS(svgNS, name);
+  for (const key in attributes) {
+    created.setAttribute(key, attributes[key]);
+  }
+  if (text) {
+    created.textContent = text;
+  }
+  return created;
+}
+
+function nodeLeft(node) {
+  return columnX[node.col];
+}
+
+function inputPort(node, index) {
+  const spread = (index - (node.from.length - 1) / 2) * 18;
+  return { x: nodeLeft(node), y: node.cy + spread };
+}
+
+function outputPort(node) {
+  return { x: nodeLeft(node) + NODE_WIDTH, y: node.cy };
+}
+
+const svg = document.getElementById("flow");
+const ports = [];
+
+columnHeads.forEach(function (label, column) {
+  svg.appendChild(element("text", { class: "head", x: columnX[column] + 4, y: 52 }, label));
+});
+
+for (const id in nodes) {
+  const target = nodes[id];
+  target.from.forEach(function (sourceId, index) {
+    const start = outputPort(nodes[sourceId]);
+    const end = inputPort(target, index);
+    const curve = (end.x - start.x) / 2;
+    const path = `M ${start.x} ${start.y} C ${start.x + curve} ${start.y}, ${end.x - curve} ${end.y}, ${end.x} ${end.y}`;
+    svg.appendChild(element("path", { class: "edge", d: path }));
+    ports.push(start, end);
+  });
+}
+
+for (const id in nodes) {
+  const node = nodes[id];
+  const left = nodeLeft(node);
+  const top = node.cy - NODE_HEIGHT / 2;
+  svg.appendChild(element("rect", {
+    class: "node " + (node.kind || ""),
+    x: left, y: top, width: NODE_WIDTH, height: NODE_HEIGHT, rx: 20,
+  }));
+  svg.appendChild(element("line", { class: "divider", x1: left, x2: left + NODE_WIDTH, y1: top + 44, y2: top + 44 }));
+  svg.appendChild(element("text", { class: "title", x: left + 24, y: top + 29 }, node.title));
+  node.lines.forEach(function (line, index) {
+    svg.appendChild(element("text", { class: "line", x: left + 24, y: top + 70 + index * 20 }, line));
+  });
+}
+
+ports.forEach(function (port) {
+  svg.appendChild(element("circle", { class: "port", cx: port.x, cy: port.y, r: 6 }));
+});
+</script>
+</body>
+</html>

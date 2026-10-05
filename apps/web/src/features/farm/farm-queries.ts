@@ -14,6 +14,7 @@ export type CropRecord = {
 
 export type WeeklyWater = {
   week: string;
+  startsOn: string;
   rainMm: number;
   demandMm: [number, number] | null;
 };
@@ -23,6 +24,8 @@ export type FarmAlert = {
   title: string;
   status: AlertStatus;
   observed: string;
+  observedFrom: string;
+  observedTo: string;
   scale: string;
   action: string;
 };
@@ -41,6 +44,7 @@ export type Farm = {
   province: string;
   asOf: string;
   field: string;
+  outline: [longitude: number, latitude: number][];
   soil: string;
   cropRecord: CropRecord;
   conditions: {
@@ -68,6 +72,12 @@ const farms: Farm[] = [
     province: "West Java",
     asOf: "2026-10-02",
     field: "FTW predicted outline (2025), not a legal boundary",
+    outline: [
+      [108.3391, -6.3468],
+      [108.3412, -6.3466],
+      [108.3414, -6.3481],
+      [108.3393, -6.3484],
+    ],
     soil: "Clay (liat)",
     cropRecord: {
       crop: "rice",
@@ -88,20 +98,20 @@ const farms: Farm[] = [
     },
     season: "Dry season 2",
     weeklyWater: [
-      { week: "1 Jul", rainMm: 12, demandMm: null },
-      { week: "8 Jul", rainMm: 6, demandMm: null },
-      { week: "15 Jul", rainMm: 0, demandMm: null },
-      { week: "22 Jul", rainMm: 4, demandMm: null },
-      { week: "29 Jul", rainMm: 0, demandMm: null },
-      { week: "5 Aug", rainMm: 2, demandMm: null },
-      { week: "12 Aug", rainMm: 8, demandMm: [5, 20] },
-      { week: "19 Aug", rainMm: 15, demandMm: [25, 32] },
-      { week: "26 Aug", rainMm: 62, demandMm: [30, 34] },
-      { week: "2 Sep", rainMm: 12, demandMm: [32, 36] },
-      { week: "9 Sep", rainMm: 6, demandMm: [34, 38] },
-      { week: "16 Sep", rainMm: 1, demandMm: [36, 41] },
-      { week: "23 Sep", rainMm: 0, demandMm: [38, 44] },
-      { week: "30 Sep", rainMm: 0, demandMm: [40, 46] },
+      { week: "1 Jul", startsOn: "2026-07-01", rainMm: 12, demandMm: null },
+      { week: "8 Jul", startsOn: "2026-07-08", rainMm: 6, demandMm: null },
+      { week: "15 Jul", startsOn: "2026-07-15", rainMm: 0, demandMm: null },
+      { week: "22 Jul", startsOn: "2026-07-22", rainMm: 4, demandMm: null },
+      { week: "29 Jul", startsOn: "2026-07-29", rainMm: 0, demandMm: null },
+      { week: "5 Aug", startsOn: "2026-08-05", rainMm: 2, demandMm: null },
+      { week: "12 Aug", startsOn: "2026-08-12", rainMm: 8, demandMm: [5, 20] },
+      { week: "19 Aug", startsOn: "2026-08-19", rainMm: 15, demandMm: [25, 32] },
+      { week: "26 Aug", startsOn: "2026-08-26", rainMm: 62, demandMm: [30, 34] },
+      { week: "2 Sep", startsOn: "2026-09-02", rainMm: 12, demandMm: [32, 36] },
+      { week: "9 Sep", startsOn: "2026-09-09", rainMm: 6, demandMm: [34, 38] },
+      { week: "16 Sep", startsOn: "2026-09-16", rainMm: 1, demandMm: [36, 41] },
+      { week: "23 Sep", startsOn: "2026-09-23", rainMm: 0, demandMm: [38, 44] },
+      { week: "30 Sep", startsOn: "2026-09-30", rainMm: 0, demandMm: [40, 46] },
     ],
     alerts: [
       {
@@ -109,6 +119,8 @@ const farms: Farm[] = [
         title: "Dry conditions",
         status: "new",
         observed: "12 Sep – 1 Oct",
+        observedFrom: "2026-09-12",
+        observedTo: "2026-10-01",
         scale: "Area · 10 km rain, 9 km moisture",
         action: "Check the field",
       },
@@ -117,6 +129,8 @@ const farms: Farm[] = [
         title: "Heavy recent rain",
         status: "recovered",
         observed: "27–29 Aug",
+        observedFrom: "2026-08-27",
+        observedTo: "2026-08-29",
         scale: "Area · 10 km",
         action: "Check the field",
       },
@@ -125,6 +139,8 @@ const farms: Farm[] = [
         title: "Low root-zone moisture",
         status: "recovered",
         observed: "2–10 Aug",
+        observedFrom: "2026-08-02",
+        observedTo: "2026-08-10",
         scale: "Area · 9 km",
         action: "Review the next planting",
       },
@@ -145,6 +161,12 @@ const farms: Farm[] = [
     province: "West Java",
     asOf: "2026-10-02",
     field: "Map point · illustrative shape",
+    outline: [
+      [107.6183, -6.9168],
+      [107.6199, -6.9168],
+      [107.6199, -6.9181],
+      [107.6183, -6.9181],
+    ],
     soil: "Unknown",
     cropRecord: {
       crop: "maize",
@@ -165,20 +187,20 @@ const farms: Farm[] = [
     },
     season: "Dry season 2",
     weeklyWater: [
-      { week: "1 Jul", rainMm: 20, demandMm: null },
-      { week: "8 Jul", rainMm: 14, demandMm: null },
-      { week: "15 Jul", rainMm: 9, demandMm: null },
-      { week: "22 Jul", rainMm: 11, demandMm: null },
-      { week: "29 Jul", rainMm: 5, demandMm: [3, 15] },
-      { week: "5 Aug", rainMm: 8, demandMm: [3, 18] },
-      { week: "12 Aug", rainMm: 12, demandMm: [5, 22] },
-      { week: "19 Aug", rainMm: 7, demandMm: [8, 26] },
-      { week: "26 Aug", rainMm: 18, demandMm: [10, 30] },
-      { week: "2 Sep", rainMm: 15, demandMm: [14, 33] },
-      { week: "9 Sep", rainMm: 10, demandMm: [18, 35] },
-      { week: "16 Sep", rainMm: 22, demandMm: [22, 37] },
-      { week: "23 Sep", rainMm: 14, demandMm: [26, 38] },
-      { week: "30 Sep", rainMm: 18, demandMm: [30, 38] },
+      { week: "1 Jul", startsOn: "2026-07-01", rainMm: 20, demandMm: null },
+      { week: "8 Jul", startsOn: "2026-07-08", rainMm: 14, demandMm: null },
+      { week: "15 Jul", startsOn: "2026-07-15", rainMm: 9, demandMm: null },
+      { week: "22 Jul", startsOn: "2026-07-22", rainMm: 11, demandMm: null },
+      { week: "29 Jul", startsOn: "2026-07-29", rainMm: 5, demandMm: [3, 15] },
+      { week: "5 Aug", startsOn: "2026-08-05", rainMm: 8, demandMm: [3, 18] },
+      { week: "12 Aug", startsOn: "2026-08-12", rainMm: 12, demandMm: [5, 22] },
+      { week: "19 Aug", startsOn: "2026-08-19", rainMm: 7, demandMm: [8, 26] },
+      { week: "26 Aug", startsOn: "2026-08-26", rainMm: 18, demandMm: [10, 30] },
+      { week: "2 Sep", startsOn: "2026-09-02", rainMm: 15, demandMm: [14, 33] },
+      { week: "9 Sep", startsOn: "2026-09-09", rainMm: 10, demandMm: [18, 35] },
+      { week: "16 Sep", startsOn: "2026-09-16", rainMm: 22, demandMm: [22, 37] },
+      { week: "23 Sep", startsOn: "2026-09-23", rainMm: 14, demandMm: [26, 38] },
+      { week: "30 Sep", startsOn: "2026-09-30", rainMm: 18, demandMm: [30, 38] },
     ],
     alerts: [],
     plan: null,
@@ -186,11 +208,9 @@ const farms: Farm[] = [
 ];
 
 export async function getFarms() {
-  return farms.map(function toOption(farm) {
-    return { id: farm.id, name: farm.name };
-  });
+  return farms;
 }
 
-export async function getFarm(farmId: string | undefined) {
-  return farms.find((farm) => farm.id === farmId) ?? farms[0];
+export async function getFarm(farmId: string) {
+  return farms.find((farm) => farm.id === farmId);
 }

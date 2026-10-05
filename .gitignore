@@ -39,6 +39,11 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
+# Cloudflare
+.open-next
+.wrangler
+.dev.vars*
+
 # Turbo
 .turbo
 .nx

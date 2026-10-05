@@ -29,9 +29,13 @@ export const cropName: Record<Crop, string> = {
   fallow: "Fallow",
 };
 
+export function seasonLengthDays(crop: Exclude<Crop, "fallow">) {
+  return cropStages[crop].reduce((sum, stage) => sum + stage.days, 0);
+}
+
 const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
-function daysBetween(from: string, to: string) {
+export function daysBetween(from: string, to: string) {
   return Math.round((Date.parse(to) - Date.parse(from)) / millisecondsPerDay);
 }
 
@@ -55,7 +59,7 @@ export function estimateCropProgress(record: CropRecord, asOf: string): CropProg
   if (record.plantedFrom === null || record.plantedTo === null) return { kind: "unknown-date" };
 
   const stages = cropStages[record.crop];
-  const seasonDays = stages.reduce((sum, stage) => sum + stage.days, 0);
+  const seasonDays = seasonLengthDays(record.crop);
   const elapsedMin = daysBetween(record.plantedTo, asOf);
   const elapsedMax = daysBetween(record.plantedFrom, asOf);
   const firstStage = stageAt(stages, elapsedMin);

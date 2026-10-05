@@ -8,6 +8,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -20,7 +21,13 @@ import { AppLogo } from "@/components/app-logo";
 
 const items = [{ title: "World Map", to: "/maps", icon: MapsGlobal02Icon }] as const;
 
-export function MapsSidebar({ userMenu }: { userMenu: React.ReactNode }) {
+export function MapsSidebar({
+  userMenu,
+  fieldNav,
+}: {
+  userMenu: React.ReactNode;
+  fieldNav: React.ReactNode;
+}) {
   const pathname = usePathname();
 
   return (
@@ -45,7 +52,7 @@ export function MapsSidebar({ userMenu }: { userMenu: React.ReactNode }) {
               <SidebarMenuItem>
                 <SidebarMenuButton render={<Link href="/" />}>
                   <HugeiconsIcon icon={ArrowLeft02Icon} />
-                  Maps
+                  Overview
                 </SidebarMenuButton>
               </SidebarMenuItem>
               {items.map((item) => (
@@ -60,6 +67,12 @@ export function MapsSidebar({ userMenu }: { userMenu: React.ReactNode }) {
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Fields</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>{fieldNav}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

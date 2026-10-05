@@ -1,6 +1,6 @@
 "use client";
 
-import { NotificationIcon, StarsIcon } from "@hugeicons/core-free-icons";
+import { NotificationIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@paddy-field/ui/components/button";
 import {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/page-header";
+import { DataFlow } from "@/features/plan/components/data-flow";
 
 export const metadata: Metadata = {
   title: "Project Plan",
@@ -11,6 +12,8 @@ export default function PlanPage() {
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
       <PageHeader title="Plan" />
+
+      <DataFlow />
 
       <div className="px-4">
         <article className="typeset mx-auto max-w-3xl py-8">
