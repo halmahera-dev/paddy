@@ -4,7 +4,7 @@ import { PauseIcon, PlayIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@paddy-field/ui/components/button";
 import { Slider } from "@paddy-field/ui/components/slider";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { Farm } from "@/features/farm/farm-queries";
 
@@ -24,7 +24,8 @@ export function FieldStage({ farm }: { farm: Farm }) {
   const [playing, setPlaying] = useState(false);
   const [daysPerSecond, setDaysPerSecond] = useState(speeds[0].daysPerSecond);
   const isPlaying = playing && day < spanDays;
-  const moment = momentAt(farm, day);
+  const sceneDay = Math.floor(day);
+  const moment = useMemo(() => momentAt(farm, sceneDay), [farm, sceneDay]);
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -54,7 +55,7 @@ export function FieldStage({ farm }: { farm: Farm }) {
 
   return (
     <div className="relative h-full w-full bg-linear-to-b from-muted to-background">
-      <FieldDiorama farm={farm} moment={moment} day={day} />
+      <FieldDiorama farm={farm} moment={moment} day={sceneDay} />
       <DayCard moment={moment} isToday={day >= spanDays} />
       <div className="absolute inset-x-4 bottom-4 mx-auto max-w-3xl rounded-3xl border bg-card/85 p-4 shadow-lg backdrop-blur-xl md:group-has-data-[state=expanded]/sidebar-wrapper:left-(--sidebar-width)">
         <div className="mb-3 flex items-center gap-3">

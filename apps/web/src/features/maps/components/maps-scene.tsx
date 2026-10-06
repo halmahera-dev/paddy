@@ -72,26 +72,29 @@ export default function MapsScene({ fields }: { fields: FieldPin[] }) {
   );
 }
 
+const areaFillPaint = { "fill-color": "#0ea5e9", "fill-opacity": 0.06 };
+const areaFillHoverPaint = { "fill-opacity": 0.3 };
+const areaLinePaint = { "line-color": "#0ea5e9", "line-width": 1, "line-opacity": 0.7 };
+
 function AreaLayer() {
   const [showAreas, setShowAreas] = useState(true);
   const [hoveredArea, setHoveredArea] = useState<AreaProperties | null>(null);
 
   return (
     <>
-      {showAreas && (
-        <MapGeoJSON<AreaProperties>
-          id="areas"
-          data="/api/areas"
-          promoteId="code"
-          interactive
-          fillPaint={{ "fill-color": "#0ea5e9", "fill-opacity": 0.06 }}
-          fillHoverPaint={{ "fill-opacity": 0.3 }}
-          linePaint={{ "line-color": "#0ea5e9", "line-width": 1, "line-opacity": 0.7 }}
-          onHover={function showAreaName(event) {
-            setHoveredArea(event ? event.feature.properties : null);
-          }}
-        />
-      )}
+      {/* Hiding removes only the layers; the parsed source stays loaded for the next toggle. */}
+      <MapGeoJSON<AreaProperties>
+        id="areas"
+        data="/api/areas"
+        promoteId="code"
+        interactive
+        fillPaint={showAreas ? areaFillPaint : false}
+        fillHoverPaint={areaFillHoverPaint}
+        linePaint={showAreas ? areaLinePaint : false}
+        onHover={function showAreaName(event) {
+          setHoveredArea(event ? event.feature.properties : null);
+        }}
+      />
       <div className="absolute top-4 right-4 z-20 flex flex-col items-end gap-2">
         <div className="flex items-center gap-3 rounded-xl border border-border bg-background px-3 py-2 shadow-sm">
           <Label htmlFor="areas-switch">Areas</Label>

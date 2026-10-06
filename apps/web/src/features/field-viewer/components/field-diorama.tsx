@@ -2,7 +2,7 @@
 
 import { CameraControls, Html } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useLayoutEffect, useMemo, useRef } from "react";
+import { memo, useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 
 import type { Crop, Farm } from "@/features/farm/farm-queries";
@@ -345,19 +345,34 @@ function Rain({ rainMm }: { rainMm: number }) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const visibleDrops = Math.round(rainDropCount * Math.min(rainMm / 60, 1));
 
-  useFrame(function fall({ clock }) {
+  useLayoutEffect(() => {
     const mesh = meshRef.current;
     if (!mesh) return;
     const matrix = new THREE.Matrix4();
-    for (let index = 0; index < visibleDrops; index++) {
-      const x = (seededNoise(index) - 0.5) * slabHalfWidth * 2;
-      const z = (seededNoise(index + 1000) - 0.5) * slabHalfDepth * 2;
-      const fallen =
-        (seededNoise(index + 2000) * rainCeiling + clock.elapsedTime * 18) % rainCeiling;
-      matrix.makeTranslation(x, rainCeiling - fallen, z);
+    for (let index = 0; index < rainDropCount; index++) {
+      matrix.makeTranslation(
+        (seededNoise(index) - 0.5) * slabHalfWidth * 2,
+        rainCeiling - seededNoise(index + 2000) * rainCeiling,
+        (seededNoise(index + 1000) - 0.5) * slabHalfDepth * 2,
+      );
       mesh.setMatrixAt(index, matrix);
     }
+  }, []);
+
+  useFrame(function fall({ clock }) {
+    const mesh = meshRef.current;
+    if (!mesh) return;
     mesh.count = visibleDrops;
+    if (visibleDrops === 0) return;
+    const matrices = mesh.instanceMatrix.array;
+    for (let index = 0; index < visibleDrops; index++) {
+      const fallen =
+        (seededNoise(index + 2000) * rainCeiling + clock.elapsedTime * 18) % rainCeiling;
+      // Drops only move down, so write the y translation (column-major element 13).
+      matrices[index * 16 + 13] = rainCeiling - fallen;
+    }
+    mesh.instanceMatrix.clearUpdateRanges();
+    mesh.instanceMatrix.addUpdateRange(0, visibleDrops * 16);
     mesh.instanceMatrix.needsUpdate = true;
   });
 
@@ -503,7 +518,8 @@ function CameraRig() {
   );
 }
 
-export function FieldDiorama({
+// Playback ticks every frame; the scene only redraws when the whole day changes.
+export const FieldDiorama = memo(function FieldDiorama({
   farm,
   moment,
   day,
@@ -514,8 +530,8 @@ export function FieldDiorama({
 }) {
   return (
     <Canvas
-      shadows
-      dpr={[1, 2]}
+      shadows="percentage"
+      dpr={[1, 1.5]}
       camera={{ fov: 35, near: 0.5, far: 600, position: [90, 110, 140] }}
     >
       <hemisphereLight args={["#fff6e5", "#b89a6a", 1.6]} />
@@ -548,4 +564,4 @@ export function FieldDiorama({
       </Chip>
     </Canvas>
   );
-}
+});
