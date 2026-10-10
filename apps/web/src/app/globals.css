@@ -2,6 +2,20 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Lets the /design-system page pin interaction states with data-preview="hover focus active". */
+@custom-variant hover {
+  @media (hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
+  &[data-preview~="hover"] {
+    @slot;
+  }
+}
+@custom-variant focus-visible (&:focus-visible, &[data-preview~="focus"]);
+@custom-variant active (&:active, &[data-preview~="active"]);
+
 [data-sidebar="sidebar"]:has([data-maps-sidebar]) {
   background: var(--sidebar);
   box-shadow:
@@ -33,39 +47,6 @@
 }
 
 @layer base {
-  .page-header-material {
-    background: color-mix(in oklch, var(--header) 72%, transparent);
-    box-shadow: 0 1px 0 color-mix(in oklch, var(--foreground) 5%, transparent);
-    backdrop-filter: var(--tw-backdrop-blur) saturate(165%);
-    -webkit-backdrop-filter: var(--tw-backdrop-blur) saturate(165%);
-  }
-  .page-header-material::after {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    height: 0.75rem;
-    pointer-events: none;
-    content: "";
-    background: linear-gradient(
-      to bottom,
-      color-mix(in oklch, var(--foreground) 7%, transparent),
-      transparent
-    );
-    opacity: 0.22;
-  }
-  @media (prefers-reduced-transparency: reduce) {
-    .page-header-material {
-      background: oklch(1 0 0);
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-    }
-    .dark.page-header-material {
-      background: var(--background);
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-    }
-  }
   .overview-art {
     background-image:
       linear-gradient(
@@ -98,30 +79,6 @@
   }
   .maplibregl-ctrl-attrib-button {
     @apply bg-transparent! dark:invert;
-  }
-}
-
-.briefing-glass {
-  background: color-mix(in oklch, var(--background) 70%, transparent);
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklch, white 15%, transparent),
-    0 8px 24px color-mix(in oklch, black 12%, transparent);
-  -webkit-backdrop-filter: blur(20px) saturate(170%);
-  backdrop-filter: blur(20px) saturate(170%);
-  border: 1px solid oklch(0 0 0 / 6%);
-}
-
-@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  .briefing-glass {
-    background: var(--background);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-}
-
-@media (prefers-contrast: more) {
-  .briefing-glass {
-    outline: 1px solid var(--foreground);
   }
 }
 
@@ -172,15 +129,15 @@
 @theme inline {
   --color-cream: oklch(0.97 0.025 90);
   --color-deep-teal: oklch(0.27 0.05 200);
-  --text-display-xl: clamp(3rem, 9vw, 7rem);
-  --text-display-xl--line-height: 1;
-  --text-display-xl--letter-spacing: -0.045em;
-  --text-display: clamp(2.25rem, 5vw, 3.5rem);
-  --text-display--line-height: 1.05;
-  --text-display--letter-spacing: -0.035em;
-  --text-display-sm: clamp(1.5rem, 3.5vw, 2.25rem);
-  --text-display-sm--line-height: 1.25;
-  --text-display-sm--letter-spacing: -0.02em;
+}
+
+/* Briefing hero only. Bigger than the shared type-display. */
+@utility type-display-xl {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 9vw, 7rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.045em;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -214,25 +171,5 @@
   .briefing-caption-blur {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
-  }
-}
-
-@keyframes rain-fall {
-  from {
-    transform: translateY(-1.5rem);
-  }
-  to {
-    transform: translateY(11rem);
-  }
-}
-
-.rain-drop {
-  animation: rain-fall linear infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rain-drop {
-    animation: none;
-    top: var(--drop-top);
   }
 }

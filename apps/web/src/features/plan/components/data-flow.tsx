@@ -266,7 +266,7 @@ function getEdges() {
 }
 
 function getNodeStrokeClass(node: FlowNode) {
-  if (node.kind === "farmer") return "stroke-amber-500";
+  if (node.kind === "farmer") return "stroke-chart-3";
   if (node.kind === "output") return "stroke-primary";
   return "stroke-border";
 }

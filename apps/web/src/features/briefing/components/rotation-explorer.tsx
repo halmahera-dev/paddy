@@ -38,14 +38,14 @@ type SeasonKey = "rainy" | "earlyDry" | "lateDry";
 const seasonKeys: SeasonKey[] = ["rainy", "earlyDry", "lateDry"];
 
 const chartConfig = {
-  rainy: { label: "Rainy (Nov–Feb)", color: "var(--primary)" },
+  rainy: { label: "Rainy (Nov–Feb)", color: "var(--chart-1)" },
   earlyDry: {
     label: "Early dry (Mar–Jun)",
-    color: "var(--color-sky-500)",
+    color: "var(--chart-2)",
   },
   lateDry: {
     label: "Late dry (Jul–Oct)",
-    color: "var(--color-indigo-500)",
+    color: "var(--chart-3)",
   },
 } satisfies ChartConfig;
 

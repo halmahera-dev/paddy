@@ -9,7 +9,7 @@ import {
 import { Bar, BarChart, LabelList, XAxis } from "recharts";
 
 const chartConfig = {
-  cover: { label: "Rain cover", color: "var(--primary)" },
+  cover: { label: "Rain cover", color: "var(--chart-1)" },
 } satisfies ChartConfig;
 
 // Illustrative: part of rice water need that normal rain covers in one area.

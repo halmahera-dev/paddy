@@ -11,7 +11,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@paddy-field/ui/components/button";
-import { cn } from "cn";
+import { cn } from "@paddy-field/ui/lib/utils";
 import * as React from "react";
 
 const toast = ToastPrimitive.createToastManager();
