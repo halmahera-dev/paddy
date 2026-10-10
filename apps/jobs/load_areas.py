@@ -51,19 +51,28 @@ def fetch_object_ids() -> list[int]:
             "f": "json",
         }
     )
+    if not body.get("objectIds"):
+        raise RuntimeError("BIG returned no object ids for the Java filter")
     return sorted(body["objectIds"])
+
+
+def read_text(attributes: dict, field: str) -> str:
+    value = attributes.get(field)
+    if value is None:
+        raise RuntimeError(f"BIG feature has no {field}: {attributes}")
+    return value.strip()
 
 
 def parse_area(feature: dict) -> Area:
     attributes = feature["properties"]
     return Area(
-        code=attributes["KDCPUM"].strip(),
-        name=attributes["WADMKC"].strip(),
-        district_code=attributes["KDPKAB"].strip(),
-        district_name=attributes["WADMKK"].strip(),
-        province_code=attributes["KDPPUM"].strip(),
-        province_name=attributes["WADMPR"].strip(),
-        boundary_release=attributes["METADATA"].strip(),
+        code=read_text(attributes, "KDCPUM"),
+        name=read_text(attributes, "WADMKC"),
+        district_code=read_text(attributes, "KDPKAB"),
+        district_name=read_text(attributes, "WADMKK"),
+        province_code=read_text(attributes, "KDPPUM"),
+        province_name=read_text(attributes, "WADMPR"),
+        boundary_release=read_text(attributes, "METADATA"),
         boundary_geojson=json.dumps(feature["geometry"]),
     )
 
@@ -87,13 +96,23 @@ def fetch_areas(object_ids: list[int]) -> list[Area]:
 
 def check_areas(areas: list[Area], expected_count: int) -> None:
     if len(areas) != expected_count:
-        raise RuntimeError(f"BIG returned {len(areas)} features, expected {expected_count}")
-    repeated_codes = [code for code, count in Counter(a.code for a in areas).items() if count > 1]
+        raise RuntimeError(
+            f"BIG returned {len(areas)} features, expected {expected_count}"
+        )
+    repeated_codes = [
+        code
+        for code, count in Counter(a.code for a in areas).items()
+        if count > 1
+    ]
     if repeated_codes:
-        raise RuntimeError(f"Codes with more than one polygon: {repeated_codes[:10]}")
+        raise RuntimeError(
+            f"Codes with more than one polygon: {repeated_codes[:10]}"
+        )
     releases = {area.boundary_release for area in areas}
     if len(releases) != 1:
-        raise RuntimeError(f"Expected one boundary release, got {sorted(releases)}")
+        raise RuntimeError(
+            f"Expected one boundary release, got {sorted(releases)}"
+        )
 
 
 UPSERT_AREA = """
@@ -102,9 +121,9 @@ with shape as (
     st_setsrid(st_geomfromgeojson(%(boundary_geojson)s), 4326))), 3)) as boundary
 )
 insert into area (code, name, district_code, district_name, province_code, province_name,
-                  boundary_release, boundary, center)
+                  boundary_release, boundary, display_boundary, center)
 select %(code)s, %(name)s, %(district_code)s, %(district_name)s, %(province_code)s,
-       %(province_name)s, %(boundary_release)s, boundary, st_pointonsurface(boundary)
+       %(province_name)s, %(boundary_release)s, boundary, boundary, st_pointonsurface(boundary)
 from shape
 on conflict (code) do update set
   name = excluded.name,
@@ -118,6 +137,7 @@ on conflict (code) do update set
 """
 
 
+# The upsert stores the full boundary as a placeholder, because display_boundary is not null.
 UPDATE_DISPLAY_BOUNDARIES = """
 update area set display_boundary = simplified.boundary
 from (
@@ -146,7 +166,9 @@ def report(connection: psycopg.Connection, areas: list[Area]) -> None:
         [release],
     ).fetchall()
     for code, name, count, invalid, center_outside in rows:
-        print(f"{code} {name}: {count} areas, {invalid} invalid, {center_outside} centers outside")
+        print(
+            f"{code} {name}: {count} areas, {invalid} invalid, {center_outside} centers outside"
+        )
 
     loaded_codes = {area.code for area in areas}
     stale = connection.execute(

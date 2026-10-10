@@ -4,13 +4,14 @@ Run after load_areas.py: uv run --env-file ../web/.env build_area_cells.py
 """
 
 import os
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 import psycopg
 
 EASE2_9KM_CELL_METERS = 9008.055210146
 EASE2_9KM_ROWS = 1624
 EASE2_9KM_COLUMNS = 3856
+SHARE_SUM_TOLERANCE = 0.001
 
 
 @dataclass(frozen=True)
@@ -49,37 +50,43 @@ def insert_cells_sql(grid: Grid) -> str:
     return f"""
     insert into area_cell (area_code, source, cell_id, cell_center, area_share)
     select code, %(source)s, {grid.cell_id_sql}, st_transform(st_setsrid(st_point(center_x, center_y), %(srid)s), 4326),
-           st_area(st_intersection(boundary, cell_in_4326)::geography) / st_area(boundary::geography)
+           area_share
     from (
-      select a.code, a.boundary, c.i, c.j,
-             %(origin_x)s + (c.i + 0.5) * %(cell_width)s as center_x,
-             %(origin_y)s + (c.j + 0.5) * %(cell_height)s as center_y,
-             st_transform(c.cell, 4326) as cell_in_4326
-      from area a
-      cross join lateral (
-        select st_transform(a.boundary, %(srid)s) as native_boundary
-      ) native
-      cross join lateral (
-        select i, j, st_makeenvelope(
-                 %(origin_x)s + i * %(cell_width)s, %(origin_y)s + j * %(cell_height)s,
-                 %(origin_x)s + (i + 1) * %(cell_width)s, %(origin_y)s + (j + 1) * %(cell_height)s,
-                 %(srid)s) as cell
-        from generate_series(
-               floor((st_xmin(native.native_boundary) - %(origin_x)s) / %(cell_width)s)::int,
-               floor((st_xmax(native.native_boundary) - %(origin_x)s) / %(cell_width)s)::int) i,
-             generate_series(
-               floor((st_ymin(native.native_boundary) - %(origin_y)s) / %(cell_height)s)::int,
-               floor((st_ymax(native.native_boundary) - %(origin_y)s) / %(cell_height)s)::int) j
-      ) c
-    ) candidate
-    where st_intersects(boundary, cell_in_4326)
+      select *, st_area(st_intersection(boundary, cell_in_4326)::geography) / st_area(boundary::geography) as area_share
+      from (
+        select a.code, a.boundary, c.i, c.j,
+               %(origin_x)s + (c.i + 0.5) * %(cell_width)s as center_x,
+               %(origin_y)s + (c.j + 0.5) * %(cell_height)s as center_y,
+               st_transform(c.cell, 4326) as cell_in_4326
+        from area a
+        cross join lateral (
+          select st_transform(a.boundary, %(srid)s) as native_boundary
+        ) native
+        cross join lateral (
+          select i, j, st_makeenvelope(
+                   %(origin_x)s + i * %(cell_width)s, %(origin_y)s + j * %(cell_height)s,
+                   %(origin_x)s + (i + 1) * %(cell_width)s, %(origin_y)s + (j + 1) * %(cell_height)s,
+                   %(srid)s) as cell
+          from generate_series(
+                 floor((st_xmin(native.native_boundary) - %(origin_x)s) / %(cell_width)s)::int,
+                 floor((st_xmax(native.native_boundary) - %(origin_x)s) / %(cell_width)s)::int) i,
+               generate_series(
+                 floor((st_ymin(native.native_boundary) - %(origin_y)s) / %(cell_height)s)::int,
+                 floor((st_ymax(native.native_boundary) - %(origin_y)s) / %(cell_height)s)::int) j
+        ) c
+      ) candidate
+      where st_intersects(boundary, cell_in_4326)
+    ) shared
+    where area_share > 0
     """
 
 
 def rebuild_grid(connection: psycopg.Connection, grid: Grid) -> None:
     with connection.transaction():
-        connection.execute("delete from area_cell where source = %s", [grid.source])
-        connection.execute(insert_cells_sql(grid), grid.__dict__)
+        connection.execute(
+            "delete from area_cell where source = %s", [grid.source]
+        )
+        connection.execute(insert_cells_sql(grid), asdict(grid))
 
 
 def report(connection: psycopg.Connection) -> None:
@@ -100,11 +107,35 @@ def report(connection: psycopg.Connection) -> None:
         """
     ).fetchall()
     area_count = connection.execute("select count(*) from area").fetchone()[0]
-    for source, areas, average_cells, min_share, max_share, shared_cells in rows:
+    problems = []
+    for (
+        source,
+        areas,
+        average_cells,
+        min_share,
+        max_share,
+        shared_cells,
+    ) in rows:
         print(
             f"{source}: {areas}/{area_count} areas, {average_cells} cells per area, "
             f"share sum {min_share} to {max_share}, {shared_cells} cells shared by several areas"
         )
+        if areas != area_count:
+            problems.append(
+                f"{source}: {area_count - areas} areas have no cells"
+            )
+        if (
+            min_share < 1 - SHARE_SUM_TOLERANCE
+            or max_share > 1 + SHARE_SUM_TOLERANCE
+        ):
+            problems.append(
+                f"{source}: share sums {min_share} to {max_share} are not 1"
+            )
+    for grid in GRIDS:
+        if grid.source not in {row[0] for row in rows}:
+            problems.append(f"{grid.source}: no cells built")
+    if problems:
+        raise RuntimeError("; ".join(problems))
 
 
 def main() -> None:
