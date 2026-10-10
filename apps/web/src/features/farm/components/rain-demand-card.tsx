@@ -45,11 +45,11 @@ export function RainDemandCard({ farm }: { farm: Farm }) {
       <CardFooter>
         <div className="flex flex-wrap gap-2">
           <Badge variant="outline">
-            <span className="size-2 rounded-full bg-primary" />
+            <span className="size-2 rounded-full bg-chart-1" />
             Weekly rain · IMERG Late, 10 km
           </Badge>
           <Badge variant="outline">
-            <span className="size-2 rounded-full bg-chart-2" />
+            <span className="size-2 rounded-full bg-chart-3" />
             Estimated demand · Hargreaves + FAO-56
           </Badge>
           <Badge variant="secondary">Planted {describePlantingDate(farm.cropRecord)}</Badge>

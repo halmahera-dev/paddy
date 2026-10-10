@@ -9,7 +9,7 @@ import {
 import { Bar, CartesianGrid, Cell, ComposedChart, Line, XAxis, YAxis } from "recharts";
 
 const chartConfig = {
-  rain: { label: "Rain", color: "var(--primary)" },
+  rain: { label: "Rain", color: "var(--chart-1)" },
   need: { label: "Rice water need", color: "var(--foreground)" },
 } satisfies ChartConfig;
 

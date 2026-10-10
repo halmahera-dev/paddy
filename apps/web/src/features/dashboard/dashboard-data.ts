@@ -3,9 +3,9 @@ export type SeasonKey = "rainy" | "dry" | "drought";
 export type Crop = "rice" | "maize" | "soybean" | "fallow";
 
 export const seasons: { key: SeasonKey; label: string; months: string; color: string }[] = [
-  { key: "rainy", label: "Rainy", months: "Nov–Feb", color: "var(--primary)" },
-  { key: "dry", label: "Dry", months: "Mar–Jun", color: "var(--color-sky-500)" },
-  { key: "drought", label: "Drought", months: "Jul–Oct", color: "var(--color-amber-500)" },
+  { key: "rainy", label: "Rainy", months: "Nov–Feb", color: "var(--chart-1)" },
+  { key: "dry", label: "Dry", months: "Mar–Jun", color: "var(--chart-2)" },
+  { key: "drought", label: "Drought", months: "Jul–Oct", color: "var(--chart-3)" },
 ];
 
 export const monthLabels = ["N", "D", "J", "F", "M", "A", "M", "J", "J", "A", "S", "O"];
