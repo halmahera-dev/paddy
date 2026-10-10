@@ -5,7 +5,7 @@ import {
   useMessageScrollerScrollable,
   useMessageScrollerVisibility,
 } from "@shadcn/react/message-scroller"
-import { cn } from "cn"
+import { cn } from "@paddy-field/ui/lib/utils"
 
 import { Button } from "@paddy-field/ui/components/button"
 import { HugeiconsIcon } from "@hugeicons/react"

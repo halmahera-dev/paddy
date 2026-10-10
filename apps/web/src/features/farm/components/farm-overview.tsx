@@ -12,9 +12,6 @@ import { FarmRecordCard } from "./farm-record-card";
 import { FieldFilter } from "./field-filter";
 import { RainDemandCard } from "./rain-demand-card";
 
-const cardStyle =
-  "**:data-[slot=card]:bg-gradient-to-t **:data-[slot=card]:from-primary/5 **:data-[slot=card]:to-card **:data-[slot=card]:shadow-xs";
-
 export async function FarmOverview({ fieldId }: { fieldId: string | undefined }) {
   const farms = (await getFarms()).toSorted(byAttentionFirst);
   const farm = farms.find((candidate) => candidate.id === fieldId) ?? farms[0];
@@ -25,13 +22,13 @@ export async function FarmOverview({ fieldId }: { fieldId: string | undefined })
   });
 
   return (
-    <div className={`flex flex-col gap-4 px-4 py-4 md:gap-6 md:py-6 lg:px-6 ${cardStyle}`}>
+    <div className="flex flex-col gap-4 px-4 py-4 md:gap-6 md:py-6 lg:px-6">
       <div className="mt-4 flex flex-col gap-1">
         <div className="mb-1 flex gap-2">
           <Badge variant="blur">{cropName[farm.cropRecord.crop]}</Badge>
           {elapsedDays && <Badge variant="blur">{elapsedDays} since planting</Badge>}
         </div>
-        <h1 className="text-4xl font-semibold">{farm.name}</h1>
+        <h1 className="type-display">{farm.name}</h1>
         <p className="text-secondary-foreground">
           {farm.subdistrict}, {farm.province}
         </p>
@@ -39,10 +36,10 @@ export async function FarmOverview({ fieldId }: { fieldId: string | undefined })
       <FieldFilter fields={fieldOptions} fieldId={farm.id} />
       <Card>
         <CardHeader>
-          <Badge variant={advice.needsAttention ? "destructive" : "secondary"}>
+          <Badge variant={advice.needsAttention ? "destructive" : "brand"}>
             {advice.needsAttention ? "Needs attention" : "Today"}
           </Badge>
-          <CardTitle className="text-2xl">{advice.headline}</CardTitle>
+          <CardTitle className="type-headline">{advice.headline}</CardTitle>
           <p className="text-sm text-secondary-foreground">{advice.detail}</p>
           {advice.action && <p className="mt-2 text-sm font-medium">{advice.action}</p>}
         </CardHeader>

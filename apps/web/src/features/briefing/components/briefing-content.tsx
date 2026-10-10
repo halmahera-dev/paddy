@@ -116,7 +116,7 @@ function Hero() {
             className="h-10 w-auto sm:h-14"
           />
         </div>
-        <h1 className="briefing-rise text-display-xl text-cream mt-5 max-w-3xl font-heading font-semibold text-balance drop-shadow-lg">
+        <h1 className="briefing-rise type-display-xl text-cream mt-5 max-w-3xl text-balance drop-shadow-lg">
           Plant what the <span className="font-light">sky</span> can carry.
         </h1>
         <p className="briefing-rise text-cream/90 mt-6 max-w-xl text-base leading-relaxed sm:text-lg">
@@ -152,7 +152,7 @@ function SectionHeading({
   return (
     <div className="briefing-reveal max-w-2xl">
       <Badge>{eyebrow}</Badge>
-      <h2 className="text-display mt-3 font-heading font-semibold text-balance">{title}</h2>
+      <h2 className="type-display mt-3 text-balance">{title}</h2>
       {children ? (
         <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
           {children}
@@ -165,7 +165,7 @@ function SectionHeading({
 function Challenge() {
   return (
     <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
-      <blockquote className="briefing-reveal text-display-sm font-heading font-medium">
+      <blockquote className="briefing-reveal type-headline">
         “Create a decision‑support tool that uses NASA Earth observations along with{" "}
         <mark className="bg-transparent text-primary">local soil information</mark>,{" "}
         <mark className="bg-transparent text-primary">crop characteristics</mark>, and{" "}
@@ -329,7 +329,7 @@ function Success() {
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="briefing-reveal max-w-2xl">
           <Badge variant="secondary">Success criteria</Badge>
-          <h2 className="text-display mt-3 font-heading font-semibold">
+          <h2 className="type-display mt-3">
             How we will know it works.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-brand-foreground/80 sm:text-lg">

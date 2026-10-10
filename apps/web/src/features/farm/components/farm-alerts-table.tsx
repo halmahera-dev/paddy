@@ -19,11 +19,11 @@ import type { AlertStatus, Farm } from "../farm-queries";
 
 const statusBadge: Record<
   AlertStatus,
-  { label: string; variant: "default" | "secondary" | "outline" }
+  { label: string; variant: "destructive" | "secondary" | "brand" }
 > = {
-  new: { label: "New", variant: "default" },
+  new: { label: "New", variant: "destructive" },
   acknowledged: { label: "Acknowledged", variant: "secondary" },
-  recovered: { label: "Recovered", variant: "outline" },
+  recovered: { label: "Recovered", variant: "brand" },
 };
 
 export function FarmAlertsTable({ farm }: { farm: Farm }) {
@@ -33,7 +33,7 @@ export function FarmAlertsTable({ farm }: { farm: Farm }) {
     <Card>
       <CardHeader>
         <CardDescription>Alerts · {openCount} open</CardDescription>
-        <CardTitle className="text-xl">Area conditions to check</CardTitle>
+        <CardTitle className="type-title">Area conditions to check</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>

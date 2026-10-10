@@ -97,7 +97,7 @@ Already set in `packages/ui/src/styles/globals.css`:
 }
 ```
 
-The type scale is a set of `type-*` utilities in `packages/ui/src/styles/globals.css`. Use them, not `text-*` sizes, for headings and lead text. (`cn()` treats unknown `text-*` classes as colors and can drop them.)
+The type scale is a set of `type-*` utilities in `packages/ui/src/styles/globals.css`. Use them, not `text-*` sizes, for headings and lead text. `cn()` (in `packages/ui/src/lib/utils.ts`) knows them, so `type-*` on a `CardTitle` replaces its size, weight, and font.
 
 | Token | Spec | Use |
 | --- | --- | --- |
@@ -233,6 +233,14 @@ List is a `bg-secondary` pill. Triggers are `rounded-full`, `text-foreground/60`
 ### Navbar
 
 Pill: `glass rounded-full border border-black/6`, same as the briefing page header. Links are ghost pills. Active link has an emerald pill behind it that moves between items.
+
+### Sidebar
+
+Menu items are 40px pills. The active item is an emerald pill (`bg-sidebar-primary`). Hover is the quiet warm wash.
+
+### Page header
+
+Sticky `glass` bar with a hairline `border-b border-border`.
 
 ### Lists
 

@@ -37,18 +37,18 @@ export function RainDemandCard({ farm }: { farm: Farm }) {
     <Card>
       <CardHeader>
         <CardDescription>Rain vs crop water demand · {farm.season}</CardDescription>
-        <CardTitle className="text-2xl">{describeRainCover(farm)}</CardTitle>
+        <CardTitle className="type-headline">{describeRainCover(farm)}</CardTitle>
       </CardHeader>
       <CardContent>
         <RainDemandChart data={farm.weeklyWater} />
       </CardContent>
       <CardFooter>
         <div className="flex flex-wrap gap-2">
-          <Badge variant="outline">
+          <Badge variant="secondary">
             <span className="size-2 rounded-full bg-chart-1" />
             Weekly rain · IMERG Late, 10 km
           </Badge>
-          <Badge variant="outline">
+          <Badge variant="secondary">
             <span className="size-2 rounded-full bg-chart-3" />
             Estimated demand · Hargreaves + FAO-56
           </Badge>

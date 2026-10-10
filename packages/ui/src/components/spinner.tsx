@@ -1,4 +1,4 @@
-import { cn } from "cn"
+import { cn } from "@paddy-field/ui/lib/utils"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Loading03Icon } from "@hugeicons/core-free-icons"
 
