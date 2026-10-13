@@ -24,6 +24,7 @@ import Link from "next/link";
 import { AppLogo } from "@/components/app-logo";
 import { ModeToggle } from "@/components/mode-toggle";
 import { RiceSeasonChart } from "@/features/briefing/components/rice-season-chart";
+import { RotationBenchFigure } from "@/features/briefing/components/rotation-bench/figure";
 import { RotationExplorer } from "@/features/briefing/components/rotation-explorer";
 import { TeamCarousel } from "@/features/briefing/components/team-carousel";
 
@@ -43,7 +44,13 @@ export function BriefingContent() {
           <AppLogo />
           One Field
         </Link>
-        <nav aria-label="Briefing sections" className="ml-auto hidden sm:flex">
+        <nav aria-label="Briefing sections" className="ml-auto hidden md:flex">
+          <Button variant="ghost" size="sm" nativeButton={false} render={<a href="#rotation" />}>
+            Rotation
+          </Button>
+          <Button variant="ghost" size="sm" nativeButton={false} render={<a href="#data" />}>
+            Data
+          </Button>
           <Button variant="ghost" size="sm" nativeButton={false} render={<a href="#try" />}>
             Try it
           </Button>
@@ -56,7 +63,7 @@ export function BriefingContent() {
         </nav>
         <Button
           variant="outline"
-          className="mr-1 ml-auto shrink-0 sm:ml-0"
+          className="mr-1 ml-auto shrink-0 md:ml-0"
           nativeButton={false}
           render={<Link href="/plan" />}
         >
@@ -69,6 +76,8 @@ export function BriefingContent() {
         <Hero />
         <Challenge />
         <Problem />
+        <HowRotationWorks />
+        <NasaData />
         <TryIt />
         <FiveTaps />
         <Success />
@@ -205,6 +214,172 @@ function Problem() {
             </CardFooter>
           </Card>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function HowRotationWorks() {
+  const effects = [
+    {
+      title: "Fit the crop to the rain",
+      body: "Rice needs about 1,000 mm of water in a season, plus about 200 mm to flood the field first. Maize needs 450–500 mm. Soybean needs 350–400 mm. Late dry rain is near 150 mm.",
+      fact: "−600 mm",
+      factLabel: "Soybean in place of rice",
+    },
+    {
+      title: "Let soybean fix nitrogen",
+      body: "Bacteria on soybean roots take nitrogen from the air. The harvest removes most of it, so a legume helps the soil. It does not replace fertilizer.",
+      fact: "60–150 kg",
+      factLabel: "Nitrogen per hectare",
+    },
+    {
+      title: "Give the soil a dry season",
+      body: "A paddy stays flooded. A dry-land crop lets the soil drain and get air. Rice after rice also lets pests such as the brown planthopper move from crop to crop.",
+      fact: "1 of 3",
+      factLabel: "Seasons without a flood",
+    },
+  ];
+
+  return (
+    <section
+      id="rotation"
+      className="mx-auto max-w-5xl scroll-mt-24 px-4 py-14 sm:px-6 sm:py-20 lg:py-24"
+    >
+      <SectionHeading eyebrow="How rotation works" title="Change the crop, not the field.">
+        A rotation is the order of crops on one field. Java has three seasons each year. Each crop
+        uses a different amount of water and gives the soil something different.
+      </SectionHeading>
+      <div className="briefing-reveal mt-10">
+        <RotationBenchFigure />
+      </div>
+      <ol className="mt-8 grid gap-3 sm:mt-10 md:grid-cols-3">
+        {effects.map(function renderEffect(effect) {
+          return (
+            <li key={effect.title} className="briefing-reveal flex min-w-0">
+              <Card className="w-full">
+                <CardHeader>
+                  <CardTitle>{effect.title}</CardTitle>
+                  <CardDescription>{effect.body}</CardDescription>
+                </CardHeader>
+                <CardFooter className="mt-auto">
+                  <div className="grid gap-0.5">
+                    <p className="font-heading text-2xl font-semibold tracking-tight text-primary tabular-nums">
+                      {effect.fact}
+                    </p>
+                    <p className="text-xs text-muted-foreground">{effect.factLabel}</p>
+                  </div>
+                </CardFooter>
+              </Card>
+            </li>
+          );
+        })}
+      </ol>
+      <p className="briefing-reveal mt-6 text-sm text-muted-foreground">
+        Sources: FAO crop water needs, TNAU rice guide, Salvagiotti et al. 2008 for soybean
+        nitrogen. Nitrogen on the dial is a guide, not a field measure.
+      </p>
+    </section>
+  );
+}
+
+function NasaData() {
+  const datasets = [
+    {
+      name: "GPM IMERG",
+      question: "How much rain does this season normally get?",
+      body: "Monthly rain, 2001–2024. We add the months of each season and average them over the kecamatan.",
+      scale: "Final V07 · 10 km",
+    },
+    {
+      name: "NASA POWER",
+      question: "How much water does the crop use here?",
+      body: "Daily minimum and maximum temperature give the reference water use, ETo. FAO-56 crop factors turn it into the crop need.",
+      scale: "Daily · 50 km",
+    },
+    {
+      name: "SMAP L4",
+      question: "Is the root zone wetter or drier than normal now?",
+      body: "Modelled moisture to 1 m deep. We compare it to the same season in past years.",
+      scale: "3-hourly · 9 km",
+    },
+  ];
+
+  const steps = [
+    { title: "Normal rain", source: "IMERG" },
+    { title: "Crop need", source: "POWER + FAO-56" },
+    { title: "Rain cover", source: "Rain ÷ need" },
+    { title: "Soil note", source: "Rule table + your soil" },
+    { title: "Plan order", source: "Your priority" },
+  ];
+
+  return (
+    <section id="data" className="scroll-mt-24 bg-muted/50 py-14 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+        <SectionHeading eyebrow="NASA data" title="Three datasets. Three questions.">
+          The tool does not guess the best crop. It shows how well normal rain covers each crop,
+          in each season, for your area.
+        </SectionHeading>
+
+        <div className="mt-10 grid gap-3 md:grid-cols-3">
+          {datasets.map(function renderDataset(dataset) {
+            return (
+              <div key={dataset.name} className="briefing-reveal flex min-w-0">
+                <Card className="w-full">
+                  <CardHeader>
+                    <CardDescription>{dataset.name}</CardDescription>
+                    <CardTitle className="text-balance">{dataset.question}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">{dataset.body}</p>
+                  </CardContent>
+                  <CardFooter className="mt-auto">
+                    <Badge variant="secondary">{dataset.scale}</Badge>
+                  </CardFooter>
+                </Card>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="briefing-reveal mt-10">
+          <Card>
+            <CardHeader>
+              <CardDescription>How one number is made</CardDescription>
+              <p className="text-display-sm font-heading font-semibold tracking-tight text-balance">
+                Rain cover <span className="text-muted-foreground">=</span>{" "}
+                <span className="text-primary">normal season rain</span>{" "}
+                <span className="text-muted-foreground">÷</span>{" "}
+                <span className="text-primary">Σ (Kc × ETo)</span>
+              </p>
+            </CardHeader>
+            <CardContent>
+              <ol className="grid gap-x-3 gap-y-4 sm:grid-cols-5">
+                {steps.map(function renderStep(step, index) {
+                  return (
+                    <li key={step.title} className="grid min-w-0 content-start gap-1 border-t pt-3">
+                      <p className="text-xs text-muted-foreground tabular-nums">{index + 1}</p>
+                      <p className="font-medium">{step.title}</p>
+                      <p className="text-xs text-muted-foreground">{step.source}</p>
+                    </li>
+                  );
+                })}
+              </ol>
+            </CardContent>
+            <CardFooter>
+              <p className="text-xs text-muted-foreground">
+                Rain only. No irrigation, no flood preparation. A screening number, not a field
+                measure.
+              </p>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <p className="briefing-reveal mt-6 max-w-2xl text-sm text-muted-foreground">
+          We leave out HLS images and NDVI greenness. They show that plants grow, not which crop
+          grows or why. A rotation plan looks forward, so rain, temperature, and soil moisture
+          carry the decision.
+        </p>
       </div>
     </section>
   );
@@ -423,7 +598,7 @@ function TwoUsers() {
 
 function Ingredients() {
   const sources = [
-    { name: "IMERG", owner: "NASA", role: "Normal rain per season, 2001–2025", scale: "10 km" },
+    { name: "IMERG", owner: "NASA", role: "Normal rain per season, 2001–2024", scale: "10 km" },
     {
       name: "POWER",
       owner: "NASA",

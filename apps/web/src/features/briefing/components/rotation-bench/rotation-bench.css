@@ -1,0 +1,135 @@
+.iso.rb {
+  --rb-sky: oklch(0.685 0.169 237);
+  --anatomy-page: var(--background);
+  --anatomy-card: var(--card);
+  --anatomy-paper: var(--card);
+  --anatomy-face: var(--card);
+  --anatomy-top: var(--card);
+  --anatomy-text: var(--muted-foreground);
+  --anatomy-strong: var(--foreground);
+  --anatomy-muted: color-mix(in oklch, var(--foreground) 52%, var(--card));
+  --anatomy-shade-0: color-mix(in oklch, var(--card) 87%, var(--foreground));
+  --anatomy-shade-1: color-mix(in oklch, var(--card) 91%, var(--foreground));
+  --anatomy-shade-2: color-mix(in oklch, var(--card) 95%, var(--foreground));
+  --anatomy-shade-3: color-mix(in oklch, var(--card) 98%, var(--foreground));
+  --anatomy-lit-top: var(--card);
+  --anatomy-lit-shade: color-mix(in oklch, var(--card) 94%, var(--foreground));
+  --anatomy-hi: color-mix(in oklch, var(--foreground) 88%, var(--card));
+  --anatomy-mid: color-mix(in oklch, var(--foreground) 46%, var(--card));
+  --anatomy-lo: color-mix(in oklch, var(--foreground) 28%, var(--card));
+  --anatomy-faint: color-mix(in oklch, var(--foreground) 14%, var(--card));
+  --anatomy-lit: oklch(0.1 0 0);
+  --anatomy-halo: color-mix(in oklch, var(--foreground) 45%, var(--card));
+  --anatomy-halo-opacity: 0.3;
+  --anatomy-dot: color-mix(in oklch, var(--foreground) 80%, var(--card));
+}
+
+.dark .iso.rb {
+  --anatomy-shade-0: color-mix(in oklch, var(--card) 70%, black);
+  --anatomy-shade-1: color-mix(in oklch, var(--card) 78%, black);
+  --anatomy-shade-2: color-mix(in oklch, var(--card) 86%, black);
+  --anatomy-shade-3: color-mix(in oklch, var(--card) 93%, black);
+  --anatomy-top: color-mix(in oklch, var(--card) 92%, white);
+  --anatomy-lit-top: color-mix(in oklch, var(--card) 85%, white);
+  --anatomy-lit-shade: color-mix(in oklch, var(--card) 88%, white);
+  --anatomy-hi: color-mix(in oklch, var(--foreground) 84%, var(--card));
+  --anatomy-mid: color-mix(in oklch, var(--foreground) 44%, var(--card));
+  --anatomy-lo: color-mix(in oklch, var(--foreground) 26%, var(--card));
+  --anatomy-faint: color-mix(in oklch, var(--foreground) 14%, var(--card));
+  --anatomy-lit: white;
+  --anatomy-halo: black;
+  --anatomy-halo-opacity: 0.6;
+}
+
+.rb .iso-figure {
+  margin: 0;
+}
+
+.rb .iso-plate {
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 1px var(--border);
+  overflow: hidden;
+}
+
+.rb-stage {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.rb-tray {
+  cursor: pointer;
+  outline: none;
+}
+
+.rb-ring {
+  fill: none;
+  stroke: var(--anatomy-hi);
+  stroke-width: 1.1;
+  stroke-dasharray: 3 3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms;
+}
+
+.rb-tray:focus-visible .rb-ring {
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .rb-tray:hover .rb-ring {
+    opacity: 0.45;
+  }
+}
+
+.rb .rb-soil > .iso-fill {
+  fill: color-mix(in oklch, var(--card) 84%, var(--foreground));
+}
+
+.dark .rb .rb-soil > .iso-fill {
+  fill: color-mix(in oklch, var(--card) 80%, black);
+}
+
+.rb-bar {
+  fill: var(--anatomy-hi);
+  stroke: none;
+}
+
+.rb .rb-water > .iso-fill {
+  fill: color-mix(in oklch, var(--rb-sky) 30%, var(--card));
+}
+
+.rb .rb-water > .iso-shade[data-shade="0"] {
+  fill: color-mix(in oklch, var(--rb-sky) 62%, var(--card));
+}
+
+.rb .rb-water > .iso-shade[data-shade="1"] {
+  fill: color-mix(in oklch, var(--rb-sky) 52%, var(--card));
+}
+
+.rb .rb-water > .iso-shade[data-shade="2"] {
+  fill: color-mix(in oklch, var(--rb-sky) 42%, var(--card));
+}
+
+.rb .rb-water > .iso-shade[data-shade="3"] {
+  fill: color-mix(in oklch, var(--rb-sky) 34%, var(--card));
+}
+
+.rb .rb-water > .iso-top {
+  fill: color-mix(in oklch, var(--rb-sky) 20%, var(--card));
+}
+
+.rb .rb-water > .iso-edge,
+.rb .iso-line.rb-water-line,
+.rb .iso-line.rb-ripple {
+  stroke: color-mix(in oklch, var(--rb-sky) 78%, var(--card));
+}
+
+.rb .rb-sheet > .iso-fill {
+  fill: color-mix(in oklch, var(--rb-sky) 30%, transparent);
+}
+
+.rb .rb-sheet > .iso-edge {
+  stroke: color-mix(in oklch, var(--rb-sky) 60%, var(--card));
+}
