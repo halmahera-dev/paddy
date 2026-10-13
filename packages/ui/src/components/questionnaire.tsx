@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Questionnaire as QuestionnairePrimitive } from "@shadcn/react/questionnaire"
-import { cn } from "cn"
+import { cn } from "@paddy-field/ui/lib/utils"
 
 import { buttonVariants, type Button } from "@paddy-field/ui/components/button"
 import { HugeiconsIcon } from "@hugeicons/react"

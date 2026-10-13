@@ -39,7 +39,7 @@ import spaceAppsLogo from "../../../../public/nasa_space_apps_challenge.png";
 export function BriefingContent() {
   return (
     <div data-page="briefing" className="min-h-svh overflow-x-clip bg-background text-foreground">
-      <header className="briefing-glass fixed inset-x-3 top-3 z-30 mx-auto flex max-w-5xl items-center gap-1 rounded-full py-1.5 pr-1.5 pl-4 sm:inset-x-6">
+      <header className="fixed inset-x-3 top-3 z-30 mx-auto flex max-w-5xl items-center gap-1 rounded-full border border-black/6 glass py-1.5 pr-1.5 pl-4 sm:inset-x-6">
         <Link href="/" className="flex items-center gap-2 font-heading text-sm font-bold">
           <AppLogo />
           One Field
@@ -125,7 +125,7 @@ function Hero() {
             className="h-9 w-auto sm:h-12"
           />
         </div>
-        <h1 className="briefing-rise text-display-xl text-cream mt-6 max-w-3xl font-heading font-semibold text-balance drop-shadow-lg">
+        <h1 className="briefing-rise type-display-xl text-cream mt-6 max-w-3xl text-balance drop-shadow-lg">
           Plant what the <span className="font-light">sky</span> can carry.
         </h1>
         <p className="briefing-rise text-cream/85 mt-6 max-w-lg text-base leading-relaxed text-pretty sm:text-lg">
@@ -161,7 +161,7 @@ function SectionHeading({
   return (
     <div className="briefing-reveal max-w-2xl">
       <Badge>{eyebrow}</Badge>
-      <h2 className="text-display mt-3 font-heading font-semibold text-balance">{title}</h2>
+      <h2 className="type-display mt-3 text-balance">{title}</h2>
       {children ? (
         <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
           {children}
@@ -174,7 +174,7 @@ function SectionHeading({
 function Challenge() {
   return (
     <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
-      <blockquote className="briefing-reveal text-display-sm font-heading font-medium">
+      <blockquote className="briefing-reveal type-headline">
         “Create a decision‑support tool that uses NASA Earth observations along with{" "}
         <mark className="bg-transparent text-primary">local soil information</mark>,{" "}
         <mark className="bg-transparent text-primary">crop characteristics</mark>, and{" "}
@@ -349,7 +349,7 @@ function NasaData() {
           <Card>
             <CardHeader>
               <CardDescription>How one number is made</CardDescription>
-              <p className="text-display-sm font-heading font-semibold tracking-tight text-balance">
+              <p className="type-headline tracking-tight text-balance">
                 Rain cover <span className="text-muted-foreground">=</span>{" "}
                 <span className="text-primary">normal season rain</span>{" "}
                 <span className="text-muted-foreground">÷</span>{" "}
@@ -502,15 +502,15 @@ function Success() {
   return (
     <section
       id="success"
-      className="to-deep-teal scroll-mt-24 bg-linear-to-br from-primary py-14 text-primary-foreground sm:py-20 lg:py-24"
+      className="to-deep-teal scroll-mt-24 bg-linear-to-br from-brand py-14 text-brand-foreground sm:py-20 lg:py-24"
     >
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="briefing-reveal max-w-2xl">
           <Badge variant="secondary">Our targets</Badge>
-          <h2 className="text-display mt-3 font-heading font-semibold">
+          <h2 className="type-display mt-3">
             We use five targets to check that the tool works.
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-primary-foreground/80 sm:text-lg">
+          <p className="mt-4 text-base leading-relaxed text-brand-foreground/80 sm:text-lg">
             Each target links to a judging area, and we measure the targets before we submit on 15
             November.
           </p>
@@ -541,7 +541,7 @@ function Success() {
             );
           })}
         </div>
-        <p className="briefing-reveal mt-6 text-sm text-primary-foreground/80">
+        <p className="briefing-rise mt-6 text-sm text-brand-foreground/80">
           Our second target is for district users. In 2 minutes or less, an agricultural extension
           officer (PPL) or district staff member finds the 10 kecamatan with the largest dry-season
           water gap in one province.

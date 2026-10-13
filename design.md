@@ -1,239 +1,289 @@
-# One Field UI Design
+# DESIGN.md
 
-This file describes the current One Field UI styles. It covers shared tokens, components, images, and motion. Values come from the current code. Component classes can override the shared defaults.
+Live showcase: `/design-system` in `apps/web`. When the tokens in `packages/ui/src/styles/globals.css` change, update this file in the same change.
 
-## Source Files
+This file maps the One Field design language to shadcn/ui tokens. The values match `packages/ui/src/styles/globals.css`.
 
-- [Shared colors, fonts, and corner sizes](packages/ui/src/styles/globals.css)
-- [Long text styles](packages/ui/src/styles/typeset.css)
-- [App materials, display text, and motion](apps/web/src/app/globals.css)
-- [Shared components](packages/ui/src/components)
-- [Theme settings](apps/web/src/app/layout.tsx)
+## 1. Character
 
-When these styles change, update this file in the same change.
+- **Warm and playful, not loud.** Cream paper background, warm taupe neutrals, near-black ink. One bright accent: emerald.
+- **Soft and round.** Pills for every button and nav item. Big radius (24px) on cards. No sharp corners.
+- **Floating layers.** Elements float on the cream page with soft, wide, low-alpha shadows and glass blur. No hard borders.
+- **Illustration first.** 3D characters and stickers carry the personality. UI chrome stays quiet so the art can speak.
+- **Tactile motion.** Things lift on hover, press down on click, and enter with a short staggered fade.
+- **Casual voice.** Short, friendly copy. Emoji are allowed in body copy ("make your product go brrr! 🚀").
 
-## Visual Style
+## 2. Color
 
-One Field uses a green accent, neutral surfaces, rounded controls, and light borders. Light mode has an off-white background and white cards. Dark mode has a near-black background and lighter dark cards. The app defaults to dark mode. The theme control offers Light, Dark, and System.
+### Raw palette
 
-Most controls use small, medium-weight text. Larger headings use a separate font. Glass surfaces use a partly transparent fill, background blur, and a light shadow. Painted images add cream and deep teal to the visual style.
-
-## Colors
-
-Keep colors in OKLCH, as defined in the CSS. Use the named color tokens in components so each theme gets the correct value.
-
-### Shared Tokens
-
-| CSS token | Light | Dark | Use |
-| --- | --- | --- | --- |
-| `--background` | `oklch(0.985 0 0)` | `oklch(0.145 0 0)` | Base surface |
-| `--foreground` | `oklch(0.252 0 0)` | `oklch(0.961 0 0)` | Main text |
-| `--card` | `oklch(1 0 0)` | `oklch(0.252 0 0)` | Card fill |
-| `--card-foreground` | `oklch(0.252 0 0)` | `oklch(0.961 0 0)` | Card text |
-| `--popover` | `oklch(1 0 0)` | `oklch(0.252 0 0)` | Menus and dialogs |
-| `--popover-foreground` | `oklch(0.252 0 0)` | `oklch(0.961 0 0)` | Menu and dialog text |
-| `--primary` | `oklch(59.6% 0.145 163.225)` | Same | Green actions and accents |
-| `--primary-foreground` | `oklch(1 0 0)` | Same | Text on primary fill |
-| `--secondary` | `oklch(0.961 0 0)` | `oklch(0.293 0 0)` | Secondary controls |
-| `--secondary-foreground` | `oklch(0.252 0 0)` | `oklch(0.961 0 0)` | Secondary control text |
-| `--muted` | `oklch(0.976 0 0)` | `oklch(0.269 0 0)` | Quiet fills |
-| `--muted-foreground` | `oklch(0.524 0 0)` | `oklch(0.715 0 0)` | Supporting text |
-| `--accent` | `oklch(0.961 0 0)` | `oklch(0.293 0 0)` | Control states |
-| `--accent-foreground` | `oklch(0.252 0 0)` | `oklch(0.961 0 0)` | Text on accent fill |
-| `--destructive` | `oklch(0.539 0.182 33.719)` | `oklch(0.708 0.186 31.679)` | Errors and destructive actions |
-| `--border` | `oklch(0.898 0 0)` | `oklch(1 0 0 / 12%)` | Borders and separators |
-| `--input` | `oklch(0.898 0 0)` | `oklch(1 0 0 / 15%)` | Input fill and strokes |
-| `--ring` | `oklch(0.252 0 0)` | `oklch(0.961 0 0)` | Focus rings |
-
-`--accent` is a neutral control color. The green brand color is `--primary`.
-
-### Navigation Tokens
-
-| CSS token | Light | Dark |
+| Name | Value | Use |
 | --- | --- | --- |
-| `--sidebar` | `oklch(1 0 0)` | `oklch(0.185 0 0)` |
-| `--sidebar-foreground` | `oklch(0.252 0 0)` | `oklch(0.961 0 0)` |
-| `--sidebar-primary` | `oklch(59.6% 0.145 163.225)` | Same |
-| `--sidebar-primary-foreground` | `oklch(1 0 0)` | Same |
-| `--sidebar-accent` | `oklch(0.87 0 0 / 0.4)` | `oklch(0.37 0 0 / 0.4)` |
-| `--sidebar-accent-foreground` | `oklch(0.252 0 0)` | `oklch(0.961 0 0)` |
-| `--sidebar-border` | `oklch(0.898 0 0)` | `oklch(1 0 0 / 12%)` |
-| `--sidebar-ring` | `oklch(0.252 0 0)` | `oklch(0.961 0 0)` |
+| cream-50 | `#FBF9EF` | Page background, floating navbar (80% + blur) |
+| white | `#FFFFFF` | Cards, pricing card, secondary pill |
+| stone-100 | `#EEECE3` | Icon button background |
+| stone-200 | `#E8E5DC` | Tooltip background |
+| stone-250 | `#E5E2D9` | Glass nav tiles (30% + blur) |
+| sand-100 | `#F6ECD3` | Warm section background |
+| sand-200 | `#EFE4C8` | Inset panel (carousel wrapper) |
+| taupe-300 | `#D4CFC8` | Secondary text on taupe cards |
+| taupe-400 | `#A8A095` | Muted heading accent ("+40 founders") |
+| taupe-500 | `#A69E94` | Avatar ring / fill on dark cards |
+| taupe-600 | `#8C857B` | Dark testimonial card |
+| ink-900 | `oklch(20.8% 0.042 265.755)` (slate-900) | Headings, primary pill |
+| ink-800 | `oklch(27.9% 0.041 260.031)` (slate-800) | Card titles, tooltip text |
+| ink-700 | `oklch(37.2% 0.044 257.287)` (slate-700) | Body text |
+| ink-600 | `oklch(44.6% 0.043 257.281)` (slate-600) | Nav links |
+| ink-500 | `oklch(55.4% 0.046 257.417)` (slate-500) | Captions, meta |
+| emerald-600 | `oklch(59.6% 0.145 163.225)` | Accent: active nav, hover fill, focus ring |
+| emerald-500 | `oklch(69.6% 0.17 162.48)` | Dot separators, small highlights |
+| emerald-700 | `oklch(50.8% 0.118 165.612)` | Small accent text and links on cream (better contrast) |
+| red-500 / red-100 | `oklch(63.7% 0.237 25.331)` / `oklch(93.6% 0.032 17.717)` | Urgency badge ("1 spot left!") |
+| button-black | `#222 → #000` gradient | Main CTA ("Book a call") |
 
-### Chart and Image Accents
+Glow gradient (special CTA border only): `#3b82f6 → #06b6d4 → #f59e0b → #f97316 → #ec4899`.
 
-The five shared chart colors are the same in both themes:
+### Rules
 
-| CSS token | Value |
-| --- | --- |
-| `--chart-1` | `oklch(0.81 0.117 11.638)` |
-| `--chart-2` | `oklch(0.645 0.246 16.439)` |
-| `--chart-3` | `oklch(0.586 0.253 17.585)` |
-| `--chart-4` | `oklch(0.514 0.222 16.935)` |
-| `--chart-5` | `oklch(0.455 0.188 13.697)` |
+- Neutrals are **warm** (cream, sand, taupe). Text is **cool** (slate). Keep this contrast; do not use warm text on warm surfaces.
+- Emerald is for state and emphasis: active, hover, focus, links. Do not fill large areas with it.
+- The primary action is black, not emerald.
+- For small text, use emerald-700. White text on emerald-600 is fine for bold button and pill labels.
+- Use red only for urgency and errors.
 
-These chart tokens form a pink-to-red scale. Individual charts can define other colors.
+### shadcn tokens
 
-The app also defines `cream` as `oklch(0.97 0.025 90)` and `deep-teal` as `oklch(0.27 0.05 200)`. These support text and overlays on painted images.
+The live values are in `packages/ui/src/styles/globals.css` (`:root` and `.dark`). Role mapping:
 
-## Typography
-
-### Fonts
-
-| Utility | Font | Use |
+| Role | Light | Dark |
 | --- | --- | --- |
-| `font-sans` | Geist Variable | Body text, labels, and controls; default font |
-| `font-heading` | Plus Jakarta Sans Variable | Display text, card titles, and long text headings |
-| `font-mono` | Geist Mono Variable | Code and monospace text |
+| `--background` | cream `#fbf9ef` | `#1a1815` |
+| `--foreground` | ink-900 | cream |
+| `--card`, `--popover` | white | `#24211d` |
+| `--primary` (main action) | ink-900 | cream |
+| `--secondary` | stone-100 `#eeece3` | `#2e2a25` |
+| `--muted` | stone-200 `#e8e5dc` | `#2e2a25` |
+| `--muted-foreground` | `oklch(48% 0.045 257.3)` | taupe-400 |
+| `--accent` (quiet hover wash, menu highlight) | stone-200 | `#34302a` |
+| `--brand` / `--brand-foreground` | emerald-600 / white | same |
+| `--brand-text` (small emerald text) | emerald-700 | emerald-400 |
+| `--destructive` | red-600 | red-400 |
+| `--border` / `--input` | `#e5e2d9` / `#dcd8cd` | white 8% / 12% |
+| `--ring`, `--sidebar-primary` | emerald-600 | same |
+| `--chart-1` … `--chart-5` | emerald-600, sky-500, amber-500, emerald-400, emerald-800 (seasons: rainy, dry, drought) | same |
+| `--surface-sand`, `--surface-taupe`, `--text-taupe` | sand-200, taupe-600, taupe-400 | derived dark |
 
-Fonts are loaded from local Fontsource packages through the shared CSS.
+Tailwind classes: `bg-brand`, `text-brand-text`, `bg-surface-sand`, `bg-surface-taupe`, `text-text-taupe`.
 
-### Common Text Sizes
+**Why emerald is `--brand`, not `--accent`:** shadcn menus, selects, and comboboxes use `--accent` to highlight the focused item. An emerald highlight on every menu item is too loud, so `--accent` stays a quiet warm wash and emerald has its own token.
 
-Sizes below assume a 16px root font size.
+### Dark mode
 
-| Utility | Size / line height | Common use |
-| --- | --- | --- |
-| `text-xs` | 12px / 16px | Badges and small notes |
-| `text-sm` | 14px / 20px | Controls, card descriptions, and navigation |
-| `text-base` | 16px / 24px | Body text and card titles |
-| `text-lg` | 18px / 28px | Supporting display text |
-| `text-2xl` | 24px / 32px | Summary values |
-| `text-3xl` | 30px / 36px | Larger values and numbers |
+The `.dark` values are derived from the light theme: warm near-black surfaces, cream text, the same emerald. The app defaults to dark.
 
-Regular text uses weight 400. Labels often use 500. Main headings and summary values often use 600. Selected brand text uses 700. Numeric summaries use `tabular-nums` where needed.
+## 3. Typography
 
-### Display Text
+- **Headings:** Plus Jakarta Sans (`font-heading`). Its round, friendly shapes fit the playful look.
+- **Body and UI:** Geist (`font-sans`).
+- **Mono:** Geist Mono (`font-mono`) for numbers in tables, codes, and IDs.
 
-| Utility | Size | Line height | Letter spacing |
-| --- | --- | --- | --- |
-| `text-display-xl` | `clamp(3rem, 9vw, 7rem)` | 1 | `-0.045em` |
-| `text-display` | `clamp(2.25rem, 5vw, 3.5rem)` | 1.05 | `-0.035em` |
-| `text-display-sm` | `clamp(1.5rem, 3.5vw, 2.25rem)` | 1.25 | `-0.02em` |
-
-### Long Text
-
-The `.typeset` class uses Geist body text and Plus Jakarta Sans headings. Body line height is 1.75. Heading weight is 600. Its default body size is 18px below 48rem and 16px from 48rem, assuming a 16px inherited size. Links use an underline and inherit the text color.
-
-## Spacing and Corners
-
-Spacing uses Tailwind's default 4px unit. Common gaps and padding are 4, 8, 12, 16, 24, and 32px. Small control gaps also use 6px. Shared cards use 24px spacing by default and 16px for the small size.
-
-The base corner token is `--radius: 0.625rem` (10px at a 16px root size).
-
-| Utility | Radius |
-| --- | --- |
-| `rounded-sm` | 6px |
-| `rounded-md` | 8px |
-| `rounded-lg` | 10px |
-| `rounded-xl` | 14px |
-| `rounded-2xl` | 18px |
-| `rounded-3xl` | 22px |
-| `rounded-4xl` | 26px |
-| `rounded-full` | Pill or circle |
-
-Buttons, inputs, cards, and dialogs use `rounded-4xl`. Badges use `rounded-3xl`. Tab controls use `rounded-full` by default.
-
-## Shared Components
-
-### Buttons
-
-[Button source](packages/ui/src/components/button.tsx)
-
-Buttons use 14px medium-weight text, rounded corners, and a small gap between text and icons.
-
-| Variant | Appearance |
-| --- | --- |
-| `default` | Green fill, white text, a light border, and a small shadow |
-| `neutral` | Foreground fill with background-colored text |
-| `outline` | Border with a partly transparent background and blur |
-| `secondary` | Neutral fill and foreground text |
-| `ghost` | No resting fill; muted fill on hover |
-| `destructive` | Tinted error fill and error-colored text |
-| `link` | Green text; underline on hover |
-
-| Size | Height | Horizontal padding |
-| --- | --- | --- |
-| `xs` | 24px | 10px |
-| `sm` | 32px | 12px |
-| `default` | 40px | 16px |
-| `lg` | 44px | 20px |
-
-Icon button sizes are 24, 32, 40, and 44px. Inline icons can reduce the padding on their side. Default buttons use `bg-primary/80` on hover. Pressing a button moves it down 1px, except when it has `aria-haspopup`. Disabled buttons use 50% opacity and block pointer events.
-
-### Inputs and Validation
-
-[Input source](packages/ui/src/components/input.tsx)
-
-Inputs are 40px tall with 12px horizontal padding, `bg-input/50`, and muted placeholder text. Text is 16px below the `md` breakpoint and 14px from `md`. The resting border is transparent.
-
-Keyboard focus adds a ring-colored border and a 3px ring at 30% opacity. Invalid inputs use a destructive border and ring. Disabled inputs use 50% opacity. Form fields provide separate labels, descriptions, and error text.
-
-### Cards
-
-[Card source](packages/ui/src/components/card.tsx)
-
-Cards use the card fill and text tokens, a small shadow, and a 1px foreground ring at 5% opacity in light mode and 10% in dark mode. They clip their content to rounded corners.
-
-Default spacing is 24px; small cards use 16px. Titles use Plus Jakarta Sans at 16px and weight 500. Descriptions use 14px muted text. Individual cards can change text size, fill, and spacing.
-
-### Badges and Tabs
-
-[Badge source](packages/ui/src/components/badge.tsx) · [Tabs source](packages/ui/src/components/tabs.tsx)
-
-Badges are 20px tall with 12px medium-weight text and 8px horizontal padding. Variants include green, secondary, destructive, outline, ghost, and link.
-
-Default tab lists have a muted fill, full rounding, 4px padding, and a 36px height. Active tabs use a background-colored fill in light mode and an input tint in dark mode. The `line` variant uses an active indicator instead of a filled active tab.
-
-### Navigation Controls
-
-[Sidebar source](packages/ui/src/components/sidebar.tsx)
-
-Navigation buttons use 14px text, rounded corners, and small icons. Hover and active states use the sidebar accent fill. Active text has medium weight. Focus uses the sidebar ring token.
-
-### Dialogs
-
-[Dialog source](packages/ui/src/components/dialog.tsx)
-
-Dialogs use the popover fill, 24px padding, rounded corners, a light foreground ring, and a large shadow. The backdrop is black at 30% opacity with blur where supported. The close control uses a small ghost icon button with a secondary fill.
-
-## Materials and Shadows
-
-The UI uses several levels of depth:
-
-- Cards use `shadow-xs` and a light ring.
-- Primary buttons use a small inset highlight and outer shadow.
-- Dialogs use `shadow-xl`.
-- Glass surfaces add blur, a partly transparent fill, and a shadow.
-
-The shared `--shadow-card` token is also available:
+Already set in `packages/ui/src/styles/globals.css`:
 
 ```css
-rgba(0, 0, 0, 0.02) 0 0 0 1px,
-rgba(0, 0, 0, 0.04) 0 2px 6px 0,
-rgba(0, 0, 0, 0.1) 0 4px 8px 0
+@theme inline {
+  --font-sans: "Geist Variable", sans-serif;
+  --font-heading: "Plus Jakarta Sans Variable", sans-serif;
+  --font-mono: "Geist Mono Variable", monospace;
+}
 ```
 
-App glass styles use different settings. The header material uses a 72% background mix and 165% saturation. Map navigation glass uses a 72% sidebar mix with 24px blur and 150% saturation. Briefing glass uses a 70% background mix with 20px blur and 170% saturation.
+The type scale is a set of `type-*` utilities in `packages/ui/src/styles/globals.css`. Use them, not `text-*` sizes, for headings and lead text. `cn()` (in `packages/ui/src/lib/utils.ts`) knows them, so `type-*` on a `CardTitle` replaces its size, weight, and font.
 
-Reduced transparency settings remove blur and use solid fills for these materials. Map navigation and briefing glass also provide high-contrast fallbacks.
+| Token | Spec | Use |
+| --- | --- | --- |
+| `type-display` | clamp 36–60px / 1.1 / 800 / -0.025em · Plus Jakarta Sans | Page hero. Two-tone: second line in `text-text-taupe` |
+| `type-headline` | clamp 20–36px / 1.25 / 700 / -0.025em · Plus Jakarta Sans | Section heads |
+| `type-title` | 18px / 1.5 / 600 · Plus Jakarta Sans | Card and block titles |
+| `type-lead` | clamp 16–20px / 1.625 / 500 · Geist | Intro paragraphs. Bold run-in phrase with `<strong>` |
+| `text-sm` | 14px / 1.43 / 400 · Geist | Body and controls |
+| `type-caption` | 14px / 1.43 · Geist, with `text-muted-foreground` | Meta and help text |
+| `font-mono` | 14px · Geist Mono | IDs, codes, coordinates |
 
-## Images and Icons
+`CardTitle` uses `font-heading text-base font-semibold`. Buttons use `text-sm`; `default` and `brand` are `font-semibold tracking-tight`, the others `font-medium`.
 
-The app mark is [logo.png](apps/web/public/logo.png). The shared logo component displays it at 24×24px.
+Rules:
+- Headings use Plus Jakarta Sans, heavy (700–800), with `tracking-tight`. Body uses Geist at medium (500) for lead text and regular (400) for dense UI.
+- Variable fonts: any weight from 200 to 800 works for both families.
+- Use `leading-relaxed` for paragraphs, `leading-tight` for headings.
+- Display headings often have a two-tone pattern: ink line + taupe line.
 
-Painted images include [daisies.webp](apps/web/public/daisies.webp) and [ascii-magic.webp](apps/web/public/ascii-magic.webp). Images use cover cropping where needed. Dark mode can reduce image brightness. Cream text and deep teal overlays support text on imagery.
+## 4. Shape
 
-Hugeicons are used in shared controls and app navigation. Some existing controls and charts use Lucide or Tabler icons. Standard button icons are 16px, small button icons are 12px, and badge icons are 12px.
+`--radius` is `0.625rem`, so the scale is `rounded-md` 8px, `rounded-lg` 10px, `rounded-xl` 14px, `rounded-2xl` 18px, `rounded-3xl` 22px, `rounded-4xl` 26px.
 
-## Motion and Focus
+| Token | Value | Use |
+| --- | --- | --- |
+| `rounded-md` | 8px | Small accents |
+| `rounded-xl` | 14px | Tooltips |
+| `rounded-2xl` | 18px | Menu and select items, textarea, accordion, alerts, images in cards |
+| `rounded-3xl` | 22px | Popovers, menus, select trigger, badges, media cards, nav tiles |
+| `rounded-4xl` | 26px | Cards, dialogs, buttons, inputs (a pill on 40px controls) |
+| `rounded-full` | pill | Tabs triggers, switches, avatars, navbar |
+| `rounded-[2rem]` | 32px | Sunken section panel |
 
-Short control changes use transitions. Header title fades and view transitions use 200ms with ease-out. Sidebar size and position changes use 200ms with linear easing. Dialogs fade and scale over 100ms.
+**Image card pattern:** white card with `p-3 rounded-3xl`, image inside with `rounded-2xl`, title below with `type-title pt-4 px-1`. This gives a "framed photo" look.
 
-Briefing entry motion lasts 900ms with `cubic-bezier(0.22, 1, 0.36, 1)`. Elements rise from 16px below, fade in, and clear a 6px blur. The first four entry elements use 80ms delay steps. Scroll reveal and image drift run where CSS scroll timelines are supported. The team carousel has an 8-second progress animation that can pause.
+## 5. Elevation
 
-Reduced motion settings disable shared view-transition animations and omit the briefing CSS entry, scroll, and progress animations. Focus styles remain visible through ring and border changes.
+No borders on cards. Depth comes from soft shadows.
 
-## Keeping This File Current
+```css
+@theme inline {
+  --shadow-card: 0 4px 35px -10px rgb(0 0 0 / 0.1);    /* pricing card */
+  --shadow-card-lg: 0 20px 40px -12px rgb(0 0 0 / 0.1); /* portfolio card */
+  --shadow-inset: inset 0 2px 8px rgb(0 0 0 / 0.04);   /* sunken sand panel */
+}
+```
 
-Use the source files above to check exact values before changing the UI. Update the relevant section when a shared token or component changes. Describe behavior that exists in the code, and mark any new proposal before it is implemented.
+- **Glass:** the `glass` utility (in `packages/ui/src/styles/globals.css`): background at 70%, `blur(20px) saturate(170%)`, a 15% white inset top highlight, and a `0 8px 24px` black 12% drop shadow. It turns solid for `prefers-reduced-transparency` and `prefers-contrast: more`. Bars (navbar) add a hairline `border border-black/6`. Buttons never get a border.
+- **Sunken panel:** `bg-surface-sand rounded-[2rem] shadow-inset`. Use to group a carousel or a section.
+| Token | Use |
+| --- | --- |
+| `shadow-inset` | Sunken sand panel |
+| `shadow-sm` | Buttons at rest |
+| `shadow-card` | Cards |
+| `glass` | Navbars, outline buttons |
+| `shadow-card-lg` | Media cards |
+| `shadow-lg` | Popovers, menus, select lists |
+| `shadow-xl` | Dialogs, hover lift |
+
+- **Floating layers** (popovers, menus, select lists, dialogs): `ring-1 ring-foreground/5` (`/10` in dark) instead of a border. Menus and select lists are frosted: `bg-popover/70` with `backdrop-blur` and `backdrop-saturate-150`. Focused items get `bg-foreground/10`.
+- **Dark mode:** cards drop the shadow and use `ring-1 ring-foreground/10`.
+- **Dialog backdrop:** `bg-black/30` with `backdrop-blur-sm`.
+- Borders only as hairlines: `hr` in `border-border`, accordion edges, and the glass navbar edge. No borders on buttons.
+
+## 6. Layout
+
+- Page container: `container mx-auto px-4`, content `max-w-6xl` / `max-w-7xl`. Text blocks `max-w-4xl` (centered) or `max-w-lg` (side text).
+- Sections: generous vertical space, `py-16` to `py-24`. Pricing cards `max-w-[490px]`.
+- Navigation floats: pill navbar fixed at top with `pt-4 px-4` gap from the edge. Desktop has a fixed side rail of square glass tiles (`size-24 rounded-3xl`) with tooltips to the right.
+- Fixed corner chips: logo top-left, CTA top-right, small pill bottom-right, all `top-6/left-6` style offsets.
+- Alternating two-column rows (text / illustration) on `lg`, stacked on mobile with the illustration first.
+- Decorative tilt: stickers and title images use `-rotate-6`, `-rotate-3`, `rotate-12`. Overlap them with negative margins.
+
+## 7. Components
+
+### Button
+
+| Variant | Use | Look |
+| --- | --- | --- |
+| `default` | Main action ("Book a call") | Ink pill, soft top gradient, lifts and gains `shadow-xl` on hover |
+| `brand` | Confirm a field action ("Start planting") | Emerald pill, same lift |
+| `neutral` | Inverted action on media | Foreground fill, background text, no lift |
+| `secondary` | Second action | Stone fill, warm wash on hover |
+| `outline` | Actions over maps and media | `glass` pill, no border |
+| `ghost` | Nav links, toolbar actions | No fill, warm wash on hover |
+| `destructive` | Delete | Red tint |
+| `link` | Inline links | Underline on hover |
+
+All buttons press down with `active:scale-[0.98]` (not when they open a popup). Focus is `ring-3 ring-ring/30`. The rainbow `glow` CTA is not built; add it only for a marketing page.
+
+Sizes: `xs` 24px, `sm` 32px, `default` 40px, `lg` 44px, plus `icon` sizes. These are dense on purpose, because One Field is an app.
+
+### Fields
+
+Inputs, selects, and textareas have no visible border: `bg-input/50` fill with a transparent border that turns `border-ring` on focus, plus `ring-3 ring-ring/30`. Invalid: `border-destructive` + `ring-destructive/20`.
+
+| Control | Height | Radius |
+| --- | --- | --- |
+| Input | 40px (`h-10`, `px-4`) | `rounded-4xl` |
+| Select trigger | 36px default, 32px `sm` | `rounded-3xl` |
+| Textarea | `min-h-16`, grows with content | `rounded-2xl` |
+| Switch | 20×44px | `rounded-full`; checked is `bg-primary` |
+
+### Card
+
+`bg-card rounded-4xl shadow-card`, no border. Spacing is `--card-spacing` (24px, 16px for `size="sm"`). Variants:
+- **light:** white bg, slate text.
+- **taupe:** `bg-surface-taupe text-surface-taupe-foreground`.
+- **media:** `rounded-3xl p-3 shadow-card-lg`, image `rounded-2xl aspect-4/3`, title below.
+
+### Dialog and popovers
+
+- **Dialog:** `rounded-4xl bg-popover p-6 shadow-xl`, `max-w-md`, zoom-in 95% on open.
+- **Popover:** `rounded-3xl p-4 shadow-lg`.
+- **Menus and select lists:** frosted `bg-popover/70`, `rounded-3xl p-1.5`, items `rounded-2xl px-3 py-2 font-medium`.
+
+### Tabs
+
+List is a `bg-secondary` pill. Triggers are `rounded-full`, `text-foreground/60` at rest; the active one gets `bg-background`. The `line` variant drops the fill and shows a 2px underline.
+
+### Accordion
+
+`rounded-2xl border`, items split by `border-b`. No fill on the open item.
+
+### Badge
+
+`h-5 rounded-3xl text-xs font-semibold`. Variants: `brand` (emerald tint, for good status), `destructive` (red tint, for urgency), `secondary`, `outline`, `blur`.
+
+### Tooltip
+
+`rounded-xl bg-muted text-xs font-semibold text-foreground shadow-md`. Small, for app density.
+
+### Navbar
+
+Pill: `glass rounded-full border border-black/6`, same as the briefing page header. Links are ghost pills. Active link has an emerald pill behind it that moves between items.
+
+### Sidebar
+
+Menu items are 40px pills. The active item is an emerald pill (`bg-sidebar-primary`). Hover is the quiet warm wash.
+
+### Page header
+
+Sticky `glass` bar with a hairline `border-b border-border`.
+
+### Lists
+
+Feature list: check icon + `text-gray-800 font-medium`, `space-y-4`. Separate inline items (footer links) with small emerald dots: `size-1.5 rounded-full bg-emerald-500`.
+
+### Logos
+
+Partner logos: `opacity-60 hover:opacity-100 transition-opacity`.
+
+## 8. Motion
+
+| Token | Value |
+| --- | --- |
+| Fast | 200ms (tooltips, color, button lift) |
+| Popups | 100ms (dialogs, popovers, menus: fade + zoom 95%) |
+| Base | 300ms (buttons, cards, nav tiles) |
+| Slow | 500ms (image zoom inside a card) |
+| Easing | `cubic-bezier(0, 0, 0.2, 1)` (ease-out) |
+
+Patterns:
+- **Lift on hover:** `-translate-y-0.5` + bigger shadow. Tiles use `scale-105` (+ `translate-x-1.5` for the side rail).
+- **Press:** `active:scale-[0.98]` (buttons), `active:scale-95` (glow CTA).
+- **Entrance:** fade + small rise when in view. Stagger with delays of 0.1s, 0.15s, 0.25s.
+- **Marquee:** endless horizontal image strip, images `rounded-2xl`.
+- **Delight:** illustrations pop out and float near the cursor. Keep this kind of effect to marketing pages, not app UI.
+- Respect `prefers-reduced-motion`: turn off marquee, mouse trail, glow loop, and entrance rise.
+
+## 9. Imagery and voice
+
+- 3D character illustrations, stickers, and looping videos are the main visual content. UI frames them; it does not compete.
+- Image-based titles with a slight tilt are part of the look. In an app, use real text with the display style instead.
+- Copy is short, casual, and confident. Emoji are OK in marketing body copy. Keep app UI copy plain.
+
+## 10. Do and don't
+
+**Do**
+- Cream background, white floating cards, soft shadows.
+- Pill buttons with black gradient as the main action.
+- Emerald only for hover, active, focus, and small highlights.
+- Bold, tight headings and medium-weight body text.
+
+**Don't**
+- Don't use 1px borders around cards.
+- Don't use sharp or small radius on interactive elements.
+- Don't use pure gray neutrals; use the warm stone/taupe set.
+- Don't use the rainbow glow on more than one element per view.

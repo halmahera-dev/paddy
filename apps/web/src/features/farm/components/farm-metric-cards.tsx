@@ -13,9 +13,9 @@ import type { Farm } from "../farm-queries";
 import { describeElapsedDays, describePlantingDate, estimateCropProgress } from "../crop-progress";
 
 function describeAgainstNormal(value: number, normal: number) {
-  if (value < normal * 0.85) return "Drier than normal";
-  if (value > normal * 1.15) return "Wetter than normal";
-  return "Near normal";
+  if (value < normal * 0.85) return { note: "Drier than normal", tone: "destructive" } as const;
+  if (value > normal * 1.15) return { note: "Wetter than normal", tone: "secondary" } as const;
+  return { note: "Near normal", tone: "brand" } as const;
 }
 
 function describeCropProgress(farm: Farm) {
@@ -23,7 +23,14 @@ function describeCropProgress(farm: Farm) {
   const source = `Your record · planted ${describePlantingDate(farm.cropRecord)}`;
 
   if (progress.kind === "fallow") {
-    return { label: "Crop progress", value: "Resting", share: null, note: "Fallow", source };
+    return {
+      label: "Crop progress",
+      value: "Resting",
+      share: null,
+      note: "Fallow",
+      tone: "secondary",
+      source,
+    } as const;
   }
   if (progress.kind === "unknown-date") {
     return {
@@ -31,16 +38,18 @@ function describeCropProgress(farm: Farm) {
       value: "Unknown",
       share: null,
       note: "Add a planting date",
+      tone: "secondary",
       source,
-    };
+    } as const;
   }
   return {
     label: "Crop progress",
     value: describeElapsedDays(progress),
     share: progress.percent / 100,
     note: `${progress.stage} · estimated`,
+    tone: "secondary",
     source,
-  };
+  } as const;
 }
 
 function describeMoisture(conditions: Farm["conditions"]) {
@@ -52,14 +61,15 @@ function describeMoisture(conditions: Farm["conditions"]) {
       value: "No reading",
       share: null,
       note: "No valid reading",
+      tone: "secondary",
       source,
-    };
+    } as const;
   }
   return {
     label: "Soil moisture",
     value: `${conditions.rootZoneMoisture.toFixed(2)} m³/m³`,
     share: conditions.rootZoneMoisture / conditions.normalRootZoneMoisture,
-    note: describeAgainstNormal(conditions.rootZoneMoisture, conditions.normalRootZoneMoisture),
+    ...describeAgainstNormal(conditions.rootZoneMoisture, conditions.normalRootZoneMoisture),
     source,
   };
 }
@@ -73,7 +83,7 @@ export function FarmMetricCards({ farm }: { farm: Farm }) {
       label: "Rain · 30 days",
       value: `${conditions.rain30dMm} mm`,
       share: conditions.rain30dMm / conditions.normalRain30dMm,
-      note: describeAgainstNormal(conditions.rain30dMm, conditions.normalRain30dMm),
+      ...describeAgainstNormal(conditions.rain30dMm, conditions.normalRain30dMm),
       source: `IMERG Late · 10 km · to ${conditions.rainObserved}`,
     },
     describeMoisture(conditions),
@@ -82,6 +92,7 @@ export function FarmMetricCards({ farm }: { farm: Farm }) {
       value: `${conditions.maxTemperatureC.toFixed(1)} °C`,
       share: null,
       note: `${temperatureDifference >= 0 ? "+" : ""}${temperatureDifference.toFixed(1)} °C vs normal`,
+      tone: "secondary" as const,
       source: `POWER · 50 km · ${conditions.temperatureObserved}`,
     },
   ];
@@ -104,7 +115,7 @@ export function FarmMetricCards({ farm }: { farm: Farm }) {
                     aria-label={metric.label}
                   />
                 )}
-                <Badge variant="outline">{metric.note}</Badge>
+                <Badge variant={metric.tone}>{metric.note}</Badge>
                 <span className="text-xs text-muted-foreground">{metric.source}</span>
               </div>
             </CardFooter>

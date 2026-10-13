@@ -34,7 +34,7 @@ function findRiskiestSeason(seasons: PlanSeason[]) {
 
 export function ChosenPlanCard({ farm }: { farm: Farm }) {
   const plansLink = (
-    <Link href="/briefing" className={buttonVariants({ variant: "outline", size: "sm" })}>
+    <Link href="/briefing" className={buttonVariants({ variant: "secondary", size: "sm" })}>
       Compare plans
     </Link>
   );
@@ -44,7 +44,7 @@ export function ChosenPlanCard({ farm }: { farm: Farm }) {
       <Card>
         <CardHeader>
           <CardDescription>Your plan · next three seasons</CardDescription>
-          <CardTitle className="text-xl">No plan chosen yet</CardTitle>
+          <CardTitle className="type-title">No plan chosen yet</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
@@ -65,7 +65,7 @@ export function ChosenPlanCard({ farm }: { farm: Farm }) {
     <Card>
       <CardHeader>
         <CardDescription>Your plan · next three seasons</CardDescription>
-        <CardTitle className="text-xl">
+        <CardTitle className="type-title">
           {seasons.map((season) => cropName[season.crop]).join(" → ")}
         </CardTitle>
       </CardHeader>
@@ -98,9 +98,9 @@ export function ChosenPlanCard({ farm }: { farm: Farm }) {
       </CardContent>
       <CardFooter>
         <div className="flex w-full flex-wrap items-center gap-2">
-          <Badge variant="secondary">Plan to consider</Badge>
+          <Badge variant="brand">Plan to consider</Badge>
           {riskiestSeason === null ? null : (
-            <Badge variant="outline">Water risk: {riskiestSeason.season}</Badge>
+            <Badge variant="destructive">Water risk: {riskiestSeason.season}</Badge>
           )}
           <span className="ml-auto">{plansLink}</span>
         </div>

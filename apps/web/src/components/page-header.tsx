@@ -15,7 +15,7 @@ function PageHeader({
     <header
       data-slot="page-header"
       className={cn(
-        "page-header-material sticky top-0 z-20 flex shrink-0 items-center gap-2 px-4 py-3 backdrop-blur-md",
+        "glass sticky top-0 z-20 flex shrink-0 items-center gap-2 border-b border-border px-4 py-3",
         className,
       )}
       {...props}

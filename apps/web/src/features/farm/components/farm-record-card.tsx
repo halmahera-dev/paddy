@@ -32,7 +32,7 @@ export function FarmRecordCard({ farm }: { farm: Farm }) {
     <Card>
       <CardHeader>
         <CardDescription>My farm</CardDescription>
-        <CardTitle className="text-xl">{farm.name}</CardTitle>
+        <CardTitle className="type-title">{farm.name}</CardTitle>
       </CardHeader>
       <CardContent>
         <dl className="flex flex-col gap-2 text-sm">
@@ -48,7 +48,7 @@ export function FarmRecordCard({ farm }: { farm: Farm }) {
       </CardContent>
       <CardFooter>
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="outline">{precisionLabel[farm.cropRecord.precision]}</Badge>
+          <Badge variant="secondary">{precisionLabel[farm.cropRecord.precision]}</Badge>
           <span className="text-xs text-muted-foreground">
             Your records · used for crop progress
           </span>

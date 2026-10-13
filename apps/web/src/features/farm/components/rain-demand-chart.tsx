@@ -11,8 +11,8 @@ import { Area, Bar, CartesianGrid, ComposedChart, XAxis, YAxis } from "recharts"
 import type { WeeklyWater } from "../farm-queries";
 
 const chartConfig = {
-  rainMm: { label: "Rain", color: "var(--primary)" },
-  demandMm: { label: "Estimated crop demand", color: "var(--chart-2)" },
+  rainMm: { label: "Rain", color: "var(--chart-1)" },
+  demandMm: { label: "Estimated crop demand", color: "var(--chart-3)" },
 } satisfies ChartConfig;
 
 function formatTooltipValue(value: unknown, name: unknown) {
