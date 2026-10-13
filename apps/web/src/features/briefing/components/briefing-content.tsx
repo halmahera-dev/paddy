@@ -58,7 +58,7 @@ export function BriefingContent() {
             Success
           </Button>
           <Button variant="ghost" size="sm" nativeButton={false} render={<a href="#road" />}>
-            Road
+            Roadmap
           </Button>
         </nav>
         <Button
@@ -67,7 +67,7 @@ export function BriefingContent() {
           nativeButton={false}
           render={<Link href="/plan" />}
         >
-          Full PRD
+          Full plan
         </Button>
         <ModeToggle />
       </header>
@@ -95,10 +95,10 @@ export function BriefingContent() {
 
 function Hero() {
   const facts = [
-    { value: "14–15 Nov", label: "Hackathon" },
-    { value: "All of Java", label: "Kecamatan level" },
-    { value: "3 seasons", label: "Rainy · early dry · late dry" },
-    { value: "4 inputs", label: "NASA · soil · crop · priority" },
+    { value: "14–15 Nov", label: "Hackathon dates" },
+    { value: "All of Java", label: "Per kecamatan (sub-district)" },
+    { value: "3 seasons", label: "Rainy, early dry, and late dry" },
+    { value: "4 inputs", label: "NASA data, soil, crop, and priority" },
   ];
 
   return (
@@ -129,8 +129,9 @@ function Hero() {
           Plant what the <span className="font-light">sky</span> can carry.
         </h1>
         <p className="briefing-rise text-cream/90 mt-6 max-w-xl text-base leading-relaxed sm:text-lg">
-          A crop rotation tool for Java farmers and landowners. Compare three seasons of rice,
-          maize, and soybean against NASA rain and soil-moisture data for your area.
+          One Field is a crop rotation tool for farmers and landowners in Java. It compares rice,
+          maize, and soybean over three seasons with NASA rain and soil moisture data for their
+          area.
         </p>
         <div className="briefing-rise mt-8 grid max-w-2xl grid-cols-2 gap-2 sm:grid-cols-4">
           {facts.map(function renderFact(fact) {
@@ -182,8 +183,8 @@ function Challenge() {
         explore rotation strategies.”
       </blockquote>
       <p className="briefing-reveal mt-6 text-sm text-muted-foreground">
-        The Field Shift challenge text. Judges score Impact, Creativity, Validity, Relevance, and
-        Presentation.
+        This is the text of the Field Shift challenge. Judges score Impact, Creativity, Validity,
+        Relevance, and Presentation.
       </p>
     </section>
   );
@@ -193,23 +194,23 @@ function Problem() {
   return (
     <section className="bg-muted/50 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto grid max-w-5xl gap-8 px-4 sm:px-6 md:grid-cols-2 md:items-center lg:gap-12">
-        <SectionHeading eyebrow="The problem" title="Rice. Rice. Rice.">
-          Many Java farmers plant rice in every season, also when the rain is too low. This uses a
-          lot of water and gives the soil no rest. Farmers have no simple way to compare other
-          rotations against the rain in their own area.
+        <SectionHeading eyebrow="The problem" title="Many farmers plant rice in every season.">
+          In Java, many farmers plant rice even when the rain is low, so the crop uses a lot of
+          water and the soil never rests. Farmers have no simple way to compare other rotations with
+          the rain in their own area.
         </SectionHeading>
         <div className="briefing-reveal">
           <Card>
             <CardHeader>
-              <CardTitle>Rice, three seasons in a row</CardTitle>
-              <CardDescription>Part of rice water need that normal rain covers.</CardDescription>
+              <CardTitle>Rice in all three seasons</CardTitle>
+              <CardDescription>How much of the rice water need normal rain covers</CardDescription>
             </CardHeader>
             <CardContent>
               <RiceSeasonChart />
             </CardContent>
             <CardFooter>
               <p className="text-xs text-muted-foreground">
-                Example area. Rain only, no irrigation.
+                This is an example area, and the numbers count rain only, without irrigation.
               </p>
             </CardFooter>
           </Card>
@@ -223,19 +224,19 @@ function HowRotationWorks() {
   const effects = [
     {
       title: "Fit the crop to the rain",
-      body: "Rice needs about 1,000 mm of water in a season, plus about 200 mm to flood the field first. Maize needs 450–500 mm. Soybean needs 350–400 mm. Late dry rain is near 150 mm.",
+      body: "Rice needs about 1,000 mm of water in a season and about 200 mm more to flood the field first. Maize needs 450–500 mm and soybean needs 350–400 mm, but the late dry season gets only about 150 mm of rain.",
       fact: "−600 mm",
-      factLabel: "Soybean in place of rice",
+      factLabel: "Soybean instead of rice",
     },
     {
       title: "Let soybean fix nitrogen",
-      body: "Bacteria on soybean roots take nitrogen from the air. The harvest removes most of it, so a legume helps the soil. It does not replace fertilizer.",
+      body: "Bacteria on soybean roots take nitrogen from the air. The harvest removes most of it, so a legume helps the soil but does not replace fertilizer.",
       fact: "60–150 kg",
       factLabel: "Nitrogen per hectare",
     },
     {
       title: "Give the soil a dry season",
-      body: "A paddy stays flooded. A dry-land crop lets the soil drain and get air. Rice after rice also lets pests such as the brown planthopper move from crop to crop.",
+      body: "A paddy stays flooded, but a dry-land crop lets the soil drain and get air. Rice after rice also lets pests such as the brown planthopper move from one crop to the next.",
       fact: "1 of 3",
       factLabel: "Seasons without a flood",
     },
@@ -246,9 +247,12 @@ function HowRotationWorks() {
       id="rotation"
       className="mx-auto max-w-5xl scroll-mt-24 px-4 py-14 sm:px-6 sm:py-20 lg:py-24"
     >
-      <SectionHeading eyebrow="How rotation works" title="Change the crop, not the field.">
-        A rotation is the order of crops on one field. Java has three seasons each year. Each crop
-        uses a different amount of water and gives the soil something different.
+      <SectionHeading
+        eyebrow="How rotation works"
+        title="A rotation changes the crop and keeps the field."
+      >
+        A rotation is the order of crops on one field. Java has three seasons each year, and each
+        crop uses a different amount of water and gives the soil something different.
       </SectionHeading>
       <div className="briefing-reveal mt-10">
         <RotationBenchFigure />
@@ -276,8 +280,8 @@ function HowRotationWorks() {
         })}
       </ol>
       <p className="briefing-reveal mt-6 text-sm text-muted-foreground">
-        Sources: FAO crop water needs, TNAU rice guide, Salvagiotti et al. 2008 for soybean
-        nitrogen. Nitrogen on the dial is a guide, not a field measure.
+        The sources are FAO crop water needs, the TNAU rice guide, and Salvagiotti et al. 2008 for
+        soybean nitrogen. The nitrogen dial gives a general guide, but it does not measure a field.
       </p>
     </section>
   );
@@ -288,37 +292,37 @@ function NasaData() {
     {
       name: "GPM IMERG",
       question: "How much rain does this season normally get?",
-      body: "Monthly rain, 2001–2024. We add the months of each season and average them over the kecamatan.",
-      scale: "Final V07 · 10 km",
+      body: "It gives monthly rain for 2001–2024, and we add the months of each season and average them over the kecamatan.",
+      scale: "Final V07, 10 km",
     },
     {
       name: "NASA POWER",
       question: "How much water does the crop use here?",
-      body: "Daily minimum and maximum temperature give the reference water use, ETo. FAO-56 crop factors turn it into the crop need.",
-      scale: "Daily · 50 km",
+      body: "Daily minimum and maximum temperatures give the reference water use (ETo), and FAO-56 crop factors change it into the crop water need.",
+      scale: "Daily, 50 km",
     },
     {
       name: "SMAP L4",
       question: "Is the root zone wetter or drier than normal now?",
-      body: "Modelled moisture to 1 m deep. We compare it to the same season in past years.",
-      scale: "3-hourly · 9 km",
+      body: "It models soil moisture down to 1 m deep, and we compare it with the same season in past years.",
+      scale: "Every 3 hours, 9 km",
     },
   ];
 
   const steps = [
     { title: "Normal rain", source: "IMERG" },
-    { title: "Crop need", source: "POWER + FAO-56" },
-    { title: "Rain cover", source: "Rain ÷ need" },
-    { title: "Soil note", source: "Rule table + your soil" },
-    { title: "Plan order", source: "Your priority" },
+    { title: "Crop water need", source: "POWER and FAO-56" },
+    { title: "Rain cover", source: "Rain divided by need" },
+    { title: "Soil note", source: "Rule table and soil type" },
+    { title: "Plan order", source: "Farmer priority" },
   ];
 
   return (
     <section id="data" className="scroll-mt-24 bg-muted/50 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        <SectionHeading eyebrow="NASA data" title="Three datasets. Three questions.">
-          The tool does not guess the best crop. It shows how well normal rain covers each crop,
-          in each season, for your area.
+        <SectionHeading eyebrow="NASA data" title="Each NASA dataset answers one question.">
+          The tool does not guess the best crop, but it shows how well normal rain covers each crop
+          in each season for the farmer's area.
         </SectionHeading>
 
         <div className="mt-10 grid gap-3 md:grid-cols-3">
@@ -368,17 +372,17 @@ function NasaData() {
             </CardContent>
             <CardFooter>
               <p className="text-xs text-muted-foreground">
-                Rain only. No irrigation, no flood preparation. A screening number, not a field
-                measure.
+                This number counts rain only, so it ignores irrigation and the water that farmers
+                use to flood the field first. Use it to compare crops, not to measure one field.
               </p>
             </CardFooter>
           </Card>
         </div>
 
         <p className="briefing-reveal mt-6 max-w-2xl text-sm text-muted-foreground">
-          We leave out HLS images and NDVI greenness. They show that plants grow, not which crop
-          grows or why. A rotation plan looks forward, so rain, temperature, and soil moisture
-          carry the decision.
+          We leave out HLS images and NDVI greenness, because they show that plants grow but not
+          which crop grows or why. A rotation plan looks forward, so the decision uses rain,
+          temperature, and soil moisture.
         </p>
       </div>
     </section>
@@ -391,9 +395,9 @@ function TryIt() {
       id="try"
       className="mx-auto max-w-5xl scroll-mt-24 px-4 py-14 sm:px-6 sm:py-20 lg:py-24"
     >
-      <SectionHeading eyebrow="Try the idea" title="Three seasons. Four plans. Your call.">
-        Pick a soil type and a priority. The plans change their order, but the tool never hides a
-        plan. Rice–rice–rice always stays as the baseline.
+      <SectionHeading eyebrow="Try the idea" title="Compare four plans over three seasons.">
+        Pick a soil type and a priority, and the plans change their order. The tool never hides a
+        plan, and the rice, rice, rice plan always stays so the farmer can compare with it.
       </SectionHeading>
       <div className="briefing-reveal mt-10">
         <RotationExplorer />
@@ -406,20 +410,20 @@ function FiveTaps() {
   const steps = [
     {
       code: "F1",
-      title: "Find my field",
-      body: "Search a village, tap the map, or tap an FTW outline.",
+      title: "Find the field",
+      body: "Search for a village, tap the map, or tap a predicted field outline.",
     },
     {
       code: "F2",
       title: "Soil and priority",
-      body: "Clay, loam, sandy, or “I do not know”. Then one goal.",
+      body: "Pick clay, loam, sandy, or “I do not know”, and then one priority.",
     },
     {
       code: "F3",
       title: "Compare plans",
-      body: "Rain cover, soil fit, and a soil note for each season.",
+      body: "See rain cover, soil fit, and a soil note for each season.",
     },
-    { code: "F4", title: "See why", body: "Each number opens its source, period, and grid scale." },
+    { code: "F4", title: "See why", body: "Each number shows its source, time period, and scale." },
     { code: "F5", title: "Save or share", body: "Send the plan to the person who farms the land." },
   ];
 
@@ -427,8 +431,8 @@ function FiveTaps() {
     <section className="py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <SectionHeading
-          eyebrow="The farmer flow"
-          title="From open to decided in under 3 minutes."
+          eyebrow="Farmer steps"
+          title="The farmer opens the tool and picks a plan in less than 3 minutes."
         />
       </div>
       <ol className="mx-auto mt-8 grid max-w-5xl gap-3 px-4 sm:mt-10 sm:grid-cols-2 sm:px-6 lg:grid-cols-5">
@@ -466,32 +470,32 @@ function Success() {
   const kpis = [
     {
       value: "4 of 5",
-      title: "Farmer task",
-      body: "Test users choose a plan without help, in 3 minutes or less.",
+      title: "Plan without help",
+      body: "Test users choose a plan without help in 3 minutes or less.",
       criterion: "Impact",
     },
     {
       value: "4 of 5",
-      title: "Understanding",
+      title: "Farmers know why",
       body: "Test users say why their plan saves water or helps the soil.",
-      criterion: "Impact · Validity",
+      criterion: "Impact and Validity",
     },
     {
       value: "100%",
-      title: "Java coverage",
-      body: "Every kecamatan shows plans, or a reason why data is missing.",
+      title: "All of Java",
+      body: "Every kecamatan shows plans or a reason for missing data.",
       criterion: "Validity",
     },
     {
       value: "100%",
-      title: "Evidence tracing",
-      body: "Every number links to a source, period, and spatial scale.",
+      title: "Sources shown",
+      body: "Every number links to its source, time period, and scale.",
       criterion: "Validity",
     },
     {
       value: "4 / 4",
-      title: "Challenge fit",
-      body: "NASA data, local soil, crop traits, and farmer priority.",
+      title: "All challenge inputs",
+      body: "The tool uses NASA data, local soil, crop traits, and farmer priority.",
       criterion: "Relevance",
     },
   ];
@@ -503,12 +507,12 @@ function Success() {
     >
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="briefing-reveal max-w-2xl">
-          <Badge variant="secondary">Success criteria</Badge>
+          <Badge variant="secondary">Our targets</Badge>
           <h2 className="text-display mt-3 font-heading font-semibold">
-            How we will know it works.
+            We use five targets to check that the tool works.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-primary-foreground/80 sm:text-lg">
-            Each target maps to a judging criterion. We measure them before we submit on 15
+            Each target links to a judging area, and we measure the targets before we submit on 15
             November.
           </p>
         </div>
@@ -539,8 +543,9 @@ function Success() {
           })}
         </div>
         <p className="briefing-reveal mt-6 text-sm text-primary-foreground/80">
-          Secondary target: a PPL or district staff member finds the 10 kecamatan with the largest
-          dry-season water gap in one province, in 2 minutes or less.
+          Our second target is for district users. In 2 minutes or less, an agricultural extension
+          officer (PPL) or district staff member finds the 10 kecamatan with the largest dry-season
+          water gap in one province.
         </p>
       </div>
     </section>
@@ -552,23 +557,23 @@ function TwoUsers() {
     {
       role: "Main user",
       title: "The farmer or landowner",
-      body: "The person who decides what is planted. The owner may farm the land or rent it out.",
+      body: "This person decides what to plant, and may farm the land or rent it out.",
       decision:
-        "Which rotation to follow, or to discuss with the tenant, for the next three seasons.",
+        "They choose which rotation to follow for the next three seasons, or which one to discuss with the tenant.",
       span: "md:col-span-3",
     },
     {
-      role: "Secondary user",
+      role: "Second user",
       title: "District staff",
-      body: "One view that sorts kecamatan by the dry-season water gap for rice.",
-      decision: "Where legume seed and PPL visits go first.",
+      body: "They use one view that sorts kecamatan by the dry-season water gap for rice.",
+      decision: "They decide where legume seed and PPL visits go first.",
       span: "md:col-span-2",
     },
   ];
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
-      <SectionHeading eyebrow="Users" title="Two users. One set of evidence." />
+      <SectionHeading eyebrow="Users" title="Two types of users see the same data." />
       <div className="mt-10 grid gap-4 md:grid-cols-5">
         {users.map(function renderUser(user) {
           return (
@@ -602,24 +607,24 @@ function Ingredients() {
     {
       name: "POWER",
       owner: "NASA",
-      role: "Min and max temperature for crop water use",
+      role: "Minimum and maximum temperature for crop water use",
       scale: "Point",
     },
     {
       name: "SMAP L4",
       owner: "NASA",
-      role: "Root-zone moisture now, compared to normal",
+      role: "Root-zone moisture now, compared with normal",
       scale: "9 km",
     },
     {
       name: "KATAM",
-      owner: "Kementan",
-      role: "Planting windows and crops per kecamatan",
+      owner: "Ministry of Agriculture",
+      role: "Planting calendar with planting windows and crops per kecamatan",
       scale: "Kecamatan",
     },
     {
       name: "BIG",
-      owner: "Indonesia",
+      owner: "Indonesian mapping agency",
       role: "Kecamatan boundaries for all of Java",
       scale: "Boundary",
     },
@@ -630,19 +635,22 @@ function Ingredients() {
       scale: "Field",
     },
     {
-      name: "You",
+      name: "Farmer input",
       owner: "The farmer",
       role: "Soil type and one priority, in 2 taps",
-      scale: "Your field",
+      scale: "One field",
     },
   ];
 
   return (
     <section className="bg-muted/50 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        <SectionHeading eyebrow="What goes in" title="Seven ingredients, each at its own scale.">
-          A 10 km rain cell is not your field. The tool shows the scale of every number, so a large
-          cell never looks like field data.
+        <SectionHeading
+          eyebrow="Inputs"
+          title="The tool uses seven inputs, and each has its own scale."
+        >
+          A 10 km rain cell is not one farmer's field, so the tool shows the scale of every number.
+          That way, a large cell never looks like field data.
         </SectionHeading>
         <div className="briefing-reveal mt-10">
           <Card>
@@ -704,15 +712,15 @@ function NotBuilding() {
     "Irrigation, fertilizer, or pest advice",
     "A checked recommendation for one field",
     "Soil tests, crop history, or land ownership",
-    "User accounts and export versioning",
+    "User accounts and saved versions of exports",
     "An AI chat assistant",
     "Crop detection from HLS images",
   ];
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
-      <SectionHeading eyebrow="Non-goals" title="What we will not build.">
-        Two days is short. These stay out, so the core flow can be good.
+      <SectionHeading eyebrow="Not in this version" title="What we will not build.">
+        The hackathon lasts only two days, so we leave these out and make the main flow work well.
       </SectionHeading>
       <ul className="briefing-reveal mt-10 flex flex-wrap gap-2">
         {nonGoals.map(function renderNonGoal(nonGoal) {
@@ -732,32 +740,32 @@ function NotBuilding() {
 function Road() {
   const phases = [
     {
-      name: "Prep",
-      date: "Now → 13 Nov",
-      body: "Prepare Java data. Write the crop table and rule tests. Test with 5 farmers.",
+      name: "Get ready",
+      date: "Now to 13 Nov",
+      body: "We prepare the Java data, write the crop table and rule tests, and test with 5 farmers.",
       current: true,
     },
     {
-      name: "MVP",
+      name: "Hackathon build",
       date: "14–15 Nov",
-      body: "Farmer flow F1–F5 and the district view. Demo video and project page.",
+      body: "We build farmer steps F1–F5 and the district view, and we make the demo video and project page.",
     },
     {
       name: "v1.1",
       date: "Dec – Jan",
-      body: "Last season’s crop and water source inputs. Optional SoilGrids default.",
+      body: "We add inputs for last season’s crop and the water source, plus an optional SoilGrids default.",
     },
     {
       name: "v2.0",
       date: "2027",
-      body: "A local agronomist reviews the plans. More crops. Price data if reliable.",
+      body: "A local agronomist reviews the plans, and we add more crops and price data if the data is reliable.",
     },
   ];
 
   return (
     <section id="road" className="scroll-mt-24 bg-muted/50 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        <SectionHeading eyebrow="Roadmap" title="The road to 15 November." />
+        <SectionHeading eyebrow="Roadmap" title="Our steps before and after 15 November." />
         <ol className="mt-8 grid gap-4 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4">
           {phases.map(function renderPhase(phase) {
             return (
@@ -796,33 +804,36 @@ function Risks() {
   const risks = [
     {
       risk: "Space Apps rules limit work before the event",
-      response: "Read the rules now. Keep prep to data and research if needed.",
+      response:
+        "We read the rules now, and if needed, we only do data and research work before the event.",
     },
     {
-      risk: "KATAM access fails",
-      response: "Use default season dates and say so. Try a dated manual import.",
+      risk: "We cannot get KATAM data",
+      response:
+        "We use default season dates and tell the user, and we also try a manual import that shows its date.",
     },
     {
       risk: "Java data takes too long to prepare",
-      response: "Run by province, from now. Show “unavailable” until done.",
+      response:
+        "We start now and process one province at a time, and the tool shows “unavailable” until a province is ready.",
     },
     {
       risk: "Irrigation is unknown",
-      response: "Label rain cover as “rain only”. Add water source in v1.1.",
+      response: "We label rain cover as “rain only”, and we add the water source input in v1.1.",
     },
     {
       risk: "Crop table or soil rules are wrong",
-      response: "A source for each row. PPL review. Rule tests fix the output.",
+      response: "Each row has a source, a PPL checks the rules, and rule tests check the output.",
     },
     {
       risk: "No farmers to test before the event",
-      response: "Recruit now through family, PPL contacts, and farmer groups.",
+      response: "We find test farmers now through family, PPL contacts, and farmer groups.",
     },
   ];
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
-      <SectionHeading eyebrow="Risks" title="What could go wrong, and what we do." />
+      <SectionHeading eyebrow="Risks" title="What can go wrong and how we respond." />
       <div className="briefing-reveal mt-10">
         <Card>
           <CardContent className="px-4 sm:px-2">
@@ -879,8 +890,8 @@ function Team() {
   return (
     <section className="py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        <SectionHeading eyebrow="The team" title="Five people. One Field.">
-          The people behind One Field.
+        <SectionHeading eyebrow="The team" title="Five people work on One Field.">
+          Meet the people who build One Field.
         </SectionHeading>
       </div>
       <div className="briefing-reveal mt-10">
@@ -893,10 +904,10 @@ function Team() {
 function OpenDecisions() {
   const decisions = [
     "Confirm the Space Apps rules on work before 14 November.",
-    "Confirm the KATAM access path.",
+    "Confirm how we get KATAM data.",
     "Approve the crop list, the plan sets, and the crop-table sources.",
     "Decide if SoilGrids can be a fourth data source in v1.1.",
-    "Set the team size, the phone, and the network targets.",
+    "Set the team size and the targets for phone and network.",
   ];
 
   return (
@@ -911,7 +922,10 @@ function OpenDecisions() {
       />
       <div className="absolute inset-0 -z-10 bg-linear-to-b from-background via-background/70 to-background/40" />
       <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
-        <SectionHeading eyebrow="Open decisions" title="Five answers we still need." />
+        <SectionHeading
+          eyebrow="Still to decide"
+          title="We still need answers to five questions."
+        />
         <ol className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 lg:grid-cols-5">
           {decisions.map(function renderDecision(decision, index) {
             return (
@@ -939,7 +953,7 @@ function OpenDecisions() {
             nativeButton={false}
             render={<Link href="/plan" />}
           >
-            Read the full PRD
+            Read the full plan
             <HugeiconsIcon
               icon={ArrowRight01Icon}
               data-icon="inline-end"
@@ -947,7 +961,7 @@ function OpenDecisions() {
             />
           </Button>
           <p className="text-sm text-muted-foreground">
-            Draft for review · 30 September 2026 · Data: NASA, FTW, BIG, KATAM
+            Draft for review, 30 September 2026. Data from NASA, FTW, BIG, and KATAM.
           </p>
         </div>
       </div>

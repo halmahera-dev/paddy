@@ -93,7 +93,7 @@ function rainCover(crop: Crop, seasonIndex: number, soil: Soil) {
 
 function soilNotes(crops: Crop[], soil: Soil) {
   const notes: string[] = [];
-  if (crops.every((crop) => crop === "rice")) notes.push("No rest for soil");
+  if (crops.every((crop) => crop === "rice")) notes.push("Soil gets no rest");
   if (crops.includes("soybean")) notes.push("Soybean adds nitrogen");
   if (crops.includes("fallow")) notes.push("Fallow rests the soil");
   if (soil === "sandy" && crops.includes("rice")) notes.push("Rice loses water on sand");
@@ -145,7 +145,7 @@ export function RotationExplorer() {
     const covers = plan.crops.map((crop, seasonIndex) => rainCover(crop, seasonIndex, soil));
     return {
       id: plan.id,
-      tick: plan.crops.map((crop) => cropShortName[crop]).join(" -> "),
+      tick: plan.crops.map((crop) => cropShortName[crop]).join(", "),
       crops: plan.crops,
       rainy: covers[0] ?? 0,
       earlyDry: covers[1] ?? 0,
@@ -169,17 +169,19 @@ export function RotationExplorer() {
         <div className="flex flex-col gap-5">
           <div className="grid min-w-0 gap-1.5">
             <CardTitle>How much of the water need does rain cover?</CardTitle>
-            <CardDescription>Example area. Rain only. Tap a plan to see why.</CardDescription>
+            <CardDescription>
+              This example area counts rain only. Tap a plan to see the reasons for its place.
+            </CardDescription>
           </div>
           <div className="grid min-w-0 gap-4 sm:grid-cols-2">
             <ChoiceTabs
-              label="Your soil"
+              label="Soil type"
               options={soilOptions}
               value={soil}
               onChange={chooseSoil}
             />
             <ChoiceTabs
-              label="Your priority"
+              label="Priority"
               options={priorityOptions}
               value={priority}
               onChange={choosePriority}
@@ -289,7 +291,7 @@ export function RotationExplorer() {
             {selectedIndex === 0 ? "Consider first" : `Choice ${selectedIndex + 1} of 4`}
           </Badge>
           <p className="font-medium">
-            {selectedPlan.crops.map((crop) => cropShortName[crop]).join(" -> ")}
+            {selectedPlan.crops.map((crop) => cropShortName[crop]).join(", ")}
           </p>
           {selectedPlan.id === "rrr" ? <Badge variant="outline">Today’s habit</Badge> : null}
           {soilNotes(selectedPlan.crops, soil).map(function renderNote(note) {

@@ -185,7 +185,7 @@ const DIAL = (
 const HUB = <Solid key="hub" paths={DIAL_ART.hub} tone="mid" crease="faint" />;
 
 const LABEL =
-  "A bench with three soil trays in a row, one per season, each with a knob that swaps its crop. Behind each tray stands a glass rain gauge. The blue water column shows normal rain for that season, and a ring on the gauge marks the water the crop needs. A dial at the right end shows the soil nitrogen balance for the whole rotation.";
+  "The bench has three soil trays in a row, one for each season, and each tray has a knob that changes its crop. A glass rain gauge stands behind each tray. The blue water column shows normal rain for that season, and a ring on the gauge marks the water that the crop needs. A dial at the right end shows the soil nitrogen balance for the whole rotation.";
 
 export function RotationBenchArt() {
   return <RotationBenchLive label={LABEL} base={BASE} gauges={GAUGES} rail={RAIL} trays={TRAYS} dial={DIAL} hub={HUB} />;

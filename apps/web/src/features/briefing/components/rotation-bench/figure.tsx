@@ -12,7 +12,7 @@ export function RotationBenchFigure() {
         title="The rotation bench"
         hint="Tap a tray to change its crop"
         readout={readoutOf(REST_PLAN)}
-        caption="Rain columns: normal season rain, NASA GPM IMERG 2001–2024, example area. Collars: crop water need. Nitrogen: illustrative."
+        caption="The rain columns show normal season rain for an example area from NASA GPM IMERG, 2001–2024. The rings show the crop water need, and the nitrogen values are only a guide."
       >
         <RotationBenchArt />
       </Plate>

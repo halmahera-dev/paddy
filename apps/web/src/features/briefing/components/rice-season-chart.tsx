@@ -26,7 +26,9 @@ export function RiceSeasonChart() {
         <XAxis dataKey="season" tickLine={false} axisLine={false} tickMargin={8} />
         <ChartTooltip
           cursor={false}
-          content={<ChartTooltipContent formatter={(value) => `Rain cover ${value}%`} />}
+          content={
+            <ChartTooltipContent formatter={(value) => `Rain covers ${value}% of the need`} />
+          }
         />
         <Bar dataKey="cover" fill="var(--color-cover)" radius={16}>
           <LabelList
