@@ -53,13 +53,13 @@ export function turnsBetween(from: Crop, to: Crop) {
 }
 
 export function readoutOf(plan: Plan) {
-  const names = plan.map((crop) => cropName[crop]).join(" → ");
-  const covers = plan.map((crop, index) => rainCover(crop, index)).join(" · ");
-  return `${names} · rain covers ${covers}%`;
+  const names = plan.map((crop) => cropName[crop]).join(", ");
+  const covers = plan.map((crop, index) => `${rainCover(crop, index)}%`).join(", ");
+  return `${names}, with rain cover of ${covers}`;
 }
 
 export function trayLabel(plan: Plan, seasonIndex: number) {
   const { name, months } = SEASONS[seasonIndex]!;
   const crop = plan[seasonIndex]!;
-  return `${name} season, ${months}: ${crop}. Normal rain covers ${rainCover(crop, seasonIndex)}% of its water need. Press to change the crop.`;
+  return `${name} season, ${months}, grows ${crop}. Normal rain covers ${rainCover(crop, seasonIndex)}% of its water need. Press to change the crop.`;
 }
