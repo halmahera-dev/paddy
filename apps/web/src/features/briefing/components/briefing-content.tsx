@@ -102,7 +102,7 @@ function Hero() {
   ];
 
   return (
-    <section className="relative isolate flex min-h-svh items-end overflow-hidden">
+    <section className="relative isolate flex min-h-svh flex-col overflow-hidden">
       <Image
         src={heroImage}
         alt="Impressionist oil painting of cream daisies in a field under a teal sky"
@@ -113,39 +113,38 @@ function Hero() {
         sizes="100vw"
         className="briefing-hero-image -z-10 object-cover object-center dark:brightness-75"
       />
-      <div className="from-deep-teal/85 via-deep-teal/55 absolute inset-0 -z-10 bg-linear-to-r to-transparent" />
-      <div className="absolute inset-0 -z-10 bg-linear-to-b from-transparent from-60% to-background" />
+      <div className="from-deep-teal/85 via-deep-teal/60 sm:from-deep-teal/80 sm:via-deep-teal/40 absolute inset-0 -z-10 bg-linear-to-r to-transparent" />
+      <div className="to-deep-teal/70 absolute inset-0 -z-10 bg-linear-to-b from-transparent from-55%" />
 
-      <div className="mx-auto w-full max-w-5xl px-4 pt-28 pb-12 sm:px-6 sm:pt-32 sm:pb-24">
+      <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-end px-4 pt-28 pb-10 sm:px-6 sm:pb-14">
         <div className="briefing-rise">
           <Image
             src={spaceAppsLogo}
             alt="NASA Space Apps Challenge"
             loading="eager"
-            className="h-10 w-auto sm:h-14"
+            className="h-9 w-auto sm:h-12"
           />
         </div>
-        <h1 className="briefing-rise text-display-xl text-cream mt-5 max-w-3xl font-heading font-semibold text-balance drop-shadow-lg">
+        <h1 className="briefing-rise text-display-xl text-cream mt-6 max-w-3xl font-heading font-semibold text-balance drop-shadow-lg">
           Plant what the <span className="font-light">sky</span> can carry.
         </h1>
-        <p className="briefing-rise text-cream/90 mt-6 max-w-xl text-base leading-relaxed sm:text-lg">
+        <p className="briefing-rise text-cream/85 mt-6 max-w-lg text-base leading-relaxed text-pretty sm:text-lg">
           One Field is a crop rotation tool for farmers and landowners in Java. It compares rice,
           maize, and soybean over three seasons with NASA rain and soil moisture data for their
           area.
         </p>
-        <div className="briefing-rise mt-8 grid max-w-2xl grid-cols-2 gap-2 sm:grid-cols-4">
-          {facts.map(function renderFact(fact) {
-            return (
-              <Card key={fact.value} size="sm" className="min-w-0">
-                <CardContent>
-                  <p className="font-medium tabular-nums">{fact.value}</p>
-                  <p className="text-xs text-muted-foreground">{fact.label}</p>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
       </div>
+
+      <dl className="border-cream/15 mx-auto grid w-full max-w-5xl grid-cols-2 gap-x-6 gap-y-5 border-t px-4 py-6 sm:grid-cols-4 sm:px-6">
+        {facts.map(function renderFact(fact) {
+          return (
+            <div key={fact.value} className="min-w-0">
+              <dt className="text-cream/65 text-xs">{fact.label}</dt>
+              <dd className="text-cream mt-1 font-medium tabular-nums">{fact.value}</dd>
+            </div>
+          );
+        })}
+      </dl>
     </section>
   );
 }
