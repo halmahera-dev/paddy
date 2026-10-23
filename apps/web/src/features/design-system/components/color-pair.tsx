@@ -57,9 +57,7 @@ export function ColorPair({
   className?: string;
 }) {
   const surfaceRef = React.useRef<HTMLDivElement>(null);
-  const [measurement, setMeasurement] = React.useState<{ ratio: number; hex: string } | null>(
-    null,
-  );
+  const [measurement, setMeasurement] = React.useState<{ ratio: number; hex: string } | null>(null);
 
   React.useEffect(() => {
     const element = surfaceRef.current;

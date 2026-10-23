@@ -40,7 +40,7 @@ export function MapsSidebar({
               render={<Link href="/" />}
             >
               <AppLogo />
-              <span className="text-base font-semibold">One Field</span>
+              <span className="font-heading text-sm font-semibold">One Field</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

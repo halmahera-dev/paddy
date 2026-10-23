@@ -104,7 +104,7 @@ export function FarmMetricCards({ farm }: { farm: Farm }) {
           <Card key={metric.label}>
             <CardHeader>
               <CardDescription>{metric.label}</CardDescription>
-              <CardTitle className="text-2xl tabular-nums">{metric.value}</CardTitle>
+              <CardTitle className="text-xl tabular-nums">{metric.value}</CardTitle>
             </CardHeader>
             <CardFooter className="mt-auto">
               <div className="flex w-full flex-col items-start gap-2">
