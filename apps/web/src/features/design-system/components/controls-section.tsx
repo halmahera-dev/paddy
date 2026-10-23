@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Add01Icon,
-  ArrowRight01Icon,
-  Delete02Icon,
-  Search01Icon,
-  Settings01Icon,
-} from "@hugeicons/core-free-icons";
+import { Delete02Icon, Search01Icon, Settings01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Badge } from "@paddy-field/ui/components/badge";
 import { Button } from "@paddy-field/ui/components/button";
@@ -60,7 +54,7 @@ const buttonVariants = [
   "link",
 ] as const;
 
-const badgeVariants = ["default", "brand", "secondary", "outline", "destructive", "blur"] as const;
+const badgeVariants = ["default", "brand", "secondary", "outline", "destructive"] as const;
 
 const cropItems = [
   { label: "Rice (IR64)", value: "rice" },
@@ -74,17 +68,14 @@ export function ControlsSection() {
       <ShowcaseSection
         id="actions"
         title="Actions"
-        description="Pills only. The main action is ink, not emerald. Emerald marks state and small highlights."
+        description="Pills only, no icons inside. The main action is the light pill. Emerald marks state and small highlights."
       >
         <ShowcaseBlock
           title="Button"
-          description="One ink primary per group. Brand emerald is for confirming field actions such as Start planting."
+          description="One light primary per group. Brand emerald is for confirming field actions such as Start planting."
         >
           <div className="flex flex-wrap items-center gap-3">
-            <Button>
-              Book a call
-              <HugeiconsIcon icon={ArrowRight01Icon} data-icon="inline-end" />
-            </Button>
+            <Button>Book a call</Button>
             <Button variant="brand">Start planting</Button>
             <Button variant="secondary">Save draft</Button>
             <Button variant="ghost">Cancel</Button>
@@ -114,10 +105,7 @@ export function ControlsSection() {
               <Button size="lg">Large</Button>
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <Button variant="secondary">
-                <HugeiconsIcon icon={Add01Icon} data-icon="inline-start" />
-                Add field
-              </Button>
+              <Button variant="secondary">Add field</Button>
               <Button variant="outline" size="icon" aria-label="Settings">
                 <HugeiconsIcon icon={Settings01Icon} />
               </Button>
@@ -168,8 +156,8 @@ export function ControlsSection() {
       <ShowcaseSection
         id="inputs"
         title="Inputs"
-        description="Soft pill fields on a warm fill. Focus shows an emerald ring."
-        className="bg-surface-sand/40"
+        description="Quiet fields with a hairline. Focus shows a emerald ring."
+        className="bg-surface-raised/40"
       >
         <ShowcaseBlock title="Input states">
           <StateMatrix
@@ -262,7 +250,9 @@ export function ControlsSection() {
               <RadioGroup defaultValue="alternate">
                 <Field orientation="horizontal">
                   <RadioGroupItem value="alternate" id="irrigation-alternate" />
-                  <FieldLabel htmlFor="irrigation-alternate">Alternate wetting and drying</FieldLabel>
+                  <FieldLabel htmlFor="irrigation-alternate">
+                    Alternate wetting and drying
+                  </FieldLabel>
                 </Field>
                 <Field orientation="horizontal">
                   <RadioGroupItem value="continuous" id="irrigation-continuous" />

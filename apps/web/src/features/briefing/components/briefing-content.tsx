@@ -40,7 +40,7 @@ export function BriefingContent() {
   return (
     <div data-page="briefing" className="min-h-svh overflow-x-clip bg-background text-foreground">
       <header className="fixed inset-x-3 top-3 z-30 mx-auto flex max-w-5xl items-center gap-1 rounded-full border border-black/6 glass py-1.5 pr-1.5 pl-4 sm:inset-x-6">
-        <Link href="/" className="flex items-center gap-2 font-heading text-sm font-bold">
+        <Link href="/" className="flex items-center gap-2 font-heading text-sm font-semibold">
           <AppLogo />
           One Field
         </Link>
@@ -125,7 +125,7 @@ function Hero() {
             className="h-9 w-auto sm:h-12"
           />
         </div>
-        <h1 className="briefing-rise type-display-xl text-cream mt-6 max-w-3xl text-balance drop-shadow-lg">
+        <h1 className="briefing-rise text-cream mt-6 max-w-3xl type-display-xl text-balance drop-shadow-lg">
           Plant what the <span className="font-light">sky</span> can carry.
         </h1>
         <p className="briefing-rise text-cream/85 mt-6 max-w-lg text-base leading-relaxed text-pretty sm:text-lg">
@@ -161,7 +161,7 @@ function SectionHeading({
   return (
     <div className="briefing-reveal max-w-2xl">
       <Badge>{eyebrow}</Badge>
-      <h2 className="type-display mt-3 text-balance">{title}</h2>
+      <h2 className="mt-3 type-display text-balance">{title}</h2>
       {children ? (
         <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
           {children}
@@ -507,9 +507,7 @@ function Success() {
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="briefing-reveal max-w-2xl">
           <Badge variant="secondary">Our targets</Badge>
-          <h2 className="type-display mt-3">
-            We use five targets to check that the tool works.
-          </h2>
+          <h2 className="mt-3 type-display">We use five targets to check that the tool works.</h2>
           <p className="mt-4 text-base leading-relaxed text-brand-foreground/80 sm:text-lg">
             Each target links to a judging area, and we measure the targets before we submit on 15
             November.

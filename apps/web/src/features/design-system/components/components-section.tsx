@@ -130,8 +130,20 @@ import { toast } from "sonner";
 import { ShowcaseBlock, ShowcaseSection } from "./showcase-section";
 
 const fields = [
-  { id: "SW-0142", name: "Sawah Barat", crop: "Rice (IR64)", stage: "Tillering", status: "On track" },
-  { id: "SW-0143", name: "Sawah Timur", crop: "Rice (Ciherang)", stage: "Booting", status: "Needs water" },
+  {
+    id: "SW-0142",
+    name: "Sawah Barat",
+    crop: "Rice (IR64)",
+    stage: "Tillering",
+    status: "On track",
+  },
+  {
+    id: "SW-0143",
+    name: "Sawah Timur",
+    crop: "Rice (Ciherang)",
+    stage: "Booting",
+    status: "Needs water",
+  },
   { id: "SW-0151", name: "Kebun Selatan", crop: "Corn", stage: "Harvest", status: "Ready" },
 ];
 
@@ -216,8 +228,8 @@ export function ComponentsSection() {
       <ShowcaseSection
         id="data-display"
         title="Data display"
-        description="White cards float on cream with soft shadows. No borders."
-        className="bg-surface-sand/40"
+        description="Panels sit one step above the page with a hairline. No shadows."
+        className="bg-surface-raised/40"
       >
         <div className="grid gap-6 lg:grid-cols-3">
           <Card>
@@ -388,7 +400,7 @@ export function ComponentsSection() {
         id="overlays"
         title="Overlays"
         description="Floating layers on white with soft shadows. Each button opens what it says."
-        className="bg-surface-sand/40"
+        className="bg-surface-raised/40"
       >
         <div className="flex flex-wrap items-center gap-3">
           <Dialog>
@@ -438,13 +450,17 @@ export function ComponentsSection() {
             <PopoverContent>
               <PopoverHeader>
                 <PopoverTitle>Soil moisture</PopoverTitle>
-                <PopoverDescription>82% at 10 cm depth, measured 12 minutes ago.</PopoverDescription>
+                <PopoverDescription>
+                  82% at 10 cm depth, measured 12 minutes ago.
+                </PopoverDescription>
               </PopoverHeader>
             </PopoverContent>
           </Popover>
 
           <DropdownMenu>
-            <DropdownMenuTrigger render={<Button variant="secondary" />}>Open menu</DropdownMenuTrigger>
+            <DropdownMenuTrigger render={<Button variant="secondary" />}>
+              Open menu
+            </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuGroup>
                 <DropdownMenuLabel>Field</DropdownMenuLabel>
@@ -459,7 +475,9 @@ export function ComponentsSection() {
           </DropdownMenu>
 
           <Tooltip>
-            <TooltipTrigger render={<Button variant="secondary" />}>Hover for tooltip</TooltipTrigger>
+            <TooltipTrigger render={<Button variant="secondary" />}>
+              Hover for tooltip
+            </TooltipTrigger>
             <TooltipContent>Works</TooltipContent>
           </Tooltip>
 

@@ -1,9 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
+@import "@fontsource-variable/inter/opsz.css";
 @import "@fontsource-variable/geist-mono";
-@import "@fontsource-variable/plus-jakarta-sans";
 @import "./typeset.css";
 @source "../../../apps/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
@@ -20,95 +19,78 @@
   );
 }
 
+/* Dark is the source scheme. Light is a warm cream paper. */
 :root {
-  --header: #fbf9ef;
-  --background: #fbf9ef;
-  --foreground: oklch(20.8% 0.042 265.755);
-  --card: #ffffff;
-  --card-foreground: oklch(27.9% 0.041 260.031);
-  --popover: #ffffff;
-  --popover-foreground: oklch(27.9% 0.041 260.031);
-  --primary: oklch(20.8% 0.042 265.755);
-  --primary-foreground: #ffffff;
-  --secondary: #eeece3;
-  --secondary-foreground: oklch(27.9% 0.041 260.031);
-  --muted: #e8e5dc;
-  --muted-foreground: oklch(48% 0.045 257.3);
-  --accent: #e8e5dc;
-  --accent-foreground: oklch(27.9% 0.041 260.031);
+  --background: #f2f1ed;
+  --card: #f7f7f4;
+  --foreground: #26251e;
+  --muted-foreground: #6b675d;
   --brand: oklch(59.6% 0.145 163.225);
   --brand-foreground: #ffffff;
   --brand-text: oklch(50.8% 0.118 165.612);
-  --destructive: oklch(57.7% 0.245 27.325);
-  --border: #e5e2d9;
-  --input: #dcd8cd;
-  --ring: oklch(59.6% 0.145 163.225);
-  --chart-1: oklch(59.6% 0.145 163.225);
-  --chart-2: oklch(68.5% 0.169 237.323);
-  --chart-3: oklch(76.9% 0.188 70.08);
-  --chart-4: oklch(76.5% 0.177 163.223);
-  --chart-5: oklch(43.2% 0.095 166.913);
-  --radius: 0.625rem;
-  --sidebar: #fbf9ef;
-  --sidebar-foreground: oklch(44.6% 0.043 257.281);
-  --sidebar-primary: oklch(59.6% 0.145 163.225);
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e8e5dc;
-  --sidebar-accent-foreground: oklch(27.9% 0.041 260.031);
-  --sidebar-border: #e5e2d9;
-  --sidebar-ring: oklch(59.6% 0.145 163.225);
-  --surface-sand: #efe4c8;
-  --surface-taupe: #8c857b;
-  --surface-taupe-foreground: #ffffff;
-  --text-taupe: #a8a095;
+  --destructive: #c9372c;
+  --chart-1: var(--brand);
+  --chart-2: #5e6ad2;
+  --chart-3: #d4a72c;
+  --chart-4: #d9534f;
+  --chart-5: #3fa7a7;
+  --shadow-ambient: rgb(38 37 30 / 0.1);
+  --shadow-outline: rgb(38 37 30 / 0.05);
+  --hair-alpha: 8%;
+  --radius: 0.5rem;
 }
 
 .dark {
-  --header: var(--background);
-  --background: #1a1815;
-  --foreground: #fbf9ef;
-  --card: #24211d;
-  --card-foreground: #fbf9ef;
-  --popover: #24211d;
-  --popover-foreground: #fbf9ef;
-  --primary: #fbf9ef;
-  --primary-foreground: #1a1815;
-  --secondary: #2e2a25;
-  --secondary-foreground: #fbf9ef;
-  --muted: #2e2a25;
-  --muted-foreground: #a8a095;
-  --accent: #34302a;
-  --accent-foreground: #fbf9ef;
+  --background: #08090a;
+  --card: #0f1011;
+  --foreground: #f7f8f8;
+  --muted-foreground: #8a8f98;
   --brand: oklch(59.6% 0.145 163.225);
   --brand-foreground: #ffffff;
   --brand-text: oklch(76.5% 0.177 163.223);
-  --destructive: oklch(70.4% 0.191 22.216);
-  --border: rgb(255 255 255 / 0.08);
-  --input: rgb(255 255 255 / 0.12);
-  --ring: oklch(59.6% 0.145 163.225);
-  --chart-1: oklch(59.6% 0.145 163.225);
-  --chart-2: oklch(68.5% 0.169 237.323);
-  --chart-3: oklch(76.9% 0.188 70.08);
-  --chart-4: oklch(76.5% 0.177 163.223);
-  --chart-5: oklch(43.2% 0.095 166.913);
-  --sidebar: #161411;
-  --sidebar-foreground: #d4cfc8;
-  --sidebar-primary: oklch(59.6% 0.145 163.225);
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #2e2a25;
-  --sidebar-accent-foreground: #fbf9ef;
-  --sidebar-border: rgb(255 255 255 / 0.08);
-  --sidebar-ring: oklch(59.6% 0.145 163.225);
-  --surface-sand: #2e2a25;
-  --surface-taupe: #4a453f;
-  --surface-taupe-foreground: #fbf9ef;
-  --text-taupe: #8c857b;
+  --destructive: #eb5757;
+  --chart-1: var(--brand);
+  --chart-2: #5e6ad2;
+  --chart-3: #f2c94c;
+  --chart-4: #f0716c;
+  --chart-5: #83dcdc;
+  --shadow-ambient: color-mix(in srgb, var(--background) 60%, transparent);
+  --shadow-outline: color-mix(in srgb, var(--background) 40%, transparent);
+}
+
+/* Tints mix from the literals above. Declared on .dark too so a dark band recomputes them. */
+:root,
+.dark {
+  --surface-raised: color-mix(in srgb, var(--card) 93%, var(--foreground));
+  --faint-foreground: color-mix(in srgb, var(--muted-foreground) 62%, var(--background));
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
+  --primary: color-mix(in srgb, var(--foreground) 92%, var(--background));
+  --primary-foreground: var(--background);
+  --secondary: var(--surface-raised);
+  --secondary-foreground: var(--foreground);
+  --muted: var(--card);
+  --accent: color-mix(in srgb, var(--foreground) 6%, transparent);
+  --accent-foreground: var(--foreground);
+  --border: color-mix(in srgb, var(--foreground) var(--hair-alpha), transparent);
+  --input: color-mix(in srgb, var(--foreground) 12%, transparent);
+  --rule: color-mix(in srgb, var(--foreground) 11%, var(--background));
+  --ring: var(--brand);
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--muted-foreground);
+  --sidebar-primary: var(--brand);
+  --sidebar-primary-foreground: var(--brand-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 }
 
 @theme inline {
-  --font-sans: "Geist Variable", sans-serif;
-  --font-heading: "Plus Jakarta Sans Variable", sans-serif;
-  --font-mono: "Geist Mono Variable", monospace;
+  --font-sans: "Inter Variable", "SF Pro Display", system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+  --font-mono: "Geist Mono Variable", "Berkeley Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -125,6 +107,7 @@
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
+  --color-rule: var(--rule);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
@@ -143,30 +126,45 @@
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
   --color-brand-text: var(--brand-text);
-  --color-surface-sand: var(--surface-sand);
-  --color-surface-taupe: var(--surface-taupe);
-  --color-surface-taupe-foreground: var(--surface-taupe-foreground);
-  --color-text-taupe: var(--text-taupe);
-  --shadow-card: 0 4px 35px -10px rgb(0 0 0 / 0.1);
-  --shadow-card-lg: 0 20px 40px -12px rgb(0 0 0 / 0.1);
-  --shadow-inset: inset 0 2px 8px rgb(0 0 0 / 0.04);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+  --color-surface-raised: var(--surface-raised);
+  --color-faint-foreground: var(--faint-foreground);
+  /* Flat cards get a hairline, never a drop shadow. */
+  --shadow-card: 0 0 0 1px var(--border);
+  --shadow-card-lg: var(--shadow-lg);
+  --shadow-inset: inset 0 0 0 1px var(--border);
+  --radius-sm: 4px; /* inline code, model tags */
+  --radius-md: 6px; /* menu items, sidebar rows */
+  --radius-lg: 6px; /* tooltips, kbd */
+  --radius-xl: 8px; /* small cards, bubbles */
+  --radius-2xl: 8px; /* fields, menu items, alerts */
+  --radius-3xl: 12px; /* popovers, menus */
+  --radius-4xl: 12px; /* cards, dialogs, panels */
 }
 
-/* Floating material for navbars and glass controls. Add a hairline border on bars, never on buttons. */
+@theme {
+  --font-weight-medium: 510;
+  --font-weight-semibold: 590;
+  /* Color fades and enter/exit. */
+  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Elements that move or resize on screen. */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --default-transition-duration: 160ms;
+  --default-transition-timing-function: var(--ease-out);
+  /* Only floating layers cast a shadow. */
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow-md: 0 2px 32px var(--shadow-ambient), 0 0 0 1px var(--shadow-outline);
+  --shadow-lg: var(--shadow-md);
+  --shadow-xl: var(--shadow-md);
+  --shadow-2xl: var(--shadow-md);
+}
+
+/* The sticky header material. */
 @utility glass {
-  background-color: color-mix(in oklch, var(--background) 70%, transparent);
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklch, white 15%, transparent),
-    0 8px 24px color-mix(in oklch, black 12%, transparent);
-  -webkit-backdrop-filter: blur(20px) saturate(170%);
-  backdrop-filter: blur(20px) saturate(170%);
+  background-color: color-mix(in srgb, var(--background) 82%, transparent);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
 
   @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
     background-color: var(--background);
@@ -179,38 +177,146 @@
   }
 }
 
+/* Press feedback on pointer-down. Popup triggers stay still so the popup does not jump. */
+@utility pressable {
+  @media (prefers-reduced-motion: no-preference) {
+    &:active:not([aria-haspopup]) {
+      scale: 0.97;
+    }
+  }
+}
+
+@utility type-display-xl {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 5vw + 1.5rem, 4.5rem);
+  font-weight: 510;
+  line-height: 1;
+  letter-spacing: -0.022em;
+}
+
 @utility type-display {
   font-family: var(--font-heading);
-  font-size: clamp(2.25rem, 4vw + 1rem, 3.75rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  font-size: clamp(2.5rem, 4vw + 1rem, 4rem);
+  font-weight: 510;
+  line-height: 1;
+  letter-spacing: -0.022em;
 }
 
 @utility type-headline {
   font-family: var(--font-heading);
-  font-size: clamp(1.25rem, 2vw + 0.75rem, 2.25rem);
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.025em;
+  font-size: clamp(2rem, 3vw + 1rem, 3rem);
+  font-weight: 510;
+  line-height: 1;
+  letter-spacing: -0.022em;
 }
 
 @utility type-title {
   font-family: var(--font-heading);
-  font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1.5;
+  font-size: 1.25rem;
+  font-weight: 590;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
 }
 
 @utility type-lead {
-  font-size: clamp(1rem, 0.5vw + 0.9rem, 1.25rem);
-  font-weight: 500;
-  line-height: 1.625;
+  font-size: clamp(1.125rem, 1vw + 0.875rem, 1.5rem);
+  font-weight: 400;
+  line-height: 1.33;
+  letter-spacing: -0.011em;
 }
 
 @utility type-caption {
-  font-size: 0.875rem;
-  line-height: 1.43;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+/* Captions for figures, IDs, branch names and dates. */
+@utility type-label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* The hero settles in one soft rise, then nothing else moves. */
+@utility rise-in {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: rise-in 640ms var(--ease-out) both;
+
+    &:nth-child(2) {
+      animation-delay: 80ms;
+    }
+    &:nth-child(3) {
+      animation-delay: 160ms;
+    }
+    &:nth-child(4) {
+      animation-delay: 240ms;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: fade-in 300ms var(--ease-out) both;
+  }
+}
+
+@keyframes blur-in {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    translate: 0 8px;
+  }
+}
+
+/* Section headings. Hidden below the fold, then blur in once when they enter view. */
+@utility blur-in-view {
+  &[data-reveal="pending"] {
+    opacity: 0;
+  }
+
+  &[data-reveal="shown"] {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: blur-in 700ms var(--ease-out) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: fade-in 300ms var(--ease-out) both;
+    }
+  }
+}
+
+/* Content blocks. Hidden below the fold, then rise in once when they enter view. No blur. */
+@utility rise-in-view {
+  &[data-reveal="pending"] {
+    opacity: 0;
+  }
+
+  &[data-reveal="shown"] {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: rise-in 640ms var(--ease-out) var(--reveal-delay, 0ms) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: fade-in 300ms var(--ease-out) var(--reveal-delay, 0ms) both;
+    }
+  }
+}
+
+/* A new screen fades in when it replaces the last one. */
+@utility fade-in {
+  animation: fade-in 240ms var(--ease-out) both;
 }
 
 @layer base {
@@ -218,7 +324,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background font-sans text-foreground;
+    @apply bg-background font-sans text-[15px] leading-[1.6] tracking-[-0.011em] text-foreground;
   }
   html {
     @apply font-sans;
@@ -226,8 +332,8 @@
 
   ::view-transition-old(root),
   ::view-transition-new(root) {
-    animation-duration: 200ms;
-    animation-timing-function: ease-out;
+    animation-duration: 160ms;
+    animation-timing-function: var(--ease-out);
   }
 
   @media (prefers-reduced-motion: reduce) {

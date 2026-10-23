@@ -25,10 +25,10 @@ export async function FarmOverview({ fieldId }: { fieldId: string | undefined })
     <div className="flex flex-col gap-4 px-4 py-4 md:gap-6 md:py-6 lg:px-6">
       <div className="mt-4 flex flex-col gap-1">
         <div className="mb-1 flex gap-2">
-          <Badge variant="blur">{cropName[farm.cropRecord.crop]}</Badge>
-          {elapsedDays && <Badge variant="blur">{elapsedDays} since planting</Badge>}
+          <Badge variant="secondary">{cropName[farm.cropRecord.crop]}</Badge>
+          {elapsedDays && <Badge variant="secondary">{elapsedDays} since planting</Badge>}
         </div>
-        <h1 className="type-display">{farm.name}</h1>
+        <h1 className="type-title">{farm.name}</h1>
         <p className="text-secondary-foreground">
           {farm.subdistrict}, {farm.province}
         </p>
@@ -39,7 +39,7 @@ export async function FarmOverview({ fieldId }: { fieldId: string | undefined })
           <Badge variant={advice.needsAttention ? "destructive" : "brand"}>
             {advice.needsAttention ? "Needs attention" : "Today"}
           </Badge>
-          <CardTitle className="type-headline">{advice.headline}</CardTitle>
+          <CardTitle className="type-title">{advice.headline}</CardTitle>
           <p className="text-sm text-secondary-foreground">{advice.detail}</p>
           {advice.action && <p className="mt-2 text-sm font-medium">{advice.action}</p>}
         </CardHeader>

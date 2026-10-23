@@ -14,6 +14,19 @@
 - Keep values in the narrowest scope that uses them. Promote a value to a module constant only when it is shared, configurable, or a stable domain concept.
 - Do not add `Co-authored-by` trailers to commit messages.
 
+## Design Rules
+
+- Pill buttons have text only. Never put arrows or icons inside them. Put arrows on quiet text links (`variant="link"`), for example "Learn more →". Icon-only buttons (`size="icon*"`) and the loading `Spinner` are allowed.
+- Motion values live in `packages/ui/src/styles/globals.css`. Use the tokens there. Do not write new cubic-bezier values in components.
+- Hover changes color only (160ms, `ease-out`). Things do not lift, grow, or bounce on hover, and nothing animates on scroll. Exception: section headings blur in once when they enter view (`blur-in-view`), and selected content blocks rise in once (`rise-in-view`, no blur).
+- Pressable elements use the `pressable` utility (scale 0.97 on pointer-down). Release is fast: 160ms `ease-out`.
+- Elements that move or resize on screen use `ease-in-out`.
+- Popovers and menus scale from their trigger (`origin-(--transform-origin)`). Modals stay centered.
+- Blur (`glass`) is for the sticky header only. Exceptions: section headings (`blur-in-view`), and floating panels over the field diorama and the map.
+- Headings use weight 510, titles 590. Never bold, never uppercase (except `type-label-mono`).
+- Emerald (`brand`) marks state, focus, and small highlights. The main action is the ink pill.
+- Respect `prefers-reduced-motion`: replace movement with a short fade, and keep color changes.
+
 ## Talking to Human
 
 - When speaking English, always talk in ASD-STE100 Simplified Technical English.

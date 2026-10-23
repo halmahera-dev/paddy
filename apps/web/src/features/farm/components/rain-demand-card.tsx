@@ -37,7 +37,7 @@ export function RainDemandCard({ farm }: { farm: Farm }) {
     <Card>
       <CardHeader>
         <CardDescription>Rain vs crop water demand · {farm.season}</CardDescription>
-        <CardTitle className="type-headline">{describeRainCover(farm)}</CardTitle>
+        <CardTitle className="type-title">{describeRainCover(farm)}</CardTitle>
       </CardHeader>
       <CardContent>
         <RainDemandChart data={farm.weeklyWater} />
