@@ -32,7 +32,7 @@ export function FarmRecordCard({ farm }: { farm: Farm }) {
     <Card>
       <CardHeader>
         <CardDescription>My farm</CardDescription>
-        <CardTitle className="type-title">{farm.name}</CardTitle>
+        <CardTitle>{farm.name}</CardTitle>
       </CardHeader>
       <CardContent>
         <dl className="flex flex-col gap-2 text-sm">

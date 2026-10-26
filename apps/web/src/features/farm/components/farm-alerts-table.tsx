@@ -33,7 +33,7 @@ export function FarmAlertsTable({ farm }: { farm: Farm }) {
     <Card>
       <CardHeader>
         <CardDescription>Alerts · {openCount} open</CardDescription>
-        <CardTitle className="type-title">Area conditions to check</CardTitle>
+        <CardTitle>Area conditions to check</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>

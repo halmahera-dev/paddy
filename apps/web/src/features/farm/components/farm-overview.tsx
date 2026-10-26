@@ -39,7 +39,7 @@ export async function FarmOverview({ fieldId }: { fieldId: string | undefined })
           <Badge variant={advice.needsAttention ? "destructive" : "brand"}>
             {advice.needsAttention ? "Needs attention" : "Today"}
           </Badge>
-          <CardTitle className="type-title">{advice.headline}</CardTitle>
+          <CardTitle>{advice.headline}</CardTitle>
           <p className="text-sm text-secondary-foreground">{advice.detail}</p>
           {advice.action && <p className="mt-2 text-sm font-medium">{advice.action}</p>}
         </CardHeader>

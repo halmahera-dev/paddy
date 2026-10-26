@@ -44,7 +44,7 @@ export function ChosenPlanCard({ farm }: { farm: Farm }) {
       <Card>
         <CardHeader>
           <CardDescription>Your plan · next three seasons</CardDescription>
-          <CardTitle className="type-title">No plan chosen yet</CardTitle>
+          <CardTitle>No plan chosen yet</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
@@ -65,7 +65,7 @@ export function ChosenPlanCard({ farm }: { farm: Farm }) {
     <Card>
       <CardHeader>
         <CardDescription>Your plan · next three seasons</CardDescription>
-        <CardTitle className="type-title">
+        <CardTitle>
           {seasons.map((season) => cropName[season.crop]).join(" → ")}
         </CardTitle>
       </CardHeader>
