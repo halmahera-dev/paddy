@@ -122,7 +122,7 @@ export function RecipesSection() {
           description="Glass bar with a hairline edge, ghost links, and an ink CTA."
         >
           <nav className="flex items-center justify-between gap-4 rounded-full border glass px-4 py-3 sm:px-8">
-            <span className="font-heading text-lg font-semibold tracking-tight">One Field</span>
+            <span className="font-heading text-lg font-semibold tracking-tight">Hollou</span>
             <div className="hidden items-center gap-1 md:flex">
               <Button variant="ghost">Fields</Button>
               <Button variant="ghost" className="bg-brand text-brand-foreground hover:bg-brand/90">
@@ -253,7 +253,7 @@ export function RecipesSection() {
             <Button variant="secondary">Read the briefing</Button>
           </div>
           <p className="text-center text-sm text-muted-foreground">
-            © 2026 One Field · We make fields grow brrr!
+            © 2026 Hollou · We make fields grow brrr!
           </p>
         </div>
       </footer>
