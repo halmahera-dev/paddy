@@ -12,11 +12,11 @@
   },
   "iconLibrary": "hugeicons",
   "aliases": {
-    "components": "@paddy-field/ui/components",
-    "utils": "@paddy-field/ui/lib/utils",
-    "hooks": "@paddy-field/ui/hooks",
-    "lib": "@paddy-field/ui/lib",
-    "ui": "@paddy-field/ui/components"
+    "components": "@hollou/ui/components",
+    "utils": "@hollou/ui/lib/utils",
+    "hooks": "@hollou/ui/hooks",
+    "lib": "@hollou/ui/lib",
+    "ui": "@hollou/ui/components"
   },
   "menuColor": "default-translucent",
   "menuAccent": "subtle",

@@ -1,14 +1,14 @@
 "use client";
 
-import { Button } from "@paddy-field/ui/components/button";
+import { Button } from "@hollou/ui/components/button";
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@paddy-field/ui/components/field";
-import { Input } from "@paddy-field/ui/components/input";
+} from "@hollou/ui/components/field";
+import { Input } from "@hollou/ui/components/input";
 import { useForm } from "@tanstack/react-form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

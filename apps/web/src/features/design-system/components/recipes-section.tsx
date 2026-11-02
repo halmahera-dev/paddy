@@ -2,11 +2,11 @@
 
 import { ArrowRight01Icon, StarIcon, Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Avatar, AvatarFallback } from "@paddy-field/ui/components/avatar";
-import { Badge } from "@paddy-field/ui/components/badge";
-import { Button } from "@paddy-field/ui/components/button";
-import { Card, CardContent } from "@paddy-field/ui/components/card";
-import { Separator } from "@paddy-field/ui/components/separator";
+import { Avatar, AvatarFallback } from "@hollou/ui/components/avatar";
+import { Badge } from "@hollou/ui/components/badge";
+import { Button } from "@hollou/ui/components/button";
+import { Card, CardContent } from "@hollou/ui/components/card";
+import { Separator } from "@hollou/ui/components/separator";
 
 import { cn } from "@/lib/utils";
 

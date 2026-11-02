@@ -2,8 +2,8 @@
 
 import { ArrowLeftIcon, ArrowRightIcon, ArrowDownIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Button, buttonVariants } from "@paddy-field/ui/components/button";
-import { cn } from "@paddy-field/ui/lib/utils";
+import { Button, buttonVariants } from "@hollou/ui/components/button";
+import { cn } from "@hollou/ui/lib/utils";
 import * as React from "react";
 import { DayPicker, getDefaultClassNames, type DayButton, type Locale } from "react-day-picker";
 

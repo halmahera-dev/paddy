@@ -35,7 +35,7 @@
   },
   "settings": {
     "shadcn": {
-      "ui": "@paddy-field/ui/components"
+      "ui": "@hollou/ui/components"
     }
   },
   "overrides": [

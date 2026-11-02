@@ -1,4 +1,4 @@
-@import "@paddy-field/ui/globals.css";
+@import "@hollou/ui/globals.css";
 
 @custom-variant dark (&:is(.dark *));
 

@@ -1,11 +1,11 @@
 {
-  "extends": "@paddy-field/config/tsconfig.base.json",
+  "extends": "@hollou/config/tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": [],
     "paths": {
-      "@paddy-field/ui/*": ["./src/*"]
+      "@hollou/ui/*": ["./src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],

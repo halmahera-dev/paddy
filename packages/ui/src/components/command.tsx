@@ -8,9 +8,9 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@paddy-field/ui/components/dialog";
-import { InputGroup, InputGroupAddon } from "@paddy-field/ui/components/input-group";
-import { cn } from "@paddy-field/ui/lib/utils";
+} from "@hollou/ui/components/dialog";
+import { InputGroup, InputGroupAddon } from "@hollou/ui/components/input-group";
+import { cn } from "@hollou/ui/lib/utils";
 import { Command as CommandPrimitive } from "cmdk";
 import * as React from "react";
 

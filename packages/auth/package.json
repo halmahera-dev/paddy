@@ -1,5 +1,5 @@
 {
-  "name": "@paddy-field/auth",
+  "name": "@hollou/auth",
   "type": "module",
   "exports": {
     ".": {
@@ -11,14 +11,14 @@
   },
   "scripts": {},
   "dependencies": {
-    "@paddy-field/db": "workspace:*",
-    "@paddy-field/env": "workspace:*",
+    "@hollou/db": "workspace:*",
+    "@hollou/env": "workspace:*",
     "better-auth": "catalog:",
     "dotenv": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@paddy-field/config": "workspace:*",
+    "@hollou/config": "workspace:*",
     "typescript": "catalog:"
   }
 }

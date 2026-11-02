@@ -8,7 +8,7 @@ import {
   ArrowDown01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { cn } from "@paddy-field/ui/lib/utils";
+import { cn } from "@hollou/ui/lib/utils";
 import * as React from "react";
 
 const Select = SelectPrimitive.Root;

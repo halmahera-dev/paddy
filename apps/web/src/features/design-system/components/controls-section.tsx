@@ -2,10 +2,10 @@
 
 import { Delete02Icon, Search01Icon, Settings01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Badge } from "@paddy-field/ui/components/badge";
-import { Button } from "@paddy-field/ui/components/button";
-import { ButtonGroup, ButtonGroupSeparator } from "@paddy-field/ui/components/button-group";
-import { Checkbox } from "@paddy-field/ui/components/checkbox";
+import { Badge } from "@hollou/ui/components/badge";
+import { Button } from "@hollou/ui/components/button";
+import { ButtonGroup, ButtonGroupSeparator } from "@hollou/ui/components/button-group";
+import { Checkbox } from "@hollou/ui/components/checkbox";
 import {
   Field,
   FieldContent,
@@ -15,17 +15,17 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@paddy-field/ui/components/field";
-import { Input } from "@paddy-field/ui/components/input";
+} from "@hollou/ui/components/field";
+import { Input } from "@hollou/ui/components/input";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
   InputGroupText,
-} from "@paddy-field/ui/components/input-group";
-import { Kbd } from "@paddy-field/ui/components/kbd";
-import { NativeSelect, NativeSelectOption } from "@paddy-field/ui/components/native-select";
-import { RadioGroup, RadioGroupItem } from "@paddy-field/ui/components/radio-group";
+} from "@hollou/ui/components/input-group";
+import { Kbd } from "@hollou/ui/components/kbd";
+import { NativeSelect, NativeSelectOption } from "@hollou/ui/components/native-select";
+import { RadioGroup, RadioGroupItem } from "@hollou/ui/components/radio-group";
 import {
   Select,
   SelectContent,
@@ -33,13 +33,13 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@paddy-field/ui/components/select";
-import { Slider } from "@paddy-field/ui/components/slider";
-import { Spinner } from "@paddy-field/ui/components/spinner";
-import { Switch } from "@paddy-field/ui/components/switch";
-import { Textarea } from "@paddy-field/ui/components/textarea";
-import { Toggle } from "@paddy-field/ui/components/toggle";
-import { ToggleGroup, ToggleGroupItem } from "@paddy-field/ui/components/toggle-group";
+} from "@hollou/ui/components/select";
+import { Slider } from "@hollou/ui/components/slider";
+import { Spinner } from "@hollou/ui/components/spinner";
+import { Switch } from "@hollou/ui/components/switch";
+import { Textarea } from "@hollou/ui/components/textarea";
+import { Toggle } from "@hollou/ui/components/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@hollou/ui/components/toggle-group";
 
 import { ShowcaseBlock, ShowcaseSection } from "./showcase-section";
 import { StateMatrix, previewState } from "./state-matrix";

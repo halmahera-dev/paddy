@@ -7,8 +7,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@paddy-field/ui/components/accordion";
-import { Alert, AlertDescription, AlertTitle } from "@paddy-field/ui/components/alert";
+} from "@hollou/ui/components/accordion";
+import { Alert, AlertDescription, AlertTitle } from "@hollou/ui/components/alert";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,15 +19,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@paddy-field/ui/components/alert-dialog";
+} from "@hollou/ui/components/alert-dialog";
 import {
   Avatar,
   AvatarFallback,
   AvatarGroup,
   AvatarGroupCount,
   AvatarImage,
-} from "@paddy-field/ui/components/avatar";
-import { Badge } from "@paddy-field/ui/components/badge";
+} from "@hollou/ui/components/avatar";
+import { Badge } from "@hollou/ui/components/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -35,8 +35,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@paddy-field/ui/components/breadcrumb";
-import { Button } from "@paddy-field/ui/components/button";
+} from "@hollou/ui/components/breadcrumb";
+import { Button } from "@hollou/ui/components/button";
 import {
   Card,
   CardAction,
@@ -45,7 +45,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@paddy-field/ui/components/card";
+} from "@hollou/ui/components/card";
 import {
   Dialog,
   DialogClose,
@@ -55,7 +55,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@paddy-field/ui/components/dialog";
+} from "@hollou/ui/components/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -64,7 +64,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@paddy-field/ui/components/dropdown-menu";
+} from "@hollou/ui/components/dropdown-menu";
 import {
   Empty,
   EmptyContent,
@@ -72,12 +72,12 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@paddy-field/ui/components/empty";
+} from "@hollou/ui/components/empty";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@paddy-field/ui/components/hover-card";
+} from "@hollou/ui/components/hover-card";
 import {
   Item,
   ItemActions,
@@ -85,7 +85,7 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "@paddy-field/ui/components/item";
+} from "@hollou/ui/components/item";
 import {
   Pagination,
   PaginationContent,
@@ -94,7 +94,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@paddy-field/ui/components/pagination";
+} from "@hollou/ui/components/pagination";
 import {
   Popover,
   PopoverContent,
@@ -102,9 +102,9 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "@paddy-field/ui/components/popover";
-import { Progress, ProgressLabel, ProgressValue } from "@paddy-field/ui/components/progress";
-import { Separator } from "@paddy-field/ui/components/separator";
+} from "@hollou/ui/components/popover";
+import { Progress, ProgressLabel, ProgressValue } from "@hollou/ui/components/progress";
+import { Separator } from "@hollou/ui/components/separator";
 import {
   Sheet,
   SheetContent,
@@ -112,9 +112,9 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@paddy-field/ui/components/sheet";
-import { Skeleton } from "@paddy-field/ui/components/skeleton";
-import { Spinner } from "@paddy-field/ui/components/spinner";
+} from "@hollou/ui/components/sheet";
+import { Skeleton } from "@hollou/ui/components/skeleton";
+import { Spinner } from "@hollou/ui/components/spinner";
 import {
   Table,
   TableBody,
@@ -122,9 +122,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@paddy-field/ui/components/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@paddy-field/ui/components/tabs";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@paddy-field/ui/components/tooltip";
+} from "@hollou/ui/components/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@hollou/ui/components/tabs";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@hollou/ui/components/tooltip";
 import { toast } from "sonner";
 
 import { ShowcaseBlock, ShowcaseSection } from "./showcase-section";

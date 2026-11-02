@@ -18,10 +18,10 @@
     "@hugeicons/core-free-icons": "catalog:",
     "@hugeicons/react": "catalog:",
     "@opennextjs/cloudflare": "^1.20.8",
-    "@paddy-field/auth": "workspace:*",
-    "@paddy-field/db": "workspace:*",
-    "@paddy-field/env": "workspace:*",
-    "@paddy-field/ui": "workspace:*",
+    "@hollou/auth": "workspace:*",
+    "@hollou/db": "workspace:*",
+    "@hollou/env": "workspace:*",
+    "@hollou/ui": "workspace:*",
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.7.0",
     "@tabler/icons-react": "^3.48.0",
@@ -45,7 +45,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@paddy-field/config": "workspace:*",
+    "@hollou/config": "workspace:*",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/geojson": "^7946.0.16",
     "@types/node": "catalog:",

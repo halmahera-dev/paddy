@@ -1,5 +1,5 @@
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
-import { cn } from "@paddy-field/ui/lib/utils";
+import { cn } from "@hollou/ui/lib/utils";
 import * as React from "react";
 
 function Avatar({

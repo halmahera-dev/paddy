@@ -5,10 +5,10 @@ initOpenNextCloudflareForDev();
 
 const config: NextConfig = {
   transpilePackages: [
-    "@paddy-field/ui",
-    "@paddy-field/auth",
-    "@paddy-field/env",
-    "@paddy-field/db",
+    "@hollou/ui",
+    "@hollou/auth",
+    "@hollou/env",
+    "@hollou/db",
   ],
   images: {
     // Serve local assets directly because the Vercel service image endpoint returns 404.

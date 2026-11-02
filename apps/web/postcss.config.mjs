@@ -1,1 +1,1 @@
-export { default } from "@paddy-field/ui/postcss.config";
+export { default } from "@hollou/ui/postcss.config";
