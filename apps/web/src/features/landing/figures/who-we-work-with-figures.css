@@ -1,0 +1,117 @@
+.www-led {
+  animation: www-led 1.7s var(--ease-out) infinite;
+}
+
+.www-led-b {
+  animation-duration: 2.2s;
+  animation-delay: 0.45s;
+}
+
+.www-led-c {
+  animation-duration: 1.4s;
+  animation-delay: 0.9s;
+}
+
+.www-led-d {
+  animation-duration: 2.6s;
+  animation-delay: 0.2s;
+}
+
+.www-blink {
+  animation: www-blink 2.8s var(--ease-out) infinite;
+}
+
+.www-steam {
+  animation: www-steam 3.2s var(--ease-in-out) infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.www-steam-b {
+  animation-delay: 1.05s;
+}
+
+.www-steam-c {
+  animation-delay: 2.1s;
+}
+
+.www-steam .iso-fill,
+.www-steam .iso-shade,
+.www-steam .iso-top {
+  fill: color-mix(in oklab, white 78%, var(--hue));
+}
+
+.dark .www-steam .iso-fill,
+.dark .www-steam .iso-shade,
+.dark .www-steam .iso-top {
+  fill: color-mix(in oklab, white 62%, var(--hue));
+}
+
+.www-steam .iso-edge,
+.www-steam .iso-crease,
+.www-steam .iso-bevel {
+  stroke: none;
+}
+
+@keyframes www-led {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.22;
+  }
+}
+
+@keyframes www-blink {
+  0%,
+  42%,
+  100% {
+    opacity: 1;
+  }
+  50%,
+  62% {
+    opacity: 0.15;
+  }
+  70%,
+  78% {
+    opacity: 1;
+  }
+  84%,
+  92% {
+    opacity: 0.15;
+  }
+}
+
+@keyframes www-steam {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  28% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-26px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .www-led,
+  .www-led-b,
+  .www-led-c,
+  .www-led-d,
+  .www-blink,
+  .www-steam,
+  .www-steam-b,
+  .www-steam-c {
+    animation: none;
+  }
+
+  .www-steam,
+  .www-steam-b,
+  .www-steam-c {
+    opacity: 0.55;
+  }
+}

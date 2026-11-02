@@ -1,5 +1,14 @@
 import * as React from "react";
-import { pathOf, type Flat, type KeyMark, type LegendKey, type LineTone, type SolidPaths, type Tone } from "../iso-kit";
+
+import {
+  pathOf,
+  type Flat,
+  type KeyMark,
+  type LegendKey,
+  type LineTone,
+  type SolidPaths,
+  type Tone,
+} from "../iso-kit";
 import { Stage } from "./live";
 
 interface SolidProps {
@@ -14,15 +23,37 @@ interface SolidProps {
   children?: React.ReactNode;
 }
 
-export function Solid({ paths, tone = "hi", crease = "faint", halo = false, lit = false, flat = false, className, inner, children }: SolidProps) {
+export function Solid({
+  paths,
+  tone = "hi",
+  crease = "faint",
+  halo = false,
+  lit = false,
+  flat = false,
+  className,
+  inner,
+  children,
+}: SolidProps) {
   return (
-    <g className={className ? `iso-solid ${className}` : "iso-solid"} data-lit={lit ? "" : undefined} data-seamless={paths.seamless ? "" : undefined}>
+    <g
+      className={className ? `iso-solid ${className}` : "iso-solid"}
+      data-lit={lit ? "" : undefined}
+      data-seamless={paths.seamless ? "" : undefined}
+    >
       {halo ? <path className="iso-halo" d={paths.fill} /> : null}
       <path className="iso-fill" d={paths.fill} />
-      {flat ? null : paths.shades.map((d, shade) => (d ? <path key={shade} className="iso-shade" data-shade={shade} d={d} /> : null))}
+      {flat
+        ? null
+        : paths.shades.map((d, shade) =>
+            d ? <path key={shade} className="iso-shade" data-shade={shade} d={d} /> : null,
+          )}
       {flat ? null : <path className="iso-top" d={paths.top} />}
-      {crease === "none" || !paths.crease ? null : <path className="iso-line iso-crease" data-tone={crease} d={paths.crease} />}
-      {crease === "none" || !paths.bevel ? null : <path className="iso-line iso-bevel" data-tone={crease} d={paths.bevel} />}
+      {crease === "none" || !paths.crease ? null : (
+        <path className="iso-line iso-crease" data-tone={crease} d={paths.crease} />
+      )}
+      {crease === "none" || !paths.bevel ? null : (
+        <path className="iso-line iso-bevel" data-tone={crease} d={paths.bevel} />
+      )}
       {inner}
       <path className="iso-line iso-edge" data-tone={tone} d={paths.outline} />
       {children}
@@ -40,7 +71,15 @@ interface LineProps {
   free?: boolean | "start" | "end";
 }
 
-export function Line({ d, tone = "lo", dotted = false, dashed = false, flow = false, className, free }: LineProps) {
+export function Line({
+  d,
+  tone = "lo",
+  dotted = false,
+  dashed = false,
+  flow = false,
+  className,
+  free,
+}: LineProps) {
   if (!d) return null;
   return (
     <path
@@ -67,19 +106,51 @@ interface WireProps {
   size?: number;
 }
 
-const tenth = (value: number) => Math.round(value * 10) / 10;
+function tenth(value: number) {
+  return Math.round(value * 10) / 10;
+}
 
-export function Wire({ from, to, via = [], tone = "lo", dotted = false, dashed = false, flow = false, ends = "both", size = 1.2 }: WireProps) {
+export function Wire({
+  from,
+  to,
+  via = [],
+  tone = "lo",
+  dotted = false,
+  dashed = false,
+  flow = false,
+  ends = "both",
+  size = 1.2,
+}: WireProps) {
   return (
     <g className="iso-wire" data-tone={tone}>
-      <Line d={pathOf([from, ...via, to])} tone={tone} dotted={dotted} dashed={dashed} flow={flow} />
-      {ends === "both" || ends === "from" ? <circle className="iso-wire-end" cx={tenth(from[0])} cy={tenth(from[1])} r={size} /> : null}
-      {ends === "both" || ends === "to" ? <circle className="iso-wire-end" cx={tenth(to[0])} cy={tenth(to[1])} r={size} /> : null}
+      <Line
+        d={pathOf([from, ...via, to])}
+        tone={tone}
+        dotted={dotted}
+        dashed={dashed}
+        flow={flow}
+      />
+      {ends === "both" || ends === "from" ? (
+        <circle className="iso-wire-end" cx={tenth(from[0])} cy={tenth(from[1])} r={size} />
+      ) : null}
+      {ends === "both" || ends === "to" ? (
+        <circle className="iso-wire-end" cx={tenth(to[0])} cy={tenth(to[1])} r={size} />
+      ) : null}
     </g>
   );
 }
 
-export function Dots({ points, size = 0.5, tone = "mid", pulse = false }: { points: Array<Flat | [number, number, number]>; size?: number; tone?: Tone; pulse?: boolean }) {
+export function Dots({
+  points,
+  size = 0.5,
+  tone = "mid",
+  pulse = false,
+}: {
+  points: Array<Flat | [number, number, number]>;
+  size?: number;
+  tone?: Tone;
+  pulse?: boolean;
+}) {
   return (
     <g className="iso-dots" data-tone={tone}>
       {points.map(([x, y, alpha], index) => (
@@ -90,7 +161,11 @@ export function Dots({ points, size = 0.5, tone = "mid", pulse = false }: { poin
           r={size}
           fillOpacity={alpha !== undefined && alpha < 1 ? Math.max(0, alpha) : undefined}
           data-pulse={pulse ? "" : undefined}
-          style={pulse ? ({ "--pulse-at": `${(index * 137) % 1600}ms` } as React.CSSProperties) : undefined}
+          style={
+            pulse
+              ? ({ "--pulse-at": `${(index * 137) % 1600}ms` } as React.CSSProperties)
+              : undefined
+          }
         />
       ))}
     </g>
@@ -111,7 +186,13 @@ export function FaceText({
   anchor?: "start" | "middle" | "end";
 }) {
   return (
-    <text className="iso-face-text" data-tone={tone} transform={transform} fontSize={size} textAnchor={anchor}>
+    <text
+      className="iso-face-text"
+      data-tone={tone}
+      transform={transform}
+      fontSize={size}
+      textAnchor={anchor}
+    >
       {children}
     </text>
   );
@@ -128,7 +209,13 @@ interface IsoFigureProps {
 export function IsoFigure({ width, height, label, className, children }: IsoFigureProps) {
   return (
     <Stage className={className ? `iso-stage ${className}` : "iso-stage"}>
-      <svg className="iso-svg" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} focusable="false">
+      <svg
+        className="iso-svg"
+        viewBox={`0 0 ${width} ${height}`}
+        role="img"
+        aria-label={label}
+        focusable="false"
+      >
         {children}
       </svg>
     </Stage>
@@ -138,14 +225,28 @@ export function IsoFigure({ width, height, label, className, children }: IsoFigu
 function Swatch({ mark }: { mark: KeyMark }) {
   if (mark === "raised" || mark === "flat" || mark === "lit") {
     return (
-      <svg className="iso-swatch" data-mark={mark} viewBox="0 0 16 10" aria-hidden="true" focusable="false">
-        <path d={mark === "flat" ? "M2 6.5 8 3.5 14 6.5 8 9.5Z" : "M2 4.5 8 1.5 14 4.5 14 6 8 9 2 6Z"} />
+      <svg
+        className="iso-swatch"
+        data-mark={mark}
+        viewBox="0 0 16 10"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path
+          d={mark === "flat" ? "M2 6.5 8 3.5 14 6.5 8 9.5Z" : "M2 4.5 8 1.5 14 4.5 14 6 8 9 2 6Z"}
+        />
         {mark === "flat" ? null : <path className="iso-swatch-crease" d="M2 4.5 8 7.5 14 4.5" />}
       </svg>
     );
   }
   return (
-    <svg className="iso-swatch" data-mark={mark} viewBox="0 0 16 10" aria-hidden="true" focusable="false">
+    <svg
+      className="iso-swatch"
+      data-mark={mark}
+      viewBox="0 0 16 10"
+      aria-hidden="true"
+      focusable="false"
+    >
       <path d="M1.5 5h13" />
     </svg>
   );

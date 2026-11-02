@@ -1,0 +1,303 @@
+@property --p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+/* Base rules are the still pose. Motion is added only when the user allows it. */
+.hts-front,
+.hts-behind {
+  offset-path: var(--path);
+  offset-rotate: 0deg;
+  offset-distance: calc(var(--approach) + (100% - var(--approach)) * 0.125);
+}
+
+.hts-behind {
+  opacity: 0;
+}
+
+.hts-planet-lit {
+  opacity: 0.55;
+}
+
+.hts-flyer {
+  offset-path: var(--path);
+  offset-rotate: 0deg;
+  offset-distance: calc(var(--p) * 100%);
+}
+
+.hts-cell,
+.hts-screen,
+.hts-beacon,
+.hts-lamp {
+  opacity: 1;
+}
+
+.hts-ready,
+.hts-plume {
+  opacity: 0;
+}
+
+.hts-rocket {
+  offset-path: var(--path);
+  offset-rotate: 0deg;
+  offset-distance: calc(var(--p) * 100%);
+}
+
+.hts-rocket-turn {
+  rotate: calc(sin(var(--p) * 180deg) * 70deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hts-front {
+    animation:
+      hts-orbit 12s linear infinite,
+      hts-front 12s linear infinite;
+  }
+
+  .hts-behind {
+    animation:
+      hts-orbit 12s linear infinite,
+      hts-behind 12s linear infinite;
+  }
+
+  .hts-planet-lit {
+    animation: hts-planet-lit 12s var(--ease-out) infinite;
+  }
+
+  .hts-sprint {
+    animation: hts-sprint 10s linear infinite;
+  }
+
+  .hts-cell {
+    opacity: clamp(0, calc((var(--p) - var(--at)) * 24), 1);
+  }
+
+  .hts-screen {
+    opacity: clamp(0, calc((var(--p) - 0.96) * 25), 1);
+  }
+
+  .hts-flight {
+    animation: hts-flight 14s var(--ease-in-out) infinite;
+  }
+
+  .hts-rocket {
+    animation: hts-rocket 14s linear infinite;
+  }
+
+  .hts-lamp {
+    animation: hts-lamp 14s var(--ease-out) infinite;
+  }
+
+  .hts-clamp {
+    animation: hts-clamp 14s var(--ease-in-out) infinite;
+  }
+
+  .hts-ready {
+    animation: hts-ready 14s var(--ease-out) infinite;
+  }
+
+  .hts-plume {
+    animation: hts-plume 14s var(--ease-out) infinite;
+  }
+
+  .hts-beacon {
+    animation: hts-beacon 14s var(--ease-out) infinite;
+  }
+}
+
+@keyframes hts-orbit {
+  0% {
+    offset-distance: 0%;
+  }
+  20% {
+    offset-distance: var(--approach);
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+@keyframes hts-front {
+  0% {
+    opacity: 0;
+  }
+  4%,
+  39.9% {
+    opacity: 1;
+  }
+  40%,
+  59.9% {
+    opacity: 0;
+  }
+  60%,
+  79.9% {
+    opacity: 1;
+  }
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes hts-behind {
+  0%,
+  39.9% {
+    opacity: 0;
+  }
+  40%,
+  59.9% {
+    opacity: 1;
+  }
+  60%,
+  79.9% {
+    opacity: 0;
+  }
+  80%,
+  94% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes hts-planet-lit {
+  0%,
+  16% {
+    opacity: 0;
+  }
+  30%,
+  92% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes hts-sprint {
+  0% {
+    --p: 0;
+    opacity: 0;
+  }
+  6% {
+    --p: 0;
+    opacity: 1;
+  }
+  62%,
+  90% {
+    --p: 1;
+    opacity: 1;
+  }
+  96% {
+    --p: 1;
+    opacity: 0;
+  }
+  100% {
+    --p: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes hts-flight {
+  0%,
+  36% {
+    --p: 0;
+  }
+  80%,
+  98% {
+    --p: 1;
+  }
+  100% {
+    --p: 0;
+  }
+}
+
+@keyframes hts-rocket {
+  0%,
+  10% {
+    opacity: 0;
+  }
+  18%,
+  90% {
+    opacity: 1;
+  }
+  96%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes hts-lamp {
+  0%,
+  12% {
+    opacity: 1;
+  }
+  18%,
+  94% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes hts-clamp {
+  0%,
+  12% {
+    translate: 0 0;
+  }
+  20%,
+  30% {
+    translate: var(--clamp);
+  }
+  38%,
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes hts-ready {
+  0%,
+  30% {
+    opacity: 0;
+  }
+  34%,
+  46% {
+    opacity: 1;
+  }
+  52%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes hts-plume {
+  0%,
+  35% {
+    opacity: 0;
+  }
+  39% {
+    opacity: 1;
+  }
+  48%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes hts-beacon {
+  0%,
+  78% {
+    opacity: 0;
+  }
+  83%,
+  94% {
+    opacity: 1;
+  }
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
