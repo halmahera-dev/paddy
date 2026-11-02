@@ -11,7 +11,7 @@ import {
 } from "@hollou/ui/components/field";
 import { Input } from "@hollou/ui/components/input";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import * as z from "zod";
 
@@ -25,6 +25,7 @@ const signUpSchema = z.object({
 
 export function SignUpForm() {
   const router = useRouter();
+  const { locale } = useParams<{ locale: string }>();
 
   const form = useForm({
     defaultValues: { name: "", email: "", password: "" },
@@ -33,7 +34,7 @@ export function SignUpForm() {
       await authClient.signUp.email(value, {
         onSuccess: () => {
           toast.success("Account created");
-          router.push("/");
+          router.push(`/${locale}`);
         },
         onError: (error) => {
           toast.error(error.error.message || error.error.statusText);
@@ -132,7 +133,7 @@ export function SignUpForm() {
           </form.Subscribe>
           <FieldDescription className="text-center">
             Already have an account?{" "}
-            <Link href="/sign-in" className="underline underline-offset-4">
+            <Link href={`/${locale}/sign-in`} className="underline underline-offset-4">
               Login
             </Link>
           </FieldDescription>
