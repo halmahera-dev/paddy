@@ -429,5 +429,11 @@ export const id: Dictionary = {
     radarSummary: "Pasangan ini mencakup {start} sampai {end}, yaitu {days} hari.",
     dropLegend: "Penurunan tanah pada {year} dengan laju sekarang, tanpa tanggul laut dan tanpa perubahan pemompaan.",
     phaseLegend: "Satu siklus warna sama dengan 12 cm gerak ke arah atau menjauhi satelit. Pada pasangan 12 hari, sebagian besar warna adalah uap air.",
+    play: "Putar",
+    pause: "Jeda",
+    banScenario: "Larangan air tanah 2023",
+    noBanSummary: "Tanpa larangan air tanah 2023, {name} turun {meters} m pada {year}. Itu {extra} m lebih banyak daripada dengan larangan.",
+    waterScale: "Di peta, kolom air {scale}× lebih tinggi dari penurunan.",
+    personScale: "Orang setinggi 1,7 m di samping penurunan di {name}",
   },
 };

@@ -91,21 +91,3 @@ export function BuildingsLayer() {
 
   return null;
 }
-
-export function FlyToNorthJakarta() {
-  const { map, isLoaded } = useMap();
-
-  useEffect(() => {
-    if (!map || !isLoaded) {
-      return;
-    }
-    const camera = { center: [106.81, -6.13] as [number, number], zoom: 12, pitch: 58, bearing: -20 };
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      map.jumpTo(camera);
-      return;
-    }
-    map.flyTo({ ...camera, duration: 7000, essential: true });
-  }, [map, isLoaded]);
-
-  return null;
-}

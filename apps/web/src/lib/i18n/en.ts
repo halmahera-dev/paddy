@@ -426,6 +426,12 @@ export const en = {
     radarSummary: "This pair spans {start} to {end}, which is {days} days.",
     dropLegend: "Ground drop by {year} at current rates, with no sea wall and no pumping change.",
     phaseLegend: "One color cycle is 12 cm of motion toward or away from the satellite. In a 12-day pair, most color is water vapor.",
+    play: "Play",
+    pause: "Pause",
+    banScenario: "2023 groundwater ban",
+    noBanSummary: "Without the 2023 groundwater ban, {name} drops {meters} m by {year}. That is {extra} m more than with the ban.",
+    waterScale: "On the map, the water column is {scale}× taller than the drop.",
+    personScale: "A 1.7 m person next to the drop at {name}",
   },
 };
 
