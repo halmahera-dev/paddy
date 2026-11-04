@@ -2,11 +2,11 @@
 
 import { ArrowRight01Icon, StarIcon, Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Avatar, AvatarFallback } from "@paddy-field/ui/components/avatar";
-import { Badge } from "@paddy-field/ui/components/badge";
-import { Button } from "@paddy-field/ui/components/button";
-import { Card, CardContent } from "@paddy-field/ui/components/card";
-import { Separator } from "@paddy-field/ui/components/separator";
+import { Avatar, AvatarFallback } from "@hollou/ui/components/avatar";
+import { Badge } from "@hollou/ui/components/badge";
+import { Button } from "@hollou/ui/components/button";
+import { Card, CardContent } from "@hollou/ui/components/card";
+import { Separator } from "@hollou/ui/components/separator";
 
 import { cn } from "@/lib/utils";
 
@@ -122,7 +122,7 @@ export function RecipesSection() {
           description="Glass bar with a hairline edge, ghost links, and an ink CTA."
         >
           <nav className="flex items-center justify-between gap-4 rounded-full border glass px-4 py-3 sm:px-8">
-            <span className="font-heading text-lg font-semibold tracking-tight">One Field</span>
+            <span className="font-heading text-lg font-semibold tracking-tight">Hollou</span>
             <div className="hidden items-center gap-1 md:flex">
               <Button variant="ghost">Fields</Button>
               <Button variant="ghost" className="bg-brand text-brand-foreground hover:bg-brand/90">
@@ -253,7 +253,7 @@ export function RecipesSection() {
             <Button variant="secondary">Read the briefing</Button>
           </div>
           <p className="text-center text-sm text-muted-foreground">
-            © 2026 One Field · We make fields grow brrr!
+            © 2026 Hollou · We make fields grow brrr!
           </p>
         </div>
       </footer>

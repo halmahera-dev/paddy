@@ -1,6 +1,6 @@
-import { Label } from "@paddy-field/ui/components/label";
-import { Separator } from "@paddy-field/ui/components/separator";
-import { cn } from "@paddy-field/ui/lib/utils";
+import { Label } from "@hollou/ui/components/label";
+import { Separator } from "@hollou/ui/components/separator";
+import { cn } from "@hollou/ui/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { useMemo } from "react";
 

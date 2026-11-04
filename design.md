@@ -2,11 +2,11 @@
 
 Live showcase: `/design-system` in `apps/web`. When the tokens in `packages/ui/src/styles/globals.css` change, update this file in the same change.
 
-This file maps the One Field design language to shadcn/ui tokens. The values match `packages/ui/src/styles/globals.css`. Dark is the source scheme. Light is warm cream paper. The app defaults to dark.
+This file maps the Hollou design language to shadcn/ui tokens. The values match `packages/ui/src/styles/globals.css`. Dark is the source scheme. Light is near-white paper (street-proof). The landing page (`data-page="landing"`) overrides light `--background` to warm cream `#f2f1ed`. The app defaults to dark.
 
 ## 1. Character
 
-- **Quiet by default.** Near-black surfaces in dark, cream paper in light, and an 8% hairline. Color is data, not decoration.
+- **Quiet by default.** Near-black surfaces in dark, near-white paper in light (cream on the landing page only), and an 8% hairline. Color is data, not decoration.
 - **One emerald accent.** Emerald marks state, focus, and small highlights. The main action is an ink pill.
 - **Pills for controls, 12px for panels.** Buttons, badges, and nav links are pills. Cards, dialogs, and panels are 12px.
 - **Flat panels.** A panel sits one step above the page and gets a hairline. Only floating layers cast a shadow.
@@ -19,18 +19,18 @@ This file maps the One Field design language to shadcn/ui tokens. The values mat
 
 | Token                | Light                       | Dark                        | Use                        |
 | -------------------- | --------------------------- | --------------------------- | -------------------------- |
-| `--background`       | `#f2f1ed`                   | `#08090a`                   | Page                       |
+| `--background`       | `#fefefe` (landing `#f2f1ed`) | `#08090a`                 | Page                       |
 | `--card`             | `#f7f7f4`                   | `#0f1011`                   | Panel, popover, muted fill |
 | `--foreground`       | `#26251e`                   | `#f7f8f8`                   | Ink                        |
 | `--muted-foreground` | `#6b675d`                   | `#8a8f98`                   | Meta and help text         |
-| `--brand`            | `oklch(59.6% 0.145 163.225)` | same                       | Emerald accent             |
-| `--brand-foreground` | `#ffffff`                   | same                        | Text on a emerald fill        |
+| `--brand`            | `oklch(59.6% 0.145 163.225)` | same                        | Emerald accent             |
+| `--brand-foreground` | `#ffffff`                   | same                        | Text on a emerald fill     |
 | `--brand-text`       | `oklch(50.8% 0.118 165.612)` | `oklch(76.5% 0.177 163.223)` | Small emerald text       |
 | `--destructive`      | `#c9372c`                   | `#eb5757`                   | Errors and urgency         |
 | `--chart-1`          | `--brand`                   | same                        | Series 1                   |
 | `--chart-2`          | `#5e6ad2`                   | same                        | Series 2                   |
 | `--chart-3`          | `#d4a72c`                   | `#f2c94c`                   | Series 3                   |
-| `--chart-4`          | `#d9534f`                   | `#f0716c`                   | Series 4                   |
+| `--chart-4`          | `#3d9a6c`                   | `#f0716c`                   | Series 4                   |
 | `--chart-5`          | `#3fa7a7`                   | `#83dcdc`                   | Series 5                   |
 | `--hair-alpha`       | `8%`                        | same                        | Hairline strength          |
 
@@ -77,7 +77,7 @@ The type scale is a set of `type-*` utilities in `packages/ui/src/styles/globals
 | ----------------- | ------------------------------------------------ | ------------------------------------------------- |
 | `type-display-xl` | clamp 48–72px / 1 / 510 / -0.022em · Inter       | Large page hero                                   |
 | `type-display`    | clamp 40–64px / 1 / 510 / -0.022em · Inter       | Page hero. Second line in `text-muted-foreground` |
-| `type-headline`   | clamp 32–48px / 1 / 510 / -0.022em · Inter       | Section heads                                     |
+| `type-headline`   | clamp 36–56px / 1 / 510 / -0.022em · Inter       | Section heads                                     |
 | `type-title`      | 20px / 1.3 / 590 / -0.012em · Inter              | Card and block titles                             |
 | `type-lead`       | clamp 18–24px / 1.33 / 400 / -0.011em · Inter    | Intro paragraphs                                  |
 | body              | 15px / 1.6 / 400 / -0.011em · Inter              | Body copy                                         |

@@ -1,9 +1,12 @@
 [project]
-name = "paddy-jobs"
+name = "hollou-jobs"
 version = "0.1.0"
-description = "Data jobs that fill the Neon area tables from BIG and NASA sources."
+description = "Radar data jobs for Hollou."
 requires-python = ">=3.11"
-dependencies = ["psycopg[binary]>=3.2"]
+dependencies = [
+    "numpy>=2.4.6",
+    "pillow>=13.0.0",
+]
 
 [tool.uv]
 package = false

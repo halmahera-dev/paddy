@@ -29,7 +29,7 @@
       "@/*": [
         "./src/*"
       ],
-      "@paddy-field/ui/*": [
+      "@hollou/ui/*": [
         "../../packages/ui/src/*"
       ]
     }

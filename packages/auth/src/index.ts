@@ -1,6 +1,6 @@
-import { createDb } from "@paddy-field/db";
-import * as schema from "@paddy-field/db/schema/auth";
-import { env } from "@paddy-field/env/server";
+import { createDb } from "@hollou/db";
+import * as schema from "@hollou/db/schema/auth";
+import { env } from "@hollou/env/server";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";

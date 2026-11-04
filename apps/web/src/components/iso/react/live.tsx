@@ -6,7 +6,9 @@ const STILLNESS = "(prefers-reduced-motion: reduce)";
 const MARGIN = "120px 0px";
 const LONGEST_FRAME = 1 / 30;
 
-export const asksForStillness = () => typeof window !== "undefined" && window.matchMedia(STILLNESS).matches;
+export function asksForStillness() {
+  return typeof window !== "undefined" && window.matchMedia(STILLNESS).matches;
+}
 
 export function useStillness() {
   return React.useSyncExternalStore(
@@ -32,17 +34,24 @@ export function useInView<T extends Element>(ref: React.RefObject<T | null>) {
     watched.current = node;
     setInView(false);
     if (!node) return;
-    const binding = new IntersectionObserver((entries) => {
-      if (watched.current === node && observer.current === binding) setInView(Boolean(entries.at(-1)?.isIntersecting));
-    }, { rootMargin: MARGIN });
+    const binding = new IntersectionObserver(
+      (entries) => {
+        if (watched.current === node && observer.current === binding)
+          setInView(Boolean(entries.at(-1)?.isIntersecting));
+      },
+      { rootMargin: MARGIN },
+    );
     observer.current = binding;
     binding.observe(node);
   });
-  React.useEffect(() => () => {
-    observer.current?.disconnect();
-    observer.current = null;
-    watched.current = null;
-  }, []);
+  React.useEffect(
+    () => () => {
+      observer.current?.disconnect();
+      observer.current = null;
+      watched.current = null;
+    },
+    [],
+  );
   return inView;
 }
 
@@ -73,12 +82,12 @@ export function useLoop(tick: (dt: number, calm: boolean) => boolean, running: b
   const kick = React.useCallback(() => {
     if (frame.current) return;
     last.current = 0;
-    const step = (now: number) => {
+    function step(now: number) {
       const dt = last.current ? Math.min((now - last.current) / 1000, LONGEST_FRAME) : 1 / 60;
       last.current = now;
       const more = latest.current(dt, asksForStillness());
       frame.current = more ? requestAnimationFrame(step) : 0;
-    };
+    }
     frame.current = requestAnimationFrame(step);
   }, []);
   React.useEffect(() => {
@@ -106,7 +115,14 @@ export interface Spring {
   rate: number;
 }
 
-export function spring(state: Spring, target: number, dt: number, stiffness: number, damping: number, calm = false) {
+export function spring(
+  state: Spring,
+  target: number,
+  dt: number,
+  stiffness: number,
+  damping: number,
+  calm = false,
+) {
   const drag = calm ? 2 * Math.sqrt(stiffness) : damping;
   const steps = Math.max(Math.ceil(dt * 240), 1);
   const slice = dt / steps;

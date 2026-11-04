@@ -2,8 +2,8 @@
 
 import { Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { buttonVariants, type Button } from "@paddy-field/ui/components/button";
-import { cn } from "@paddy-field/ui/lib/utils";
+import { buttonVariants, type Button } from "@hollou/ui/components/button";
+import { cn } from "@hollou/ui/lib/utils";
 import { Questionnaire as QuestionnairePrimitive } from "@shadcn/react/questionnaire";
 import * as React from "react";
 

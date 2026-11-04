@@ -1,17 +1,17 @@
 "use client";
 
-import { Button } from "@paddy-field/ui/components/button";
+import { Button } from "@hollou/ui/components/button";
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@paddy-field/ui/components/field";
-import { Input } from "@paddy-field/ui/components/input";
+} from "@hollou/ui/components/field";
+import { Input } from "@hollou/ui/components/input";
 import { useForm } from "@tanstack/react-form";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import * as z from "zod";
 
@@ -24,6 +24,7 @@ const signInSchema = z.object({
 
 export function SignInForm() {
   const router = useRouter();
+  const { locale } = useParams<{ locale: string }>();
 
   const form = useForm({
     defaultValues: { email: "", password: "" },
@@ -32,7 +33,7 @@ export function SignInForm() {
       await authClient.signIn.email(value, {
         onSuccess: () => {
           toast.success("Signed in");
-          router.push("/");
+          router.push(`/${locale}`);
         },
         onError: (error) => {
           toast.error(error.error.message || error.error.statusText);
@@ -107,7 +108,7 @@ export function SignInForm() {
           </form.Subscribe>
           <FieldDescription className="text-center">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="underline underline-offset-4">
+            <Link href={`/${locale}/sign-up`} className="underline underline-offset-4">
               Sign up
             </Link>
           </FieldDescription>

@@ -19,9 +19,9 @@
   );
 }
 
-/* Dark is the source scheme. Light is a warm cream paper. */
+/* Dark is the source scheme. Light paper matches street-proof; brand stays emerald. */
 :root {
-  --background: #f2f1ed;
+  --background: #fefefe;
   --card: #f7f7f4;
   --foreground: #26251e;
   --muted-foreground: #6b675d;
@@ -32,7 +32,7 @@
   --chart-1: var(--brand);
   --chart-2: #5e6ad2;
   --chart-3: #d4a72c;
-  --chart-4: #d9534f;
+  --chart-4: #3d9a6c;
   --chart-5: #3fa7a7;
   --shadow-ambient: rgb(38 37 30 / 0.1);
   --shadow-outline: rgb(38 37 30 / 0.05);
@@ -186,6 +186,13 @@
   }
 }
 
+/* Resize and press on one element. Each property gets its own duration and curve. */
+@utility transition-resize-press {
+  transition-property: flex-grow, scale;
+  transition-duration: 500ms, 160ms;
+  transition-timing-function: var(--ease-in-out), var(--ease-out);
+}
+
 @utility type-display-xl {
   font-family: var(--font-heading);
   font-size: clamp(3rem, 5vw + 1.5rem, 4.5rem);
@@ -204,7 +211,7 @@
 
 @utility type-headline {
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 3vw + 1rem, 3rem);
+  font-size: clamp(2.25rem, 3.4vw + 1rem, 3.5rem);
   font-weight: 510;
   line-height: 1;
   letter-spacing: -0.022em;
@@ -280,6 +287,26 @@
   }
 }
 
+@keyframes autoplay-progress {
+  from {
+    scale: 0 1;
+  }
+}
+
+/* Only the hero headline. One time per load. */
+@utility blur-in {
+  display: inline-block;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: blur-in 700ms var(--ease-out) both;
+    animation-delay: calc(var(--word-index, 0) * 60ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: fade-in 300ms var(--ease-out) both;
+  }
+}
+
 /* Section headings. Hidden below the fold, then blur in once when they enter view. */
 @utility blur-in-view {
   &[data-reveal="pending"] {
@@ -317,6 +344,223 @@
 /* A new screen fades in when it replaces the last one. */
 @utility fade-in {
   animation: fade-in 240ms var(--ease-out) both;
+}
+
+/* The orbit canvas shows after its first frame, not before. */
+@utility fade-in-ready {
+  opacity: 0;
+  transition: opacity 480ms var(--ease-out);
+
+  &[data-ready] {
+    opacity: 1;
+  }
+}
+
+/* A carousel advances when this bar finishes, and pauses with it. */
+@utility autoplay-progress {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: autoplay-progress 8s linear both;
+
+    [data-paused="true"] & {
+      animation-play-state: paused;
+    }
+  }
+}
+
+/* An image chip that sits inside a line of display text. */
+@utility inline-swatch {
+  display: inline-block;
+  height: 0.8em;
+  width: 1.6em;
+  vertical-align: -0.05em;
+}
+
+/*
+ * A 1px rose and indigo ring that follows the pointer.
+ * Set --glow-x and --glow-y on the element. Plain gradients: no blur filter.
+ * Active and reduced-motion states show a still ring.
+ */
+@utility glow-ring {
+  --glow-x: 50%;
+  --glow-y: 50%;
+  --glow-stops: var(--brand), var(--chart-2);
+  border-radius: inherit;
+  pointer-events: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background-image: radial-gradient(
+      12rem circle at var(--glow-x) var(--glow-y),
+      var(--glow-stops),
+      transparent
+    );
+    mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+    mask-clip: content-box, border-box;
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+  }
+
+  &[data-active="true"]::before {
+    background-image: linear-gradient(90deg, var(--glow-stops));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before {
+      background-image: linear-gradient(90deg, var(--glow-stops));
+    }
+  }
+}
+
+/* A card row that runs edge to edge. The first card lines up with the 72rem page column. */
+@utility card-row-inset {
+  --row-inset: 1rem;
+  padding-inline: max(var(--row-inset), calc((100% - 72rem) / 2 + var(--row-inset)));
+  scroll-padding-inline: max(var(--row-inset), calc((100% - 72rem) / 2 + var(--row-inset)));
+
+  @media (min-width: 40rem) {
+    --row-inset: 2rem;
+  }
+}
+
+/* One, two, or three cards fit the row. The 1.5rem gap is subtracted first. */
+@utility card-row-item {
+  flex-basis: 100%;
+
+  @media (min-width: 48rem) {
+    flex-basis: calc((100% - 1.5rem) / 2);
+  }
+
+  @media (min-width: 64rem) {
+    flex-basis: calc((100% - 3rem) / 3);
+  }
+}
+
+@utility star-field {
+  background-image:
+    radial-gradient(circle at 18% 27%, currentColor 0.7px, transparent 1.3px),
+    radial-gradient(circle at 73% 61%, currentColor 0.6px, transparent 1.2px),
+    radial-gradient(circle at 41% 83%, currentColor 1px, transparent 1.6px),
+    radial-gradient(circle at 87% 12%, currentColor 0.5px, transparent 1.1px),
+    radial-gradient(circle at 32% 49%, currentColor 0.6px, transparent 1.2px),
+    radial-gradient(circle at 64% 91%, currentColor 0.5px, transparent 1.1px),
+    radial-gradient(circle at 9% 68%, currentColor 0.8px, transparent 1.4px),
+    radial-gradient(circle at 55% 8%, currentColor 0.5px, transparent 1.1px),
+    radial-gradient(circle at 92% 77%, currentColor 1.2px, transparent 1.8px);
+  background-size:
+    131px 131px,
+    197px 197px,
+    283px 283px,
+    109px 109px,
+    79px 79px,
+    151px 151px,
+    233px 233px,
+    89px 89px,
+    349px 349px;
+  mask-image: radial-gradient(ellipse 90% 85% at 65% 50%, black 30%, transparent);
+}
+
+/* A copy of a headline that glitches in short steps. Add glitch-mirror to flip its direction. */
+@utility glitch-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  animation: glitch-idle 7s steps(1, end) infinite;
+
+  [data-glitch] & {
+    animation: glitch-burst 900ms steps(1, end);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@utility glitch-mirror {
+  --glitch-direction: -1;
+}
+
+@keyframes glitch-idle {
+  0%,
+  95% {
+    opacity: 0;
+  }
+  95.5% {
+    opacity: 0.8;
+    clip-path: inset(20% 0 60% 0);
+    translate: calc(var(--glitch-direction, 1) * 3px) 0;
+  }
+  96.5% {
+    clip-path: inset(55% 0 30% 0);
+    translate: calc(var(--glitch-direction, 1) * -2px) 0;
+  }
+  97.5% {
+    clip-path: inset(8% 0 82% 0);
+    translate: calc(var(--glitch-direction, 1) * 4px) 0;
+  }
+  98.5%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes glitch-burst {
+  0% {
+    opacity: 1;
+    clip-path: inset(10% 0 70% 0);
+    translate: calc(var(--glitch-direction, 1) * 8px) 0;
+  }
+  10% {
+    clip-path: inset(45% 0 35% 0);
+    translate: calc(var(--glitch-direction, 1) * -6px) 0;
+  }
+  20% {
+    clip-path: inset(75% 0 5% 0);
+    translate: calc(var(--glitch-direction, 1) * 10px) 0;
+  }
+  30% {
+    clip-path: inset(0 0 85% 0);
+    translate: calc(var(--glitch-direction, 1) * -4px) 0;
+  }
+  40% {
+    clip-path: inset(30% 0 40% 0);
+    translate: calc(var(--glitch-direction, 1) * 12px) 0;
+  }
+  50% {
+    clip-path: inset(60% 0 20% 0);
+    translate: calc(var(--glitch-direction, 1) * -9px) 0;
+  }
+  60% {
+    clip-path: inset(15% 0 60% 0);
+    translate: calc(var(--glitch-direction, 1) * 5px) 0;
+  }
+  70% {
+    clip-path: inset(85% 0 0 0);
+    translate: calc(var(--glitch-direction, 1) * -7px) 0;
+  }
+  80% {
+    clip-path: inset(40% 0 50% 0);
+    translate: calc(var(--glitch-direction, 1) * 3px) 0;
+  }
+  90%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@utility caption-blur {
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  mask-image: linear-gradient(to top, black 35%, transparent);
+
+  @media (prefers-reduced-transparency: reduce) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 @layer base {

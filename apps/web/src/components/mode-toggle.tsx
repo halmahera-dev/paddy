@@ -2,13 +2,13 @@
 
 import { MoonFastWindIcon, Sun03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Button } from "@paddy-field/ui/components/button";
+import { Button } from "@hollou/ui/components/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@paddy-field/ui/components/dropdown-menu";
+} from "@hollou/ui/components/dropdown-menu";
 import { useTheme } from "next-themes";
 import React from "react";
 
@@ -16,12 +16,12 @@ export function ModeToggle() {
   const { theme, setTheme } = useTheme();
 
   React.useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "D") {
         event.preventDefault();
         setTheme(theme === "dark" ? "light" : "dark");
       }
-    };
+    }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);

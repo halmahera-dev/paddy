@@ -125,12 +125,12 @@ function useResolvedTheme(themeProp?: "light" | "dark"): Theme {
 
     // Also watch for system preference changes
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleSystemChange = (e: MediaQueryListEvent) => {
+    function handleSystemChange(e: MediaQueryListEvent) {
       // Only use system preference if no document class is set
       if (!getDocumentTheme()) {
         setDetectedTheme(e.matches ? "dark" : "light");
       }
-    };
+    }
     mediaQuery.addEventListener("change", handleSystemChange);
 
     return () => {
@@ -304,17 +304,19 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
       ...viewport,
     });
 
-    const styleLoadHandler = () => {
+    function styleLoadHandler() {
       styleSwapInFlightRef.current = false;
       setIsStyleLoaded(true);
-    };
-    const loadHandler = () => setIsLoaded(true);
+    }
+    function loadHandler() {
+      return setIsLoaded(true);
+    }
 
     // Viewport change handler - skip if triggered by internal update
-    const handleMove = () => {
+    function handleMove() {
       if (internalUpdateRef.current) return;
       onViewportChangeRef.current?.(getViewport(map));
-    };
+    }
 
     map.on("load", loadHandler);
     map.on("style.load", styleLoadHandler);
@@ -491,11 +493,15 @@ function MapMarker({
       draggable,
     }).setLngLat([longitude, latitude]);
 
-    const handleClick = (e: MouseEvent) => callbacksRef.current.onClick?.(e);
-    const handleMouseEnter = (e: MouseEvent) =>
-      callbacksRef.current.onMouseEnter?.(e);
-    const handleMouseLeave = (e: MouseEvent) =>
-      callbacksRef.current.onMouseLeave?.(e);
+    function handleClick(e: MouseEvent) {
+      return callbacksRef.current.onClick?.(e);
+    }
+    function handleMouseEnter(e: MouseEvent) {
+      return callbacksRef.current.onMouseEnter?.(e);
+    }
+    function handleMouseLeave(e: MouseEvent) {
+      return callbacksRef.current.onMouseLeave?.(e);
+    }
 
     markerInstance.getElement()?.addEventListener("click", handleClick);
     markerInstance
@@ -505,18 +511,18 @@ function MapMarker({
       .getElement()
       ?.addEventListener("mouseleave", handleMouseLeave);
 
-    const handleDragStart = () => {
+    function handleDragStart() {
       const lngLat = markerInstance.getLngLat();
       callbacksRef.current.onDragStart?.({ lng: lngLat.lng, lat: lngLat.lat });
-    };
-    const handleDrag = () => {
+    }
+    function handleDrag() {
       const lngLat = markerInstance.getLngLat();
       callbacksRef.current.onDrag?.({ lng: lngLat.lng, lat: lngLat.lat });
-    };
-    const handleDragEnd = () => {
+    }
+    function handleDragEnd() {
       const lngLat = markerInstance.getLngLat();
       callbacksRef.current.onDragEnd?.({ lng: lngLat.lng, lat: lngLat.lat });
-    };
+    }
 
     markerInstance.on("dragstart", handleDragStart);
     markerInstance.on("drag", handleDrag);
@@ -676,7 +682,9 @@ function MarkerPopup({
     }
   }, [popup, offset, maxWidth]);
 
-  const handleClose = () => popup.remove();
+  function handleClose() {
+    return popup.remove();
+  }
 
   return createPortal(
     <div
@@ -726,10 +734,13 @@ function MarkerTooltip({
 
     tooltip.setDOMContent(container);
 
-    const handleMouseEnter = () => {
+    function handleMouseEnter() {
+      if (!map) return;
       tooltip.setLngLat(marker.getLngLat()).addTo(map);
-    };
-    const handleMouseLeave = () => tooltip.remove();
+    }
+    function handleMouseLeave() {
+      return tooltip.remove();
+    }
 
     marker.getElement()?.addEventListener("mouseenter", handleMouseEnter);
     marker.getElement()?.addEventListener("mouseleave", handleMouseLeave);
@@ -978,11 +989,12 @@ function CompassButton({ onClick }: { onClick: () => void }) {
 
     const compass = compassRef.current;
 
-    const updateRotation = () => {
+    function updateRotation() {
+      if (!map) return;
       const bearing = map.getBearing();
       const pitch = map.getPitch();
       compass.style.transform = `rotateX(${pitch}deg) rotateZ(${-bearing}deg)`;
-    };
+    }
 
     map.on("rotate", updateRotation);
     map.on("pitch", updateRotation);
@@ -1057,7 +1069,9 @@ function MapPopup({
   useEffect(() => {
     if (!map) return;
 
-    const onCloseProp = () => onCloseRef.current?.();
+    function onCloseProp() {
+      return onCloseRef.current?.();
+    }
 
     popup.on("close", onCloseProp);
 
@@ -1085,9 +1099,9 @@ function MapPopup({
     }
   }, [popup, longitude, latitude, offset, maxWidth]);
 
-  const handleClose = () => {
+  function handleClose() {
     popup.remove();
-  };
+  }
 
   return createPortal(
     <div
@@ -1457,7 +1471,8 @@ function MapRoute({
     // Which layers exist, ignoring their order.
     let lastLayerSet = "";
 
-    const raise = () => {
+    function raise() {
+      if (!map) return;
       const order = map.getLayersOrder();
 
       // React only when layers are added or removed, never to a reorder.
@@ -1479,7 +1494,7 @@ function MapRoute({
       if (owned.every((entry, index) => top[index] === entry)) return;
 
       for (const entry of owned) map.moveLayer(entry, before);
-    };
+    }
 
     raise();
     map.on("styledata", raise);
@@ -1493,17 +1508,19 @@ function MapRoute({
   useEffect(() => {
     if (!isLoaded || !map || !interactive) return;
 
-    const handleClick = () => {
+    function handleClick() {
       onClick?.();
-    };
-    const handleMouseEnter = () => {
+    }
+    function handleMouseEnter() {
+      if (!map) return;
       map.getCanvas().style.cursor = "pointer";
       onMouseEnter?.();
-    };
-    const handleMouseLeave = () => {
+    }
+    function handleMouseLeave() {
+      if (!map) return;
       map.getCanvas().style.cursor = "";
       onMouseLeave?.();
-    };
+    }
 
     map.on("click", layerId, handleClick);
     map.on("mouseenter", layerId, handleMouseEnter);
@@ -1935,8 +1952,8 @@ function MapGeoJSON<
 
     let hoveredId: string | number | null = null;
 
-    const setHover = (next: string | number | null) => {
-      if (next === hoveredId) return;
+    function setHover(next: string | number | null) {
+      if (!map || next === hoveredId) return;
       const sourceExists = !!map.getSource(sourceId);
       if (hoveredId != null && sourceExists) {
         map.setFeatureState(
@@ -1948,9 +1965,10 @@ function MapGeoJSON<
       if (next != null && sourceExists) {
         map.setFeatureState({ source: sourceId, id: next }, { hover: true });
       }
-    };
+    }
 
-    const handleMouseMove = (e: MapLibreGL.MapLayerMouseEvent) => {
+    function handleMouseMove(e: MapLibreGL.MapLayerMouseEvent) {
+      if (!map) return;
       const feature = e.features?.[0];
       if (!feature) return;
       map.getCanvas().style.cursor = "pointer";
@@ -1964,15 +1982,16 @@ function MapGeoJSON<
         latitude: e.lngLat.lat,
         originalEvent: e,
       });
-    };
+    }
 
-    const handleMouseLeave = () => {
+    function handleMouseLeave() {
+      if (!map) return;
       setHover(null);
       map.getCanvas().style.cursor = "";
       latestRef.current.onHover?.(null);
-    };
+    }
 
-    const handleClick = (e: MapLibreGL.MapLayerMouseEvent) => {
+    function handleClick(e: MapLibreGL.MapLayerMouseEvent) {
       const feature = e.features?.[0];
       if (!feature) return;
       latestRef.current.onClick?.({
@@ -1981,7 +2000,7 @@ function MapGeoJSON<
         latitude: e.lngLat.lat,
         originalEvent: e,
       });
-    };
+    }
 
     map.on("mousemove", fillLayerId, handleMouseMove);
     map.on("mouseleave", fillLayerId, handleMouseLeave);
@@ -2268,8 +2287,8 @@ function MapArc<T extends MapArcDatum = MapArcDatum>({
 
     let hoveredId: string | number | null = null;
 
-    const setHover = (next: string | number | null) => {
-      if (next === hoveredId) return;
+    function setHover(next: string | number | null) {
+      if (!map || next === hoveredId) return;
       const sourceExists = !!map.getSource(sourceId);
       if (hoveredId != null && sourceExists) {
         map.setFeatureState(
@@ -2281,16 +2300,18 @@ function MapArc<T extends MapArcDatum = MapArcDatum>({
       if (next != null && sourceExists) {
         map.setFeatureState({ source: sourceId, id: next }, { hover: true });
       }
-    };
+    }
 
-    const findArc = (featureId: string | number | undefined) =>
-      featureId == null
+    function findArc(featureId: string | number | undefined) {
+      return featureId == null
         ? undefined
         : latestRef.current.data.find(
             (arc) => String(arc.id) === String(featureId),
           );
+    }
 
-    const handleMouseMove = (e: MapLibreGL.MapLayerMouseEvent) => {
+    function handleMouseMove(e: MapLibreGL.MapLayerMouseEvent) {
+      if (!map) return;
       const featureId = e.features?.[0]?.id as string | number | undefined;
       if (featureId == null || featureId === hoveredId) return;
 
@@ -2306,15 +2327,16 @@ function MapArc<T extends MapArcDatum = MapArcDatum>({
           originalEvent: e,
         });
       }
-    };
+    }
 
-    const handleMouseLeave = () => {
+    function handleMouseLeave() {
+      if (!map) return;
       setHover(null);
       map.getCanvas().style.cursor = "";
       latestRef.current.onHover?.(null);
-    };
+    }
 
-    const handleClick = (e: MapLibreGL.MapLayerMouseEvent) => {
+    function handleClick(e: MapLibreGL.MapLayerMouseEvent) {
       const arc = findArc(e.features?.[0]?.id as string | number | undefined);
       if (!arc) return;
       latestRef.current.onClick?.({
@@ -2323,7 +2345,7 @@ function MapArc<T extends MapArcDatum = MapArcDatum>({
         latitude: e.lngLat.lat,
         originalEvent: e,
       });
-    };
+    }
 
     map.on("mousemove", hitLayerId, handleMouseMove);
     map.on("mouseleave", hitLayerId, handleMouseLeave);
@@ -2552,12 +2574,14 @@ function MapClusterLayer<
     if (!isLoaded || !map) return;
 
     // Cluster click handler - zoom into cluster
-    const handleClusterClick = async (
+    async function handleClusterClick(
       e: MapLibreGL.MapMouseEvent & {
         features?: MapLibreGL.MapGeoJSONFeature[];
       },
-    ) => {
-      const features = map.queryRenderedFeatures(e.point, {
+    ) {
+      if (!map) return;
+      const activeMap = map;
+      const features = activeMap.queryRenderedFeatures(e.point, {
         layers: [clusterLayerId],
       });
       if (!features.length) return;
@@ -2574,21 +2598,21 @@ function MapClusterLayer<
         onClusterClick(clusterId, coordinates, pointCount);
       } else {
         // Default behavior: zoom to cluster expansion zoom
-        const source = map.getSource(sourceId) as MapLibreGL.GeoJSONSource;
+        const source = activeMap.getSource(sourceId) as MapLibreGL.GeoJSONSource;
         const zoom = await source.getClusterExpansionZoom(clusterId);
-        map.easeTo({
+        activeMap.easeTo({
           center: coordinates,
           zoom,
         });
       }
-    };
+    }
 
     // Unclustered point click handler
-    const handlePointClick = (
+    function handlePointClick(
       e: MapLibreGL.MapMouseEvent & {
         features?: MapLibreGL.MapGeoJSONFeature[];
       },
-    ) => {
+    ) {
       if (!onPointClick || !e.features?.length) return;
 
       const feature = e.features[0];
@@ -2605,23 +2629,25 @@ function MapClusterLayer<
         feature as unknown as GeoJSON.Feature<GeoJSON.Point, P>,
         coordinates,
       );
-    };
+    }
 
     // Cursor style handlers
-    const handleMouseEnterCluster = () => {
+    function handleMouseEnterCluster() {
+      if (!map) return;
       map.getCanvas().style.cursor = "pointer";
-    };
-    const handleMouseLeaveCluster = () => {
+    }
+    function handleMouseLeaveCluster() {
+      if (!map) return;
       map.getCanvas().style.cursor = "";
-    };
-    const handleMouseEnterPoint = () => {
-      if (onPointClick) {
-        map.getCanvas().style.cursor = "pointer";
-      }
-    };
-    const handleMouseLeavePoint = () => {
+    }
+    function handleMouseEnterPoint() {
+      if (!map || !onPointClick) return;
+      map.getCanvas().style.cursor = "pointer";
+    }
+    function handleMouseLeavePoint() {
+      if (!map) return;
       map.getCanvas().style.cursor = "";
-    };
+    }
 
     map.on("click", clusterLayerId, handleClusterClick);
     map.on("click", unclusteredLayerId, handlePointClick);

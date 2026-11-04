@@ -207,7 +207,7 @@ export function FoundationsSection() {
           ))}
         </div>
         <p className="max-w-prose text-sm leading-relaxed text-foreground">
-          <strong className="font-medium">Your fields, in plain words.</strong> One Field reads
+          <strong className="font-medium">Your fields, in plain words.</strong> Hollou reads
           satellite and weather data and turns it into a short plan for each plot. Open{" "}
           <a href="#recipes" className="font-medium text-brand-text underline underline-offset-4">
             the field card

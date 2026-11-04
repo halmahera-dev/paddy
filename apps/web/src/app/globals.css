@@ -1,6 +1,17 @@
-@import "@paddy-field/ui/globals.css";
+@import "@hollou/ui/globals.css";
 
 @custom-variant dark (&:is(.dark *));
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has([data-page="landing"]) {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Landing keeps the warm cream paper. The rest of the app stays near-white in light. */
+html:has([data-page="landing"]):not(.dark) {
+  --background: #f2f1ed;
+}
 
 /* Lets the /design-system page pin interaction states with data-preview="hover focus active". */
 @custom-variant hover {
@@ -16,52 +27,7 @@
 @custom-variant focus-visible (&:focus-visible, &[data-preview~="focus"]);
 @custom-variant active (&:active, &[data-preview~="active"]);
 
-[data-sidebar="sidebar"]:has([data-maps-sidebar]) {
-  background: var(--sidebar);
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklch, var(--background) 60%, transparent),
-    0 8px 24px color-mix(in oklch, var(--foreground) 10%, transparent);
-}
-
-@supports (backdrop-filter: blur(24px)) or (-webkit-backdrop-filter: blur(24px)) {
-  [data-sidebar="sidebar"]:has([data-maps-sidebar]) {
-    background: color-mix(in oklch, var(--sidebar) 72%, transparent);
-    -webkit-backdrop-filter: blur(24px) saturate(150%);
-    backdrop-filter: blur(24px) saturate(150%);
-  }
-}
-
-@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  [data-sidebar="sidebar"]:has([data-maps-sidebar]) {
-    background: var(--sidebar);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-}
-
-@media (prefers-contrast: more) {
-  [data-sidebar="sidebar"]:has([data-maps-sidebar]) {
-    outline: 1px solid var(--sidebar-foreground);
-    outline-offset: -1px;
-  }
-}
-
 @layer base {
-  .overview-art {
-    background-image:
-      linear-gradient(
-        to bottom,
-        color-mix(in oklch, var(--background) 35%, transparent),
-        var(--background) 30rem
-      ),
-      url("/daisies.webp");
-    background-size:
-      100% 100%,
-      100% auto;
-    background-position: top center;
-    background-repeat: no-repeat;
-    background-attachment: local;
-  }
   .maplibregl-popup-content {
     @apply rounded-none! bg-transparent! p-0! shadow-none!;
   }
@@ -80,96 +46,47 @@
   .maplibregl-ctrl-attrib-button {
     @apply bg-transparent! dark:invert;
   }
-}
-
-@keyframes briefing-rise {
-  from {
-    opacity: 0;
-    translate: 0 16px;
-    filter: blur(6px);
+  :root {
+    --dither-ink: var(--primary);
+    --dither-paper: var(--background);
+    --dither-cell: 3px;
+    --dither-color-blue: oklch(0.56 0.18 248);
+    --dither-color-purple: oklch(0.53 0.22 302);
+    --dither-color-green: oklch(0.58 0.15 152);
+    --dither-color-pink: oklch(0.58 0.21 355);
+    --dither-color-orange: oklch(0.64 0.17 52);
+    --dither-color-red: oklch(0.55 0.21 27);
+    --dither-color-grey: oklch(0.55 0 0);
+    --dither-bloom: 0.6;
   }
-}
-
-@keyframes briefing-drift {
-  to {
-    scale: 1.08;
-    translate: 0 6%;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .briefing-rise {
-    animation: briefing-rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-  .briefing-rise:nth-child(2) {
-    animation-delay: 80ms;
-  }
-  .briefing-rise:nth-child(3) {
-    animation-delay: 160ms;
-  }
-  .briefing-rise:nth-child(4) {
-    animation-delay: 240ms;
-  }
-
-  @supports (animation-timeline: view()) {
-    .briefing-reveal {
-      animation: briefing-rise linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 60%;
-    }
-
-    .briefing-hero-image {
-      animation: briefing-drift linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 100vh;
-    }
+  .dark {
+    --dither-ink: var(--primary);
+    --dither-paper: var(--background);
+    --dither-cell: 3px;
+    --dither-color-blue: oklch(0.72 0.14 240);
+    --dither-color-purple: oklch(0.7 0.18 304);
+    --dither-color-green: oklch(0.78 0.17 152);
+    --dither-color-pink: oklch(0.74 0.17 354);
+    --dither-color-orange: oklch(0.79 0.15 62);
+    --dither-color-red: oklch(0.68 0.2 25);
+    --dither-color-grey: oklch(0.66 0 0);
+    --dither-bloom: 1;
   }
 }
 
 @theme inline {
-  --color-cream: oklch(0.97 0.025 90);
-  --color-deep-teal: oklch(0.27 0.05 200);
+  --color-dither-ink: var(--dither-ink);
+  --color-dither-paper: var(--dither-paper);
+  --color-dither-blue: var(--dither-color-blue);
+  --color-dither-purple: var(--dither-color-purple);
+  --color-dither-green: var(--dither-color-green);
+  --color-dither-pink: var(--dither-color-pink);
+  --color-dither-orange: var(--dither-color-orange);
+  --color-dither-red: var(--dither-color-red);
+  --color-dither-grey: var(--dither-color-grey);
 }
 
-/* Briefing hero only. Bigger than the shared type-display. */
-@utility type-display-xl {
-  font-family: var(--font-heading);
-  font-size: clamp(3rem, 9vw, 7rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.045em;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html:has([data-page="briefing"]) {
-    scroll-behavior: smooth;
-  }
-}
-
-@keyframes briefing-progress {
-  from {
-    scale: 0 1;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .briefing-progress {
-    animation: briefing-progress 8s linear both;
-  }
-  [data-paused="true"] .briefing-progress {
-    animation-play-state: paused;
-  }
-}
-
-.briefing-caption-blur {
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-  mask-image: linear-gradient(to top, black 35%, transparent);
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .briefing-caption-blur {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
+/* Matches the cyclic colormap of the NISAR GUNW browse images. */
+.phase-cycle-legend {
+  background: linear-gradient(to right, #2f1436, #4b3a9c, #8fb7dd, #f2eeec, #d98b5f, #8a2f3d, #2f1436);
 }

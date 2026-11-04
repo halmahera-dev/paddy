@@ -1,5 +1,5 @@
 {
-  "name": "@paddy-field/db",
+  "name": "@hollou/db",
   "type": "module",
   "exports": {
     ".": {
@@ -18,13 +18,13 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
-    "@paddy-field/env": "workspace:*",
+    "@hollou/env": "workspace:*",
     "dotenv": "catalog:",
     "drizzle-orm": "^0.45.2",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@paddy-field/config": "workspace:*",
+    "@hollou/config": "workspace:*",
     "drizzle-kit": "^0.31.10",
     "typescript": "catalog:"
   }

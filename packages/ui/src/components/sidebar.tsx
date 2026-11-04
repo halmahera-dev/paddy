@@ -4,20 +4,20 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { SidebarLeftIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Button } from "@paddy-field/ui/components/button";
-import { Input } from "@paddy-field/ui/components/input";
-import { Separator } from "@paddy-field/ui/components/separator";
+import { Button } from "@hollou/ui/components/button";
+import { Input } from "@hollou/ui/components/input";
+import { Separator } from "@hollou/ui/components/separator";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@paddy-field/ui/components/sheet";
-import { Skeleton } from "@paddy-field/ui/components/skeleton";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@paddy-field/ui/components/tooltip";
-import { useIsMobile } from "@paddy-field/ui/hooks/use-mobile";
-import { cn } from "@paddy-field/ui/lib/utils";
+} from "@hollou/ui/components/sheet";
+import { Skeleton } from "@hollou/ui/components/skeleton";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@hollou/ui/components/tooltip";
+import { useIsMobile } from "@hollou/ui/hooks/use-mobile";
+import { cn } from "@hollou/ui/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 
@@ -91,12 +91,12 @@ function SidebarProvider({
 
   // Adds a keyboard shortcut to toggle the sidebar.
   React.useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    function handleKeyDown(event: KeyboardEvent) {
       if (event.key === SIDEBAR_KEYBOARD_SHORTCUT && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         toggleSidebar();
       }
-    };
+    }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);

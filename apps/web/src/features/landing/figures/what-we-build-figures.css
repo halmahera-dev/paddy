@@ -1,0 +1,124 @@
+.wwb-rose {
+  --hue: oklch(72% 0.2 15);
+  --hue-end: oklch(58% 0.22 30);
+}
+
+.wwb-blue {
+  --hue: oklch(68% 0.18 255);
+  --hue-end: oklch(52% 0.2 280);
+}
+
+.wwb-amber {
+  --hue: oklch(83% 0.17 85);
+  --hue-end: oklch(67% 0.19 50);
+}
+
+.wwb-green {
+  --hue: oklch(78% 0.18 150);
+  --hue-end: oklch(60% 0.15 180);
+}
+
+.wwb-violet {
+  --hue: oklch(68% 0.2 305);
+  --hue-end: oklch(54% 0.24 335);
+}
+
+.wwb-cyan {
+  --hue: oklch(80% 0.12 205);
+  --hue-end: oklch(62% 0.14 230);
+}
+
+/* Body: tinted tones. Gradients fill only the top faces. */
+.wwb-object {
+  --anatomy-face: color-mix(in oklab, var(--hue) 16%, white);
+  --anatomy-shade-0: color-mix(in oklab, var(--hue-end) 38%, white);
+  --anatomy-shade-1: color-mix(in oklab, var(--hue-end) 30%, white);
+  --anatomy-shade-2: color-mix(in oklab, var(--hue-end) 22%, white);
+  --anatomy-shade-3: color-mix(in oklab, var(--hue-end) 14%, white);
+  --anatomy-top: color-mix(in oklab, var(--hue) 20%, white);
+}
+
+.dark .wwb-object {
+  --anatomy-face: color-mix(in oklab, var(--hue) 30%, var(--card));
+  --anatomy-shade-0: color-mix(in oklab, var(--hue-end) 12%, var(--card));
+  --anatomy-shade-1: color-mix(in oklab, var(--hue-end) 18%, var(--card));
+  --anatomy-shade-2: color-mix(in oklab, var(--hue-end) 24%, var(--card));
+  --anatomy-shade-3: color-mix(in oklab, var(--hue-end) 30%, var(--card));
+  --anatomy-top: color-mix(in oklab, var(--hue) 40%, var(--card));
+}
+
+.wwb-object .iso-fill {
+  fill: var(--anatomy-face);
+}
+
+.wwb-object .iso-top {
+  fill: var(--top-fill);
+}
+
+/* Glow: the one vivid part. Same in both themes. */
+.wwb-glow {
+  --anatomy-face: var(--hue);
+  --anatomy-shade-0: color-mix(in oklab, var(--hue-end) 80%, black);
+  --anatomy-shade-1: var(--hue-end);
+  --anatomy-shade-2: color-mix(in oklab, var(--hue-end) 50%, var(--hue));
+  --anatomy-shade-3: var(--hue);
+  --anatomy-top: var(--hue);
+}
+
+.wwb-glow .iso-top {
+  fill: var(--glow-fill);
+}
+
+.wwb-glow .iso-edge {
+  stroke: color-mix(in oklab, var(--hue-end) 70%, black);
+}
+
+.dark .wwb-glow .iso-edge {
+  stroke: color-mix(in oklab, var(--hue) 55%, white);
+}
+
+.wwb-top-start {
+  stop-color: color-mix(in oklab, var(--hue) 12%, white);
+}
+
+.wwb-top-end {
+  stop-color: color-mix(in oklab, var(--hue) 38%, white);
+}
+
+.dark .wwb-top-start {
+  stop-color: color-mix(in oklab, var(--hue) 52%, var(--card));
+}
+
+.dark .wwb-top-end {
+  stop-color: color-mix(in oklab, var(--hue-end) 38%, var(--card));
+}
+
+.wwb-glow-hot {
+  stop-color: color-mix(in oklab, var(--hue) 40%, white);
+}
+
+.wwb-glow-body {
+  stop-color: var(--hue);
+}
+
+.wwb-glow-edge {
+  stop-color: var(--hue-end);
+}
+
+.wwb-pool {
+  stroke: none;
+}
+
+.wwb-pool-core {
+  stop-color: var(--hue);
+  stop-opacity: 0.4;
+}
+
+.wwb-pool-rim {
+  stop-color: var(--hue-end);
+  stop-opacity: 0;
+}
+
+.dark .wwb-pool-core {
+  stop-opacity: 0.5;
+}

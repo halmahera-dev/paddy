@@ -18,8 +18,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@paddy-field/ui/components/dropdown-menu";
-import { cn } from "@paddy-field/ui/lib/utils";
+} from "@hollou/ui/components/dropdown-menu";
+import { cn } from "@hollou/ui/lib/utils";
 import * as React from "react";
 
 function Menubar({ className, ...props }: MenubarPrimitive.Props) {
