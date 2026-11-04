@@ -31,7 +31,7 @@ export function HowToStart({
           as="ul"
           className="mt-12 grid divide-y rounded-4xl shadow-card md:grid-cols-3 md:divide-x md:divide-y-0"
         >
-          {t.howToStart.offers.map(function renderOffer(offer, index) {
+          {t.howToStart.offers.map((offer, index) => {
             const Figure = figures[index] ?? OrreryFigure;
             const isFeatured = "isFeatured" in offer && offer.isFeatured;
             return (

@@ -6,7 +6,7 @@ import { requireSession } from "@/features/user/user-queries";
 import { getDictionary, toLocale } from "@/lib/i18n";
 
 export default function DeskLayout({ children, drawer, params }: LayoutProps<"/[locale]">) {
-  return params.then(async function renderDesk({ locale: rawLocale }) {
+  return params.then(async ({ locale: rawLocale }) => {
     const locale = toLocale(rawLocale);
     const session = await requireSession(locale);
     const t = getDictionary(locale);

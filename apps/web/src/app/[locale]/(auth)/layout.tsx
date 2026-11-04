@@ -6,7 +6,7 @@ import { redirectIfAuthenticated } from "@/features/user/user-queries";
 import { toLocale } from "@/lib/i18n";
 
 export default function AuthLayout({ children, params }: LayoutProps<"/[locale]">) {
-  return params.then(async function renderAuthLayout({ locale }) {
+  return params.then(async ({ locale }) => {
     await redirectIfAuthenticated(toLocale(locale));
 
     return (

@@ -82,12 +82,12 @@ export function useLoop(tick: (dt: number, calm: boolean) => boolean, running: b
   const kick = React.useCallback(() => {
     if (frame.current) return;
     last.current = 0;
-    const step = (now: number) => {
+    function step(now: number) {
       const dt = last.current ? Math.min((now - last.current) / 1000, LONGEST_FRAME) : 1 / 60;
       last.current = now;
       const more = latest.current(dt, asksForStillness());
       frame.current = more ? requestAnimationFrame(step) : 0;
-    };
+    }
     frame.current = requestAnimationFrame(step);
   }, []);
   React.useEffect(() => {

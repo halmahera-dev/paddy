@@ -5,41 +5,43 @@ import type { RefObject } from "react";
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
-const subscribeToReducedMotion = (onChange: () => void) => {
+function subscribeToReducedMotion(onChange: () => void) {
   const query = window.matchMedia(REDUCED_MOTION_QUERY);
   query.addEventListener("change", onChange);
   return () => query.removeEventListener("change", onChange);
-};
+}
 
 /** Whether the visitor asked for reduced motion. `false` on the server. */
-export const usePrefersReducedMotion = (): boolean =>
-  useSyncExternalStore(
+export function usePrefersReducedMotion(): boolean {
+  return useSyncExternalStore(
     subscribeToReducedMotion,
     () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
     () => false
   );
+}
 
-const subscribeToVisibility = (onChange: () => void) => {
+function subscribeToVisibility(onChange: () => void) {
   document.addEventListener("visibilitychange", onChange);
   return () => document.removeEventListener("visibilitychange", onChange);
-};
+}
 
 /** Whether the tab is visible. `true` on the server. */
-export const useDocumentVisible = (): boolean =>
-  useSyncExternalStore(
+export function useDocumentVisible(): boolean {
+  return useSyncExternalStore(
     subscribeToVisibility,
     () => document.visibilityState === "visible",
     () => true
   );
+}
 
 /**
  * Whether the element is on screen, or within `rootMargin` of it.
  * `false` until the first observation.
  */
-export const useInView = (
+export function useInView(
   ref: RefObject<Element | null>,
   { rootMargin = "120px" }: { rootMargin?: string } = {}
-): boolean => {
+): boolean {
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export const useInView = (
   }, [ref, rootMargin]);
 
   return inView;
-};
+}
 
 /**
  * `running`: drawing every frame. `paused`: offscreen or the tab is hidden.
@@ -95,10 +97,10 @@ const MAX_DELTA = 0.1;
  * `enabled: false`) it calls `callback` once with `stillTime` instead.
  * Returns the loop state, which changes rarely, never per frame.
  */
-export const useFrameLoop = (
+export function useFrameLoop(
   callback: FrameLoopCallback,
   { target, enabled = true, fps = 30, stillTime = 0 }: FrameLoopOptions = {}
-): FrameLoopState => {
+): FrameLoopState {
   const callbackRef = useRef(callback);
   useEffect(() => {
     callbackRef.current = callback;
@@ -125,7 +127,7 @@ export const useFrameLoop = (
     let frame = 0;
     let lastTick = performance.now();
     let lastDraw = -Infinity;
-    const tick = (now: number) => {
+    function tick(now: number) {
       frame = requestAnimationFrame(tick);
       const delta = Math.min((now - lastTick) / 1000, MAX_DELTA);
       lastTick = now;
@@ -136,7 +138,7 @@ export const useFrameLoop = (
         lastDraw = now;
         callbackRef.current(timeRef.current, sinceDraw);
       }
-    };
+    }
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
   }, [isStatic, isRunning, fps, stillTime]);
@@ -145,4 +147,4 @@ export const useFrameLoop = (
     return "static";
   }
   return isRunning ? "running" : "paused";
-};
+}

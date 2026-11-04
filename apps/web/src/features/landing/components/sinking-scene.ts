@@ -129,7 +129,7 @@ function segments(pairs: [Point3, Point3][]) {
 
 const P_FLATTEN = 0.5;
 
-const XS = Array.from({ length: (X1 - X0) / 5 + 1 }, function xAt(_, index) {
+const XS = Array.from({ length: (X1 - X0) / 5 + 1 }, (_, index) => {
   return X0 + index * 5;
 });
 
@@ -206,12 +206,14 @@ function inflowLines(water: Surface) {
 function houseDetails(house: { x: number; y: number }) {
   const front = house.y + 11;
   const side = house.x + 13;
-  const pane = (x: number, z: number): [number, number, number][] => [
-    [x - 3, front, z],
-    [x + 3, front, z],
-    [x + 3, front, z + 6],
-    [x - 3, front, z + 6],
-  ];
+  function pane(x: number, z: number): [number, number, number][] {
+    return [
+      [x - 3, front, z],
+      [x + 3, front, z],
+      [x + 3, front, z + 6],
+      [x - 3, front, z + 6],
+    ];
+  }
   const sidePane = [
     [side, house.y - 5, TOP + 7],
     [side, house.y + 5, TOP + 7],
@@ -291,14 +293,26 @@ const STAFF_TICKS = (() => {
 
 export function sceneAt(level: number) {
   const sink = MAX_SINK * level;
-  const ground: Surface = (x) => TOP - sink * bowl(x);
-  const clay: Surface = (x) => CLAY_TOP - sink * 0.9 * bowl(x);
-  const water: Surface = (x) => AQUIFER_TOP - MAX_DRAWDOWN * level * bowl(x);
-  const aquiferTop: Surface = () => AQUIFER_TOP;
-  const baseTop: Surface = () => BASE_TOP;
-  const sea: Surface = () => SEA;
+  function ground(x: number) {
+    return TOP - sink * bowl(x);
+  }
+  function clay(x: number) {
+    return CLAY_TOP - sink * 0.9 * bowl(x);
+  }
+  function water(x: number) {
+    return AQUIFER_TOP - MAX_DRAWDOWN * level * bowl(x);
+  }
+  function aquiferTop(_x: number) {
+    return AQUIFER_TOP;
+  }
+  function baseTop(_x: number) {
+    return BASE_TOP;
+  }
+  function sea(_x: number) {
+    return SEA;
+  }
 
-  const houses = HOUSES.map(function houseAt(house) {
+  const houses = HOUSES.map((house) => {
     const slope = (ground(house.x + 1) - ground(house.x - 1)) / 2;
     const lean = -HOUSE_LEAN * Math.atan(slope) * (180 / Math.PI);
     const [cx, cy] = at(house.x, house.y, TOP);
@@ -322,7 +336,7 @@ export function sceneAt(level: number) {
   const streamFrom: Point3 = [PUMP[0], PUMP[1], TOP + 23 + pumpDrop];
   const streamTo: Point3 = [TANK[0], TANK[1], TOP + TANK_HEIGHT + 3];
   const stream = pathOf(
-    Array.from({ length: 16 }, function streamAt(_, index) {
+    Array.from({ length: 16 }, (_, index) => {
       const t = index / 15;
       return at(
         streamFrom[0] + (streamTo[0] - streamFrom[0]) * t,
@@ -412,7 +426,7 @@ export const PARTS = {
   ),
   depthRuler: DEPTH_RULER,
   sand: SAND,
-  houses: HOUSES.map(function houseParts(house) {
+  houses: HOUSES.map((house) => {
     const body: Plan = { x: house.x - 13, y: house.y - 11, w: 26, d: 22, r: 1.5 };
     const roof: Plan = { x: house.x - 15, y: house.y - 13, w: 30, d: 26, r: 1.5 };
     return {

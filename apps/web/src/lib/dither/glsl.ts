@@ -12,18 +12,18 @@ const TOKEN =
  * GLSL without directives, split at the top level with comments dropped:
  * declarations ending in `;` and definitions ending in their `}`.
  */
-const topLevelChunks = (source: string): string[] => {
+function topLevelChunks(source: string): string[] {
   const code = source.replaceAll(COMMENTS, " ");
   const chunks: string[] = [];
   let depth = 0;
   let start = 0;
-  const cut = (end: number) => {
+  function cut(end: number) {
     const chunk = code.slice(start, end).trim();
     start = end;
     if (chunk !== "") {
       chunks.push(chunk);
     }
-  };
+  }
   for (let index = 0; index < code.length; index += 1) {
     const char = code[index];
     if (char === "{") {
@@ -40,12 +40,15 @@ const topLevelChunks = (source: string): string[] => {
   }
   cut(code.length);
   return chunks;
-};
+}
 
-const tokens = (chunk: string) => chunk.match(TOKEN)?.join(" ") ?? "";
+function tokens(chunk: string) {
+  return chunk.match(TOKEN)?.join(" ") ?? "";
+}
 
-const hasDirective = (source: string) =>
-  DIRECTIVE.test(source.replaceAll(COMMENTS, " "));
+function hasDirective(source: string) {
+  return DIRECTIVE.test(source.replaceAll(COMMENTS, " "));
+}
 
 /**
  * `field` and `colorField` compile into one shader, where defining a helper
@@ -57,10 +60,10 @@ const hasDirective = (source: string) =>
  * statements are always kept, since each sets the precision for the code
  * after it.
  */
-export const withoutSharedHelpers = (
+export function withoutSharedHelpers(
   field: string,
   colorField: string
-): string => {
+): string {
   if (hasDirective(field) || hasDirective(colorField)) {
     return colorField;
   }
@@ -68,4 +71,4 @@ export const withoutSharedHelpers = (
   return topLevelChunks(colorField)
     .filter((chunk) => PRECISION.test(chunk) || !defined.has(tokens(chunk)))
     .join("\n");
-};
+}

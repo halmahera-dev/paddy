@@ -10,7 +10,7 @@ export function getDictionary(locale: Locale) {
 }
 
 export function fill(template: string, values: Record<string, string | number>) {
-  return template.replace(/\{(\w+)\}/g, function replaceKey(match, key: string) {
+  return template.replace(/\{(\w+)\}/g, (match, key: string) => {
     return key in values ? String(values[key]) : match;
   });
 }

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function MapPage({ params }: PageProps<"/[locale]/map">) {
-  return params.then(function renderMap({ locale }) {
+  return params.then(({ locale }) => {
     return (
       <Suspense fallback={<LandasMapSkeleton />}>
         <MapExperience locale={toLocale(locale)} />

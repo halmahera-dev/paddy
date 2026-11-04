@@ -31,14 +31,14 @@ function orbitPoint(degrees: number, z: number = PLANET.z): Point3 {
 }
 
 function orbitArc(from: number, to: number, count: number) {
-  return Array.from({ length: count + 1 }, function pointAt(_, index) {
+  return Array.from({ length: count + 1 }, (_, index) => {
     return orbitPoint(from + ((to - from) * index) / count);
   });
 }
 
 function arcPath(points: Point3[]) {
   return pathOf(
-    points.map(function project(point) {
+    points.map((point) => {
       return iso(point, P);
     }),
   );
@@ -49,7 +49,7 @@ export function OrreryFigure() {
   const frame = frameAt(0, 0, PLANET.z);
   const entry = orbitPoint(-45);
   const start: Point3 = [entry[0] - 15.5, entry[1] - 15.5, PLANET.z + 12];
-  const approach = Array.from({ length: 13 }, function stepAt(_, index): Point3 {
+  const approach = Array.from({ length: 13 }, (_, index): Point3 => {
     const t = index / 12;
     return [
       start[0] + (entry[0] - start[0]) * t,
@@ -61,18 +61,18 @@ export function OrreryFigure() {
   const approachEnd = flight.fractions[12] * 100;
   const flightStyle = { "--approach": `${approachEnd}%` } as React.CSSProperties;
   const latitudes = [-7.5, -3, 4.5, 9];
-  const lights = [0, 22, 46, 70, 94, 116].map(function onEquator(degrees): Point3 {
+  const lights = [0, 22, 46, 70, 94, 116].map((degrees): Point3 => {
     return [
       Math.cos(degrees * DEGREES) * (PLANET.r + 0.1),
       Math.sin(degrees * DEGREES) * (PLANET.r + 0.1),
       PLANET.z,
     ];
   });
-  const screws = Array.from({ length: 8 }, function around(_, index): Point3 {
+  const screws = Array.from({ length: 8 }, (_, index): Point3 => {
     const angle = (index / 8) * Math.PI * 2 + Math.PI / 8;
     return [Math.cos(angle) * 35.5, Math.sin(angle) * 35.5, floorTop];
   });
-  const ticks = Array.from({ length: 36 }, function tickAt(_, index) {
+  const ticks = Array.from({ length: 36 }, (_, index) => {
     const angle = (index / 36) * Math.PI * 2;
     const major = index % 3 === 0;
     const inner = major ? 27.5 : 29;
@@ -90,7 +90,7 @@ export function OrreryFigure() {
   });
   const latitudeLines = (
     <>
-      {latitudes.map(function band(height) {
+      {latitudes.map((height) => {
         const radius = Math.sqrt(PLANET.r ** 2 - height ** 2);
         return (
           <Line
@@ -108,7 +108,7 @@ export function OrreryFigure() {
     return (
       <>
         <Solid paths={cylinder(0, 0, 1.3, base - 1.2, 1.4, P, 12, 0.2)} tone="lo" />
-        {[-1, 1].map(function wing(side) {
+        {[-1, 1].map((side) => {
           const plan = { x: -0.4, y: side > 0 ? 2.6 : -8.6, w: 0.8, d: 6, r: 0.15 };
           return (
             <g key={side}>
@@ -156,7 +156,7 @@ export function OrreryFigure() {
       <Line d={ring(0, 0, 7, floorTop + 6, P, 28)} tone="lo" />
       <Dots
         points={pointsAt(
-          corners({ x: -8, y: -8, w: 16, d: 16, r: 0 }, 0).map(function bolt([x, y]): Point3 {
+          corners({ x: -8, y: -8, w: 16, d: 16, r: 0 }, 0).map(([x, y]): Point3 => {
             return [x * 0.75, y * 0.75, floorTop + 6];
           }),
           P,

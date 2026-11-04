@@ -44,18 +44,19 @@ export type KeyOfType<T, V> = {
 export type Accessor<T, V> = KeyOfType<T, V> | ((datum: T) => V);
 
 /** A category label, as text. */
-export const readLabel = <T,>(
+export function readLabel<T,>(
   datum: T,
   accessor: Accessor<T, string | number>
-): string =>
-  String(typeof accessor === "function" ? accessor(datum) : datum[accessor]);
+): string {
+  return String(typeof accessor === "function" ? accessor(datum) : datum[accessor]);
+}
 
 /** A value, as a number. Anything that is not a finite number reads as 0. */
-export const readValue = <T,>(datum: T, accessor: Accessor<T, number>) => {
+export function readValue<T,>(datum: T, accessor: Accessor<T, number>) {
   const raw =
     typeof accessor === "function" ? accessor(datum) : datum[accessor];
   return typeof raw === "number" && Number.isFinite(raw) ? raw : 0;
-};
+}
 
 /**
  * How values are written: `Intl.NumberFormat` options (usable from Server
@@ -71,15 +72,15 @@ const COMPACT: Intl.NumberFormatOptions = {
 };
 
 /** A formatter for a `ValueFormat`. Default compact, as in 1.2K. */
-export const toFormatter = (
+export function toFormatter(
   format: ValueFormat = COMPACT
-): ((value: number) => string) => {
+): ((value: number) => string) {
   if (typeof format === "function") {
     return format;
   }
   const formatter = new Intl.NumberFormat("en", format);
   return (value) => formatter.format(value);
-};
+}
 
 /** One value read from every datum, drawn as one line, area or bar set. */
 export interface ChartSeries<T> {
@@ -97,19 +98,21 @@ export type NonEmpty<T> = readonly [T, ...T[]];
  * The colour series `index` draws in: its own `color`, then the chart's
  * `colors`, then the default palette (ink, orange, green, pink, ...).
  */
-export const seriesColor = (
+export function seriesColor(
   color: DitherColor | undefined,
   index: number,
   colors: readonly DitherColor[] = []
-): DitherColor =>
-  color ??
-  colors[index] ??
-  SERIES_COLORS[index % SERIES_COLORS.length] ??
-  "ink";
+): DitherColor {
+  return color ??
+    colors[index] ??
+    SERIES_COLORS[index % SERIES_COLORS.length] ??
+    "ink";
+}
 
 /** Snap a length to whole device pixels so dither cells stay sharp. */
-const snapToDevice = (px: number, dpr: number) =>
-  Math.max(1, Math.round(px * dpr)) / dpr;
+function snapToDevice(px: number, dpr: number) {
+  return Math.max(1, Math.round(px * dpr)) / dpr;
+}
 
 export interface ChartSize {
   width: number;
@@ -121,10 +124,10 @@ export interface ChartSize {
  * Width of the element and the dither cell to draw with. `null` until the
  * first measurement, so charts render nothing on the server.
  */
-export const useChartSize = (
+export function useChartSize(
   ref: { current: HTMLElement | null },
   cell?: number
-): ChartSize | null => {
+): ChartSize | null {
   const [measured, setMeasured] = useState<{
     width: number;
     baseCell: number;
@@ -157,11 +160,12 @@ export const useChartSize = (
     cell: snapToDevice(cell ?? measured.baseCell, measured.dpr),
     width: measured.width,
   };
-};
+}
 
 /** Round a dither level to whole cells of a 4×4 tile so it renders exactly. */
-export const quantizeLevel = (level: number) =>
-  Math.round(Math.min(1, Math.max(0, level)) * 16) / 16;
+export function quantizeLevel(level: number) {
+  return Math.round(Math.min(1, Math.max(0, level)) * 16) / 16;
+}
 
 const NICE_STEPS = [1, 2, 2.5, 5, 10];
 
@@ -175,10 +179,10 @@ export interface Scale {
  * A y domain with round ticks that covers every value. With `zero` it
  * always includes zero, as bars and areas need.
  */
-export const niceScale = (
+export function niceScale(
   values: readonly number[],
   { zero = true, count = 4 }: { zero?: boolean; count?: number } = {}
-): Scale => {
+): Scale {
   const finite = values.filter((value) => Number.isFinite(value));
   const floor = zero ? [0] : [];
   const low = finite.length > 0 ? Math.min(...floor, ...finite) : 0;
@@ -196,7 +200,7 @@ export const niceScale = (
     ticks.push(Number(tick.toPrecision(12)));
   }
   return { max, min, ticks };
-};
+}
 
 export interface Point {
   x: number;
@@ -204,16 +208,17 @@ export interface Point {
 }
 
 /** Straight segments through the points. */
-export const linearPath = (points: readonly Point[]) =>
-  points
+export function linearPath(points: readonly Point[]) {
+  return points
     .map(({ x, y }, index) => `${index === 0 ? "M" : "L"}${x} ${y}`)
     .join("");
+}
 
 /**
  * A smooth curve through the points that never overshoots them
  * (monotone cubic, Fritsch–Carlson), so peaks stay at the data.
  */
-export const monotonePath = (points: readonly Point[]) => {
+export function monotonePath(points: readonly Point[]) {
   const count = points.length;
   if (count < 3) {
     return linearPath(points);
@@ -268,16 +273,16 @@ export const monotonePath = (points: readonly Point[]) => {
     }
   }
   return path;
-};
+}
 
 /**
  * 0 → 1 over the entrance, stepping through dither levels, once the chart
  * is on screen. 1 at once under reduced motion or with `enabled: false`.
  */
-export const useReveal = (
+export function useReveal(
   target: { current: Element | null },
   enabled = true
-) => {
+) {
   const [progress, setProgress] = useState(enabled ? 0 : 1);
   const duration = (MOTION.slow + MOTION.base) / 1000;
   useFrameLoop(
@@ -289,7 +294,7 @@ export const useReveal = (
     { enabled: enabled && progress < 1, stillTime: duration, target }
   );
   return progress;
-};
+}
 
 export interface Plot {
   left: number;
@@ -393,7 +398,7 @@ const AXIS_FONT_WIDTH = 6.1;
 const DIMMED = 0.18;
 
 /** Where the plot sits inside the chart, and the scales that map into it. */
-const layoutPlot = ({
+function layoutPlot({
   axes,
   count,
   formatTick,
@@ -409,7 +414,7 @@ const layoutPlot = ({
   layout: "point" | "band";
   scale: Scale;
   width: number;
-}) => {
+}) {
   const tickLabels = scale.ticks.map((tick) => formatTick(tick));
   const longest = Math.max(1, ...tickLabels.map((label) => label.length));
   const plot: Plot = {
@@ -421,20 +426,21 @@ const layoutPlot = ({
   const plotWidth = Math.max(1, plot.right - plot.left);
   const slots = layout === "band" ? count : count - 1;
   const band = plotWidth / Math.max(1, slots);
-  const xAt = (index: number) => {
+  function xAt(index: number) {
     if (layout === "band") {
       return plot.left + band * (index + 0.5);
     }
     return plot.left + (count === 1 ? plotWidth / 2 : band * index);
-  };
+  }
   const span = scale.max - scale.min || 1;
-  const yAt = (value: number) =>
-    plot.bottom - ((value - scale.min) / span) * (plot.bottom - plot.top);
+  function yAt(value: number) {
+    return plot.bottom - ((value - scale.min) / span) * (plot.bottom - plot.top);
+  }
   return { band, plot, plotWidth, tickLabels, xAt, yAt };
-};
+}
 
 /** Every value, for screen readers. */
-const DataTable = ({
+function DataTable({
   summary,
   series,
   rows,
@@ -442,38 +448,40 @@ const DataTable = ({
   summary: string;
   series: readonly { label: string }[];
   rows: readonly { label: string; values: readonly ReadoutRow[] }[];
-}) => (
-  <table className="sr-only">
-    <caption>{summary}</caption>
-    <thead>
-      <tr>
-        <th scope="col">Category</th>
-        {series.map((entry) => (
-          <th key={entry.label} scope="col">
-            {entry.label}
-          </th>
-        ))}
-      </tr>
-    </thead>
-    <tbody>
-      {rows.map((row, index) => (
-        // oxlint-disable-next-line react/no-array-index-key -- categories can repeat; position is the identity.
-        <tr key={index}>
-          <th scope="row">{row.label}</th>
-          {row.values.map((value) => (
-            <td key={value.label}>{value.value}</td>
+}) {
+  return (
+    <table className="sr-only">
+      <caption>{summary}</caption>
+      <thead>
+        <tr>
+          <th scope="col">Category</th>
+          {series.map((entry) => (
+            <th key={entry.label} scope="col">
+              {entry.label}
+            </th>
           ))}
         </tr>
-      ))}
-    </tbody>
-  </table>
-);
+      </thead>
+      <tbody>
+        {rows.map((row, index) => (
+          // oxlint-disable-next-line react/no-array-index-key -- categories can repeat; position is the identity.
+          <tr key={index}>
+            <th scope="row">{row.label}</th>
+            {row.values.map((value) => (
+              <td key={value.label}>{value.value}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
 
 /**
  * Every `every`th label, plus the last. The one before the last drops out
  * when it would sit too close to it.
  */
-const xLabelIndices = (count: number, every: number) => {
+function xLabelIndices(count: number, every: number) {
   const step = Math.max(1, every);
   const shown = new Set<number>();
   for (let index = 0; index < count; index += step) {
@@ -488,13 +496,13 @@ const xLabelIndices = (count: number, every: number) => {
     shown.add(last);
   }
   return shown;
-};
+}
 
-const labelAnchor = (
+function labelAnchor(
   layout: "point" | "band",
   index: number,
   count: number
-) => {
+) {
   if (layout === "band" || count === 1) {
     return "middle";
   }
@@ -502,7 +510,7 @@ const labelAnchor = (
     return "start";
   }
   return index === count - 1 ? "end" : "middle";
-};
+}
 
 /**
  * The scrubbed datum; whether moving to it glides (pointer) or jumps
@@ -515,8 +523,9 @@ interface Scrub {
   visible: boolean;
 }
 
-const hide = (current: Scrub | null): Scrub | null =>
-  current === null ? null : { ...current, glide: false, visible: false };
+function hide(current: Scrub | null): Scrub | null {
+  return current === null ? null : { ...current, glide: false, visible: false };
+}
 
 // Gliding parts share one duration and the site's ease-out. Every glide is
 // a transform, so it never triggers layout.
@@ -533,10 +542,10 @@ const READOUT_GAP = 12;
  * Writes the transform straight to the element so a scrub never
  * re-lays out React.
  */
-const useReadoutPosition = (
+function useReadoutPosition(
   ref: { current: HTMLDivElement | null },
   anchor: { x: number; y: number; width: number; top: number } | null
-) => {
+) {
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el || anchor === null) {
@@ -556,7 +565,7 @@ const useReadoutPosition = (
     }
     el.style.transform = `translate3d(${Math.round(left)}px, ${Math.round(top)}px, 0)`;
   });
-};
+}
 
 const ARROW_STEPS: Readonly<Record<string, number>> = {
   ArrowLeft: -1,
@@ -567,7 +576,7 @@ const ARROW_STEPS: Readonly<Record<string, number>> = {
  * The scrub state and its handlers: pointer moves throttled to one update
  * per frame, keyboard steps that jump, and a hide that keeps the position.
  */
-const useScrub = ({
+function useScrub({
   count,
   indexAt,
   onEscape,
@@ -575,14 +584,14 @@ const useScrub = ({
   count: number;
   indexAt: (px: number) => number;
   onEscape: () => void;
-}) => {
+}) {
   const [scrub, setScrub] = useState<Scrub | null>(null);
   const pointerX = useRef<number | null>(null);
   const frame = useRef(0);
 
   useEffect(() => () => cancelAnimationFrame(frame.current), []);
 
-  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+  function onPointerMove(event: PointerEvent<HTMLDivElement>) {
     if (count === 0) {
       return;
     }
@@ -603,23 +612,24 @@ const useScrub = ({
           : { glide: current?.visible === true, index, visible: true }
       );
     });
-  };
+  }
 
-  const onPointerLeave = () => {
+  function onPointerLeave() {
     pointerX.current = null;
     cancelAnimationFrame(frame.current);
     frame.current = 0;
     setScrub(hide);
-  };
+  }
 
-  const jumpTo = (index: number) =>
-    setScrub({
+  function jumpTo(index: number) {
+    return setScrub({
       glide: false,
       index: Math.min(count - 1, Math.max(0, index)),
       visible: true,
     });
+  }
 
-  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+  function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === "Escape") {
       setScrub(hide);
       onEscape();
@@ -646,14 +656,15 @@ const useScrub = ({
     event.stopPropagation();
     // Keyboard steps jump: easing would lag behind held arrow keys.
     jumpTo(target);
-  };
+  }
 
-  const onFocus = () =>
-    setScrub((current) =>
+  function onFocus() {
+    return setScrub((current) =>
       current?.visible === true
         ? current
         : { glide: false, index: current?.index ?? count - 1, visible: true }
     );
+  }
 
   return {
     handlers: {
@@ -665,10 +676,10 @@ const useScrub = ({
     },
     scrub,
   };
-};
+}
 
 /** Gridlines and value labels, then the category labels that fit. */
-const Axes = <T,>({
+function Axes<T,>({
   data,
   x,
   scale,
@@ -690,7 +701,7 @@ const Axes = <T,>({
   layout: "point" | "band";
   xAt: (index: number) => number;
   yAt: (value: number) => number;
-}) => {
+}) {
   const count = data.length;
   // Space x labels so they never collide: about one per 72px.
   const shown = xLabelIndices(
@@ -737,10 +748,10 @@ const Axes = <T,>({
       )}
     </g>
   );
-};
+}
 
 /** A dashed crosshair and one marker per series, gliding by transform. */
-const Crosshair = ({
+function Crosshair({
   plot,
   x,
   anchorY,
@@ -758,46 +769,48 @@ const Crosshair = ({
   glide: string;
   context: ChartContext;
   labels: readonly string[];
-}) => (
-  <g aria-hidden="true">
-    <line
-      data-glide={glide}
-      x1={0.5}
-      x2={0.5}
-      y1={plot.top}
-      y2={plot.bottom}
-      className={cn("stroke-foreground/35", GLIDE)}
-      strokeWidth={1}
-      strokeDasharray="2 3"
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: `translateX(${Math.round(x)}px)`,
-      }}
-    />
-    {labels.map((label, index) => {
-      const point = points.find((candidate) => candidate.seriesIndex === index);
-      return (
-        <circle
-          key={label}
-          data-glide={glide}
-          r={4}
-          fill={cssColor(context.colorOf(index))}
-          stroke="var(--dither-paper)"
-          strokeWidth={2}
-          className={GLIDE}
-          style={{
-            opacity:
-              point === undefined || !visible ? 0 : context.opacityOf(index),
-            transform: `translate(${x}px, ${point?.y ?? anchorY}px)`,
-          }}
-        />
-      );
-    })}
-  </g>
-);
+}) {
+  return (
+    <g aria-hidden="true">
+      <line
+        data-glide={glide}
+        x1={0.5}
+        x2={0.5}
+        y1={plot.top}
+        y2={plot.bottom}
+        className={cn("stroke-foreground/35", GLIDE)}
+        strokeWidth={1}
+        strokeDasharray="2 3"
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: `translateX(${Math.round(x)}px)`,
+        }}
+      />
+      {labels.map((label, index) => {
+        const point = points.find((candidate) => candidate.seriesIndex === index);
+        return (
+          <circle
+            key={label}
+            data-glide={glide}
+            r={4}
+            fill={cssColor(context.colorOf(index))}
+            stroke="var(--dither-paper)"
+            strokeWidth={2}
+            className={GLIDE}
+            style={{
+              opacity:
+                point === undefined || !visible ? 0 : context.opacityOf(index),
+              transform: `translate(${x}px, ${point?.y ?? anchorY}px)`,
+            }}
+          />
+        );
+      })}
+    </g>
+  );
+}
 
 /** The readout card: the category, then one row per series. */
-const Readout = ({
+function Readout({
   ref,
   row,
   visible,
@@ -809,52 +822,54 @@ const Readout = ({
   visible: boolean;
   glide: string;
   focus: number | null;
-}) => (
-  <div
-    ref={ref}
-    aria-hidden="true"
-    data-glide={glide}
-    className={cn(
-      "bg-popover/95 text-popover-foreground border-border pointer-events-none absolute top-0 left-0 z-10 min-w-32 rounded-lg border px-2.5 py-2 shadow-[0_8px_24px_-12px_rgb(0_0_0/0.6)] backdrop-blur-sm",
-      GLIDE
-    )}
-    style={{ opacity: visible ? 1 : 0 }}
-  >
-    {row === undefined ? null : (
-      <>
-        <div className="text-muted-foreground mb-1.5 font-mono text-[10px] tracking-wide uppercase">
-          {row.label}
-        </div>
-        <div className="flex flex-col gap-1">
-          {row.values.map((value, index) => (
-            <div
-              key={value.label}
-              className={cn(
-                "flex items-center gap-2 text-xs transition-opacity duration-150",
-                focus !== null && focus !== index && "opacity-40"
-              )}
-            >
-              <span
-                className="size-2 shrink-0 rounded-[2px]"
-                style={{ background: cssColor(value.color) }}
-              />
-              <span className="text-muted-foreground pr-3">{value.label}</span>
-              <span className="ml-auto font-mono font-medium tabular-nums">
-                {value.value}
-              </span>
-            </div>
-          ))}
-        </div>
-      </>
-    )}
-  </div>
-);
+}) {
+  return (
+    <div
+      ref={ref}
+      aria-hidden="true"
+      data-glide={glide}
+      className={cn(
+        "bg-popover/95 text-popover-foreground border-border pointer-events-none absolute top-0 left-0 z-10 min-w-32 rounded-lg border px-2.5 py-2 shadow-[0_8px_24px_-12px_rgb(0_0_0/0.6)] backdrop-blur-sm",
+        GLIDE
+      )}
+      style={{ opacity: visible ? 1 : 0 }}
+    >
+      {row === undefined ? null : (
+        <>
+          <div className="text-muted-foreground mb-1.5 font-mono text-[10px] tracking-wide uppercase">
+            {row.label}
+          </div>
+          <div className="flex flex-col gap-1">
+            {row.values.map((value, index) => (
+              <div
+                key={value.label}
+                className={cn(
+                  "flex items-center gap-2 text-xs transition-opacity duration-150",
+                  focus !== null && focus !== index && "opacity-40"
+                )}
+              >
+                <span
+                  className="size-2 shrink-0 rounded-[2px]"
+                  style={{ background: cssColor(value.color) }}
+                />
+                <span className="text-muted-foreground pr-3">{value.label}</span>
+                <span className="ml-auto font-mono font-medium tabular-nums">
+                  {value.value}
+                </span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 /**
  * Legend entries. Interactive ones are toggle buttons: hover or focus
  * spotlights a series, click locks it, Escape lets go.
  */
-const Legend = ({
+function Legend({
   labels,
   interactive,
   focus,
@@ -872,79 +887,83 @@ const Legend = ({
   colorOf: (index: number) => DitherColor;
   onHover: (index: number | null) => void;
   onLock: (index: number | null) => void;
-}) => (
-  <div
-    className="mt-3 flex flex-wrap gap-1"
-    {...(interactive
-      ? { "aria-label": "Series", role: "group" }
-      : { "aria-hidden": true })}
-  >
-    {labels.map((label, index) => {
-      const content = (
-        <>
-          {swatch(index, colorOf(index))}
-          {label}
-        </>
-      );
-      const itemClass = cn(
-        "text-muted-foreground inline-flex h-7 items-center gap-1.5 rounded-md px-2 font-mono text-[11px] transition-[color,opacity,background-color] duration-150 ease-out",
-        focus !== null && focus !== index && "opacity-45"
-      );
-      if (!interactive) {
-        return (
-          <span key={label} className={itemClass}>
-            {content}
-          </span>
+}) {
+  return (
+    <div
+      className="mt-3 flex flex-wrap gap-1"
+      {...(interactive
+        ? { "aria-label": "Series", role: "group" }
+        : { "aria-hidden": true })}
+    >
+      {labels.map((label, index) => {
+        const content = (
+          <>
+            {swatch(index, colorOf(index))}
+            {label}
+          </>
         );
-      }
-      return (
-        <button
-          key={label}
-          type="button"
-          aria-pressed={locked === index}
-          aria-label={`Spotlight ${label}`}
-          onPointerEnter={() => onHover(index)}
-          onPointerLeave={() => onHover(null)}
-          onFocus={() => onHover(index)}
-          onBlur={() => onHover(null)}
-          onClick={() => onLock(locked === index ? null : index)}
-          onKeyDown={(event) => {
-            if (event.key === "Escape") {
-              onLock(null);
-            }
-          }}
-          className={cn(
-            itemClass,
-            "hover:text-foreground focus-visible:ring-ring/60 aria-pressed:bg-muted aria-pressed:text-foreground cursor-pointer outline-none focus-visible:ring-2"
-          )}
-        >
-          {content}
-        </button>
-      );
-    })}
-  </div>
-);
+        const itemClass = cn(
+          "text-muted-foreground inline-flex h-7 items-center gap-1.5 rounded-md px-2 font-mono text-[11px] transition-[color,opacity,background-color] duration-150 ease-out",
+          focus !== null && focus !== index && "opacity-45"
+        );
+        if (!interactive) {
+          return (
+            <span key={label} className={itemClass}>
+              {content}
+            </span>
+          );
+        }
+        return (
+          <button
+            key={label}
+            type="button"
+            aria-pressed={locked === index}
+            aria-label={`Spotlight ${label}`}
+            onPointerEnter={() => onHover(index)}
+            onPointerLeave={() => onHover(null)}
+            onFocus={() => onHover(index)}
+            onBlur={() => onHover(null)}
+            onClick={() => onLock(locked === index ? null : index)}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                onLock(null);
+              }
+            }}
+            className={cn(
+              itemClass,
+              "hover:text-foreground focus-visible:ring-ring/60 aria-pressed:bg-muted aria-pressed:text-foreground cursor-pointer outline-none focus-visible:ring-2"
+            )}
+          >
+            {content}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 /** The visually hidden key help and the live readout for screen readers. */
-const ScreenReaderStatus = ({
+function ScreenReaderStatus({
   id,
   row,
 }: {
   id: string;
   row: { label: string; values: readonly ReadoutRow[] } | undefined;
-}) => (
-  <>
-    <p id={id} className="sr-only">
-      Use the arrow keys to move through the data, Home and End to jump to the
-      ends, Escape to clear.
-    </p>
-    <div aria-live="polite" aria-atomic="true" className="sr-only">
-      {row === undefined
-        ? ""
-        : `${row.label}: ${row.values.map((value) => `${value.label} ${value.value}`).join(", ")}`}
-    </div>
-  </>
-);
+}) {
+  return (
+    <>
+      <p id={id} className="sr-only">
+        Use the arrow keys to move through the data, Home and End to jump to the
+        ends, Escape to clear.
+      </p>
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {row === undefined
+          ? ""
+          : `${row.label}: ${row.values.map((value) => `${value.label} ${value.value}`).join(", ")}`}
+      </div>
+    </>
+  );
+}
 
 interface ScrubView {
   scrubbing: boolean;
@@ -958,7 +977,7 @@ interface ScrubView {
 }
 
 /** What the scrub shows right now, derived from its state. */
-const scrubView = ({
+function scrubView({
   scrub,
   tableRows,
   xAt,
@@ -976,7 +995,7 @@ const scrubView = ({
   activeMarks:
     | ((index: number, context: ChartContext) => ReactNode)
     | undefined;
-}): ScrubView => {
+}): ScrubView {
   const scrubbing = scrub?.visible === true;
   const glide = String(scrub?.glide ?? false);
   if (scrub === null || context === null) {
@@ -1000,10 +1019,10 @@ const scrubView = ({
     points,
     scrubbing,
   };
-};
+}
 
 /** Root props: a focusable, labelled group when interactive, else an image. */
-const rootProps = ({
+function rootProps({
   interactive,
   handlers,
   uid,
@@ -1015,8 +1034,8 @@ const rootProps = ({
   uid: string;
   label: string;
   count: number;
-}) =>
-  interactive
+}) {
+  return interactive
     ? {
         ...handlers,
         "aria-describedby": `${uid}-keys`,
@@ -1026,9 +1045,10 @@ const rootProps = ({
         tabIndex: count > 0 ? 0 : -1,
       }
     : { "aria-label": label, role: "img" };
+}
 
 /** The drawing: axes (children), the column band, marks, then the crosshair. */
-const ChartSvg = ({
+function ChartSvg({
   context,
   view,
   marks,
@@ -1042,7 +1062,7 @@ const ChartSvg = ({
   scrubKind: "line" | "column" | "none";
   labels: readonly string[];
   children: ReactNode;
-}) => {
+}) {
   const { width, height, plot, band } = context;
   return (
     <svg
@@ -1083,7 +1103,7 @@ const ChartSvg = ({
       ) : null}
     </svg>
   );
-};
+}
 
 /**
  * Measures itself, lays out the plot and owns the interaction: a gliding
@@ -1092,7 +1112,7 @@ const ChartSvg = ({
  * render function of the layout; it is memoised, so scrubbing only
  * redraws the crosshair, markers and readout.
  */
-export const CartesianChart = <T,>({
+export function CartesianChart<T,>({
   data,
   x,
   series,
@@ -1118,7 +1138,7 @@ export const CartesianChart = <T,>({
   className,
   "aria-label": ariaLabel,
   ...props
-}: CartesianChartProps<T>) => {
+}: CartesianChartProps<T>) {
   const uid = useId().replaceAll(":", "");
   const ref = useRef<HTMLDivElement>(null);
   const readoutRef = useRef<HTMLDivElement>(null);
@@ -1133,11 +1153,11 @@ export const CartesianChart = <T,>({
     () => layoutPlot({ axes, count, formatTick, height, layout, scale, width }),
     [axes, count, formatTick, height, layout, scale, width]
   );
-  const indexAt = (px: number) => {
+  function indexAt(px: number) {
     const offset = (px - plot.left) / band;
     const raw = layout === "band" ? Math.floor(offset) : Math.round(offset);
     return Math.min(count - 1, Math.max(0, raw));
-  };
+  }
   const { scrub, handlers } = useScrub({
     count,
     indexAt,
@@ -1299,16 +1319,17 @@ export const CartesianChart = <T,>({
       <DataTable summary={summary} series={series} rows={tableRows} />
     </div>
   );
-};
+}
 
 /** "Revenue and Costs" / "Revenue, Costs and Refunds". */
-export const listLabels = (labels: readonly string[]) =>
-  labels.length < 2
+export function listLabels(labels: readonly string[]) {
+  return labels.length < 2
     ? (labels[0] ?? "")
     : `${labels.slice(0, -1).join(", ")} and ${labels.at(-1) ?? ""}`;
+}
 
 /** "Area chart of Revenue and Costs, Jan to Dec." */
-export const chartSummary = <T,>({
+export function chartSummary<T,>({
   kind,
   series,
   data,
@@ -1318,7 +1339,7 @@ export const chartSummary = <T,>({
   series: readonly { label: string }[];
   data: readonly T[];
   x: Accessor<T, string | number>;
-}) => {
+}) {
   const [first] = data;
   const last = data.at(-1);
   const range =
@@ -1326,4 +1347,4 @@ export const chartSummary = <T,>({
       ? ""
       : `, ${readLabel(first, x)} to ${readLabel(last, x)}`;
   return `${kind} of ${listLabels(series.map((entry) => entry.label))}${range}.`;
-};
+}

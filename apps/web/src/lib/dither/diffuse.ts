@@ -91,7 +91,7 @@ const KERNELS = {
   ],
 } as const satisfies Record<DiffusionMethod, Kernel>;
 
-const nearest = (palette: ImagePalette, r: number, g: number, b: number) => {
+function nearest(palette: ImagePalette, r: number, g: number, b: number) {
   let best = 0;
   let bestDistance = Infinity;
   for (let index = 0; index < palette.length; index += 1) {
@@ -110,26 +110,26 @@ const nearest = (palette: ImagePalette, r: number, g: number, b: number) => {
     }
   }
   return best;
-};
+}
 
-const write = (
+function write(
   out: Uint8ClampedArray,
   offset: number,
   color: PaletteColor,
   alpha: number
-) => {
+) {
   out[offset] = color[0] * 255;
   out[offset + 1] = color[1] * 255;
   out[offset + 2] = color[2] * 255;
   out[offset + 3] = alpha;
-};
+}
 
-const ditherOrdered = (
+function ditherOrdered(
   image: PixelBuffer,
   method: OrderedMethod,
   palette: ImagePalette,
   bias: number
-): Uint8ClampedArray<ArrayBuffer> => {
+): Uint8ClampedArray<ArrayBuffer> {
   const { data, width, height } = image;
   const out = new Uint8ClampedArray(data.length);
   const map = getThresholdMap(method);
@@ -149,10 +149,10 @@ const ditherOrdered = (
     }
   }
   return out;
-};
+}
 
 /** Pass one pixel's rounding error on to its unvisited neighbours. */
-const spreadError = ({
+function spreadError({
   error,
   height,
   kernel,
@@ -170,7 +170,7 @@ const spreadError = ({
   work: Float32Array;
   x: number;
   y: number;
-}) => {
+}) {
   for (const [dx, dy, weight] of kernel) {
     const nx = reverse ? x - dx : x + dx;
     const ny = y + dy;
@@ -183,15 +183,15 @@ const spreadError = ({
         (work[target + channel] ?? 0) + error[channel] * weight;
     }
   }
-};
+}
 
-const ditherDiffusion = (
+function ditherDiffusion(
   image: PixelBuffer,
   kernel: Kernel,
   palette: ImagePalette,
   bias: number,
   serpentine: boolean
-): Uint8ClampedArray<ArrayBuffer> => {
+): Uint8ClampedArray<ArrayBuffer> {
   const { data, width, height } = image;
   const out = new Uint8ClampedArray(data.length);
   const work = new Float32Array(width * height * 3);
@@ -225,7 +225,7 @@ const ditherDiffusion = (
     }
   }
   return out;
-};
+}
 
 const DEFAULT_OPTIONS: DiffuseOptions = { method: "floyd-steinberg" };
 
@@ -233,10 +233,10 @@ const DEFAULT_OPTIONS: DiffuseOptions = { method: "floyd-steinberg" };
  * Dither an image to a palette. Returns a new `ImageData` the same size;
  * `image` is not modified. Default: Floyd–Steinberg in black and white.
  */
-export const ditherImage = (
+export function ditherImage(
   image: PixelBuffer,
   options: DiffuseOptions = DEFAULT_OPTIONS
-): ImageData => {
+): ImageData {
   const palette = options.palette ?? BLACK_AND_WHITE;
   const bias = 0.5 - (options.threshold ?? 0.5);
   let data: Uint8ClampedArray<ArrayBuffer>;
@@ -265,4 +265,4 @@ export const ditherImage = (
     }
   }
   return new ImageData(data, image.width, image.height);
-};
+}

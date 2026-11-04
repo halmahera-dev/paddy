@@ -35,12 +35,12 @@ export function LanguageSwitch({ locale, label }: { locale: Locale; label: strin
         <span className="sr-only">{label}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {locales.map(function renderLocale(next) {
+        {locales.map((next) => {
           return (
             <DropdownMenuItem
               key={next}
               disabled={next === locale}
-              onClick={function go() {
+              onClick={() => {
                 router.push(hrefFor(next));
               }}
             >

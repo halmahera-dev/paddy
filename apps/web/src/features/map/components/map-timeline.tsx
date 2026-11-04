@@ -45,7 +45,7 @@ export function usePlayback({
       frameId = requestAnimationFrame(tick);
     }
     frameId = requestAnimationFrame(tick);
-    return function stopTicking() {
+    return () => {
       cancelAnimationFrame(frameId);
     };
   }, [isPlaying, max, unitsPerSecond]);

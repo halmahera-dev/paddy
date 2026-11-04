@@ -43,7 +43,7 @@ export function LaunchFigure() {
   const padTop = floorTop + 1.6;
   const centerZ = padTop + 7.5;
   const flight = pathThrough(
-    Array.from({ length: 61 }, function arcAt(_, index): Point3 {
+    Array.from({ length: 61 }, (_, index): Point3 => {
       const t = index / 60;
       const along = 3 * t * t - 2 * t ** 3;
       return [
@@ -63,7 +63,7 @@ export function LaunchFigure() {
   const ringSolids = [
     [14.5, 16.5],
     [17.5, 20.5],
-  ].map(function band([inner, outer]) {
+  ].map(([inner, outer]) => {
     const d = ring(PLANET.x, 0, outer, PLANET.z, P, 64) + ring(PLANET.x, 0, inner, PLANET.z, P, 64);
     return (
       <g key={inner}>
@@ -75,10 +75,10 @@ export function LaunchFigure() {
   const bands = [-4.5, 0.5, 4, 7];
   const clampIn = vectorOf([0, 3.8, 0]);
   const clampOut = vectorOf([0, -3.8, 0]);
-  const screws = corners(moon, 6).map(function onMoon([x, y]): Point3 {
+  const screws = corners(moon, 6).map(([x, y]): Point3 => {
     return [x, y, floorTop];
   });
-  const landingLamps = [30, 150, 270].map(function lampAround(degrees): [number, number] {
+  const landingLamps = [30, 150, 270].map((degrees): [number, number] => {
     const angle = (degrees * Math.PI) / 180;
     return [LAND_X + Math.cos(angle) * 11, Math.sin(angle) * 11];
   });
@@ -104,7 +104,7 @@ export function LaunchFigure() {
   function planetBands() {
     return (
       <>
-        {bands.map(function band(height) {
+        {bands.map((height) => {
           const radius = Math.sqrt(PLANET.r ** 2 - height ** 2);
           return (
             <Line
@@ -129,7 +129,7 @@ export function LaunchFigure() {
     ];
     return (
       <>
-        {back.map(function backFin(fin) {
+        {back.map((fin) => {
           return <g key={fin.key}>{slab(fin.plan, rocketBase, 4)}</g>;
         })}
         <Glow>
@@ -137,7 +137,7 @@ export function LaunchFigure() {
         </Glow>
         <Line d={ring(LAUNCH_X, 0, 3.2, rocketBase + 5, P, 20)} tone="lo" />
         <Line d={ring(LAUNCH_X, 0, 3.2, rocketBase + 8, P, 20)} tone="lo" />
-        {front.map(function frontFin(fin) {
+        {front.map((fin) => {
           return <g key={fin.key}>{slab(fin.plan, rocketBase, 4)}</g>;
         })}
       </>
@@ -162,7 +162,7 @@ export function LaunchFigure() {
         [table.x + table.w - 1.6, table.y + 1.6],
         [table.x + 1.6, table.y + table.d - 1.6],
         [table.x + table.w - 1.6, table.y + table.d - 1.6],
-      ].map(function leg([x, y]) {
+      ].map(([x, y]) => {
         return (
           <Solid
             key={`${x}${y}`}
@@ -174,7 +174,7 @@ export function LaunchFigure() {
       })}
       <Solid paths={slabOf(table, tableTop - 2, 2, P, 4, 0.4)} tone="mid" />
       <Solid paths={slabOf(sheet, tableTop, 0.5, P, 4, 0.2)} tone="lo" crease="none" />
-      {[-3, 0, 3].map(function gridRow(offset) {
+      {[-3, 0, 3].map((offset) => {
         const y = sheet.y + sheet.d / 2 + offset;
         return (
           <Line
@@ -184,7 +184,7 @@ export function LaunchFigure() {
           />
         );
       })}
-      {[-4, 0, 4].map(function gridColumn(offset) {
+      {[-4, 0, 4].map((offset) => {
         const x = sheet.x + sheet.w / 2 + offset;
         return (
           <Line
@@ -216,7 +216,7 @@ export function LaunchFigure() {
         paths={slabOf({ x: -47, y: -12, w: 4, d: 4, r: 0.4 }, floorTop, 36, P, 4, 0.4)}
         tone="mid"
       />
-      {[10, 18, 26].map(function level(z) {
+      {[10, 18, 26].map((z) => {
         return (
           <Line
             key={z}
@@ -251,7 +251,7 @@ export function LaunchFigure() {
       <g clipPath="url(#hts-ring-front)">{ringSolids}</g>
 
       {pad(LAND_X)}
-      {landingLamps.map(function lampPost([x, y]) {
+      {landingLamps.map(([x, y]) => {
         return (
           <g key={`${x}${y}`}>
             <Solid paths={cylinder(x, y, 0.6, padTop, 3, P, 10)} tone="mid" crease="none" />
@@ -260,7 +260,7 @@ export function LaunchFigure() {
         );
       })}
       <g className="hts-beacon">
-        {landingLamps.map(function litLamp([x, y]) {
+        {landingLamps.map(([x, y]) => {
           return (
             <Glow key={`${x}${y}`}>
               <Solid paths={G.sphereOf([x, y, padTop + 3.8], 1.1, P)} tone="hi" />
@@ -270,7 +270,7 @@ export function LaunchFigure() {
       </g>
 
       <g className="hts-plume">
-        {[0, 90, 180, 270].map(function jet(degrees) {
+        {[0, 90, 180, 270].map((degrees) => {
           const angle = (degrees * Math.PI) / 180;
           return (
             <Glow key={degrees}>
@@ -289,7 +289,7 @@ export function LaunchFigure() {
 
       <Line
         d={pathOf(
-          Array.from({ length: 61 }, function traceAt(_, index) {
+          Array.from({ length: 61 }, (_, index) => {
             const t = index / 60;
             const along = 3 * t * t - 2 * t ** 3;
             return iso(

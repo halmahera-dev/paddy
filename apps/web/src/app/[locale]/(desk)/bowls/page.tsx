@@ -11,7 +11,7 @@ function firstValue(value: string | string[] | undefined) {
 }
 
 export default function BowlsPage({ params, searchParams }: PageProps<"/[locale]/bowls">) {
-  return Promise.all([params, searchParams]).then(function renderBowls([{ locale: rawLocale }, query]) {
+  return Promise.all([params, searchParams]).then(([{ locale: rawLocale }, query]) => {
     const locale = toLocale(rawLocale);
     const t = getDictionary(locale);
     const filters = {

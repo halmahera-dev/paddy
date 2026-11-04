@@ -5,7 +5,7 @@ import { PageHeader } from "@/features/shell/components/page-header";
 import { getDictionary, toLocale } from "@/lib/i18n";
 
 export default function BowlPage({ params }: PageProps<"/[locale]/bowls/[id]">) {
-  return params.then(function renderBowl({ locale: rawLocale, id }) {
+  return params.then(({ locale: rawLocale, id }) => {
     const locale = toLocale(rawLocale);
     return (
       <>

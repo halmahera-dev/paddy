@@ -9,9 +9,11 @@ import type { Locale } from "@/lib/i18n";
 
 export type Session = Awaited<ReturnType<typeof getSession>>;
 
-export const getSession = cache(async () => {
+async function readSession() {
   return auth.api.getSession({ headers: await headers() });
-});
+}
+
+export const getSession = cache(readSession);
 
 export async function requireSession(locale: Locale) {
   const session = await getSession();

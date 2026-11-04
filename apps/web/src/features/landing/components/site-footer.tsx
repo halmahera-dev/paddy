@@ -32,7 +32,7 @@ export function SiteFooter({
 
         <nav aria-label="Footer" className="grid content-start gap-2">
           <p className="text-xs font-semibold text-muted-foreground">{t.footer.pages}</p>
-          {links.map(function renderLink(link) {
+          {links.map((link) => {
             return (
               <Link
                 key={link.href}

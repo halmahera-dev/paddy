@@ -154,7 +154,7 @@ export function InspectionColumns({
 }) {
   const [optimisticBowls, moveOptimistically] = useOptimistic(
     bowls,
-    function applyMove(current, move: { bowlId: string; status: BowlStatus }) {
+    (current, move: { bowlId: string; status: BowlStatus }) => {
       return current.map((bowl) => (bowl.id === move.bowlId ? { ...bowl, status: move.status } : bowl));
     },
   );
@@ -187,7 +187,7 @@ export function InspectionColumns({
       setOutcomeBowl(bowl);
       return;
     }
-    startMoving(async function runMove() {
+    startMoving(async () => {
       moveOptimistically({ bowlId: bowl.id, status });
       const result = await moveBowl({ bowlId: bowl.id, status });
       if (!result.ok) {
@@ -206,7 +206,7 @@ export function InspectionColumns({
         onDragCancel={() => setDraggedBowlId(null)}
       >
         <div className="-m-1 flex min-h-0 flex-1 gap-3 overflow-x-auto p-1">
-          {columns.map(function renderColumn(status) {
+          {columns.map((status) => {
             const columnBowls = optimisticBowls
               .filter((bowl) => bowl.status === status)
               .toSorted((a, b) => a.rank - b.rank);

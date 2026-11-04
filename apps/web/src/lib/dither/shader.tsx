@@ -126,11 +126,12 @@ interface UniformSpec {
 const IDENTIFIER = /^[A-Za-z][A-Za-z0-9_]*$/;
 const GLSL_TYPES = { 1: "float", 2: "vec2", 3: "vec3", 4: "vec4" } as const;
 
-const uniformSize = (value: ShaderUniformValue): UniformSpec["size"] =>
-  typeof value === "number" ? 1 : value.length;
+function uniformSize(value: ShaderUniformValue): UniformSpec["size"] {
+  return typeof value === "number" ? 1 : value.length;
+}
 
-const uniformSpecs = (uniforms: DitherUniforms): UniformSpec[] =>
-  Object.keys(uniforms)
+function uniformSpecs(uniforms: DitherUniforms): UniformSpec[] {
+  return Object.keys(uniforms)
     .toSorted()
     .flatMap((name) => {
       const value = uniforms[name];
@@ -146,6 +147,7 @@ const uniformSpecs = (uniforms: DitherUniforms): UniformSpec[] =>
       }
       return [{ name, size: uniformSize(value) }];
     });
+}
 
 // With a colour field, a cell is either paper or the colour field's colour
 // there, chosen by the same tone and threshold as a two-colour palette.
@@ -162,11 +164,12 @@ const FIELD_COLOR = `
     : dither_paletteEntry(0.0);
   color = clamp(color, 0.0, 1.0);`;
 
-const fragmentShader = (
+function fragmentShader(
   field: string,
   colorField: string | undefined,
   specs: readonly UniformSpec[]
-) => `
+) {
+  return `
 #ifdef GL_FRAGMENT_PRECISION_HIGH
 precision highp float;
 #else
@@ -203,6 +206,7 @@ ${colorField === undefined ? PALETTE_COLOR : FIELD_COLOR}
   gl_FragColor = vec4(color.rgb * color.a, color.a);
 }
 `;
+}
 
 interface DrawInput {
   readonly columns: number;
@@ -219,7 +223,7 @@ interface Renderer {
   readonly dispose: () => void;
 }
 
-const compile = (gl: WebGLRenderingContext, type: GLenum, source: string) => {
+function compile(gl: WebGLRenderingContext, type: GLenum, source: string) {
   const shader = gl.createShader(type);
   if (!shader) {
     return null;
@@ -241,9 +245,9 @@ const compile = (gl: WebGLRenderingContext, type: GLenum, source: string) => {
     return null;
   }
   return shader;
-};
+}
 
-const createTexture = (gl: WebGLRenderingContext) => {
+function createTexture(gl: WebGLRenderingContext) {
   const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
@@ -251,9 +255,9 @@ const createTexture = (gl: WebGLRenderingContext) => {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   return texture;
-};
+}
 
-const createRenderer = (
+function createRenderer(
   gl: WebGLRenderingContext,
   {
     field,
@@ -264,7 +268,7 @@ const createRenderer = (
     colorField: string | undefined;
     specs: readonly UniformSpec[];
   }
-): Renderer | null => {
+): Renderer | null {
   const vertex = compile(gl, gl.VERTEX_SHADER, VERTEX_SHADER);
   const fragment = compile(
     gl,
@@ -298,7 +302,9 @@ const createRenderer = (
   gl.enableVertexAttribArray(position);
   gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
 
-  const location = (name: string) => gl.getUniformLocation(program, name);
+  function location(name: string) {
+    return gl.getUniformLocation(program, name);
+  }
   const uResolution = location("u_resolution");
   const uTime = location("u_time");
   const uLevels = location("u_levels");
@@ -388,7 +394,7 @@ const createRenderer = (
       gl.uniform1f(uPaletteSize, colors.length);
     },
   };
-};
+}
 
 /**
  * Browsers cap live WebGL contexts (Chrome drops the oldest past 16), so
@@ -411,12 +417,12 @@ interface ContextSlot {
 
 const slots = new Set<ContextSlot>();
 
-const activate = (slot: ContextSlot, active: boolean) => {
+function activate(slot: ContextSlot, active: boolean) {
   slot.active = active;
   slot.setActive(active);
-};
+}
 
-const leastRecent = (candidates: Iterable<ContextSlot>) => {
+function leastRecent(candidates: Iterable<ContextSlot>) {
   let oldest: ContextSlot | null = null;
   for (const slot of candidates) {
     if (!oldest || slot.lastSeen < oldest.lastSeen) {
@@ -424,9 +430,9 @@ const leastRecent = (candidates: Iterable<ContextSlot>) => {
     }
   }
   return oldest;
-};
+}
 
-const requestContext = (slot: ContextSlot) => {
+function requestContext(slot: ContextSlot) {
   if (slot.active) {
     return;
   }
@@ -440,9 +446,9 @@ const requestContext = (slot: ContextSlot) => {
     activate(victim, false);
   }
   activate(slot, true);
-};
+}
 
-const releaseContext = (slot: ContextSlot) => {
+function releaseContext(slot: ContextSlot) {
   if (!slot.active) {
     return;
   }
@@ -454,13 +460,14 @@ const releaseContext = (slot: ContextSlot) => {
   if (next) {
     activate(next, true);
   }
-};
+}
 
-const hasOnScreenWaiter = () =>
-  [...slots].some((other) => other.onScreen && other.near && !other.active);
+function hasOnScreenWaiter() {
+  return [...slots].some((other) => other.onScreen && other.near && !other.active);
+}
 
 /** Holds a slot in the shared context budget while `ref` is near the viewport. */
-const useContextSlot = (ref: RefObject<Element | null>): boolean => {
+function useContextSlot(ref: RefObject<Element | null>): boolean {
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -511,7 +518,7 @@ const useContextSlot = (ref: RefObject<Element | null>): boolean => {
   }, [ref]);
 
   return active;
-};
+}
 
 export interface DitherShaderProps extends Omit<
   ComponentProps<"div">,
@@ -570,8 +577,9 @@ export interface DitherShaderProps extends Omit<
 
 const NO_UNIFORMS: DitherUniforms = {};
 
-const clampLevels = (levels: number) =>
-  Math.min(256, Math.max(2, Math.round(levels)));
+function clampLevels(levels: number) {
+  return Math.min(256, Math.max(2, Math.round(levels)));
+}
 
 const CANVAS_CLASS =
   "absolute top-0 left-0 block opacity-100 transition-opacity duration-700 ease-out [image-rendering:pixelated] group-data-[state=fallback]/dither:opacity-0 group-data-[state=fallback]/dither:duration-0 motion-reduce:transition-none";
@@ -583,7 +591,7 @@ const CANVAS_CLASS =
  * and shows `fallback` without WebGL or while far offscreen. `data-state`
  * reports `fallback`, `running`, `paused` or `static`.
  */
-export const DitherShader = ({
+export function DitherShader({
   field,
   colorField,
   uniforms = NO_UNIFORMS,
@@ -600,10 +608,10 @@ export const DitherShader = ({
   "aria-hidden": ariaHidden = true,
   ref,
   ...props
-}: DitherShaderProps) => {
+}: DitherShaderProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   // The root is ours and the caller's: keep both refs pointing at it.
-  const setRoot = (node: HTMLDivElement | null) => {
+  function setRoot(node: HTMLDivElement | null) {
     rootRef.current = node;
     if (typeof ref === "function") {
       return ref(node);
@@ -611,7 +619,7 @@ export const DitherShader = ({
     if (ref) {
       ref.current = node;
     }
-  };
+  }
   const rendererRef = useRef<Renderer | null>(null);
   const sizeRef = useRef({ columns: 0, rows: 0 });
   const timeRef = useRef(stillTime);
@@ -625,12 +633,12 @@ export const DitherShader = ({
   const specs = uniformSpecs(uniforms);
   const specKey = specs.map(({ name, size }) => `${name}:${size}`).join(",");
 
-  const markFrame = (drawn: boolean) => {
+  function markFrame(drawn: boolean) {
     if (hasFrameRef.current !== drawn) {
       hasFrameRef.current = drawn;
       setHasFrame(drawn);
     }
-  };
+  }
 
   // Everything a draw reads, kept current without restarting effects.
   const live = useRef({
@@ -705,20 +713,24 @@ export const DitherShader = ({
     }
     root.appendChild(canvas);
 
-    const resolvePalette = () =>
-      live.current.paletteKey
+    function resolvePalette() {
+      if (!root) return [];
+      return live.current.paletteKey
         .split("|")
         .map((color) => resolveColor(color, root));
+    }
 
-    const build = () => {
+    function build() {
+      if (!gl) return;
       rendererRef.current?.dispose();
       const renderer = createRenderer(gl, { colorField, field, specs });
       rendererRef.current = renderer;
       renderer?.setMatrix(live.current.map);
       renderer?.setPalette(resolvePalette());
-    };
+    }
 
-    const resize = () => {
+    function resize() {
+      if (!root) return;
       const dpr = window.devicePixelRatio || 1;
       const cssCell = cell ?? readDitherCell(root);
       // Whole device pixels per cell, so every cell is the same size.
@@ -739,21 +751,21 @@ export const DitherShader = ({
       canvas.style.width = `${columns * snapped}px`;
       canvas.style.height = `${rows * snapped}px`;
       drawRef.current?.();
-    };
+    }
 
-    const onThemeChange = () => {
+    function onThemeChange() {
       rendererRef.current?.setPalette(resolvePalette());
       drawRef.current?.();
-    };
-    const onContextLost = (event: Event) => {
+    }
+    function onContextLost(event: Event) {
       event.preventDefault();
       rendererRef.current = null;
       markFrame(false);
-    };
-    const onContextRestored = () => {
+    }
+    function onContextRestored() {
       build();
       drawRef.current?.();
-    };
+    }
 
     build();
     resize();
@@ -824,4 +836,4 @@ export const DitherShader = ({
       </div>
     </div>
   );
-};
+}

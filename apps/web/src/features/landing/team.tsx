@@ -11,7 +11,7 @@ import zakiPhoto from "../../../public/members/zaki.webp";
 const photos = [nadyaPhoto, ariqPhoto, zakiPhoto, akmalPhoto, falifPhoto];
 
 export function Team({ t }: { t: Dictionary["landing"] }) {
-  const members = t.team.members.map(function addPhoto(member, index) {
+  const members = t.team.members.map((member, index) => {
     return {
       ...member,
       photo: photos[index],

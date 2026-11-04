@@ -27,16 +27,18 @@ export interface ThresholdMap {
   readonly steps: number;
 }
 
-const fromRanks = (size: number, ranks: Uint8Array, steps: number) => ({
-  ranks,
-  size,
-  steps,
-  thresholds: Float32Array.from(ranks, (rank) => (rank + 0.5) / steps),
-});
+function fromRanks(size: number, ranks: Uint8Array, steps: number) {
+  return ({
+    ranks,
+    size,
+    steps,
+    thresholds: Float32Array.from(ranks, (rank) => (rank + 0.5) / steps),
+  });
+}
 
 // Bayer ranks: interleave the bits of (x xor y) and y, least significant
 // first, so each 2x2 block of the previous size splits into four.
-const bayerRanks = (size: number): Uint8Array => {
+function bayerRanks(size: number): Uint8Array {
   const ranks = new Uint8Array(size * size);
   for (let y = 0; y < size; y += 1) {
     for (let x = 0; x < size; x += 1) {
@@ -50,12 +52,12 @@ const bayerRanks = (size: number): Uint8Array => {
     }
   }
   return ranks;
-};
+}
 
-const decodeBase64 = (value: string): Uint8Array => {
+function decodeBase64(value: string): Uint8Array {
   const binary = atob(value);
   return Uint8Array.from(binary, (char) => char.codePointAt(0) ?? 0);
-};
+}
 
 export const BAYER_2: ThresholdMap = fromRanks(2, bayerRanks(2), 4);
 export const BAYER_4: ThresholdMap = fromRanks(4, bayerRanks(4), 16);
@@ -68,7 +70,7 @@ export const BLUE_NOISE_64: ThresholdMap = fromRanks(
   256
 );
 
-export const getThresholdMap = (matrix: DitherMatrix): ThresholdMap => {
+export function getThresholdMap(matrix: DitherMatrix): ThresholdMap {
   switch (matrix) {
     case "bayer2": {
       return BAYER_2;
@@ -87,21 +89,24 @@ export const getThresholdMap = (matrix: DitherMatrix): ThresholdMap => {
       return exhaustive;
     }
   }
-};
+}
 
-const wrap = (value: number, size: number) =>
-  ((Math.floor(value) % size) + size) % size;
+function wrap(value: number, size: number) {
+  return ((Math.floor(value) % size) + size) % size;
+}
 
 /** The threshold in (0, 1) at cell (x, y). Coordinates wrap. */
-export const thresholdAt = (matrix: DitherMatrix, x: number, y: number) => {
+export function thresholdAt(matrix: DitherMatrix, x: number, y: number) {
   const map = getThresholdMap(matrix);
   return map.thresholds[wrap(y, map.size) * map.size + wrap(x, map.size)] ?? 0;
-};
+}
 
 /** Whether a cell is inked for a tone in [0, 1]. */
-export const isInked = (
+export function isInked(
   matrix: DitherMatrix,
   x: number,
   y: number,
   tone: number
-) => tone > thresholdAt(matrix, x, y);
+) {
+  return tone > thresholdAt(matrix, x, y);
+}

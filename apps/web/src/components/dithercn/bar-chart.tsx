@@ -71,8 +71,9 @@ export interface BarChartProps<T>
   format?: ValueFormat;
 }
 
-const fillId = (uid: string, seriesIndex: number) =>
-  `${uid}-bar-${seriesIndex}`;
+function fillId(uid: string, seriesIndex: number) {
+  return `${uid}-bar-${seriesIndex}`;
+}
 
 /** Widest a single bar gets, so wide charts keep air between bars. */
 const MAX_BAR = 36;
@@ -86,19 +87,23 @@ const FADE = 0.7;
 const FLOOR = 0.125;
 
 const PERCENT_SCALE: Scale = { max: 100, min: 0, ticks: [0, 25, 50, 75, 100] };
-const formatPercent = (value: number) => `${Math.round(value)}%`;
+function formatPercent(value: number) {
+  return `${Math.round(value)}%`;
+}
 
-const Swatch = ({ color }: { color: DitherColor }) => (
-  <svg aria-hidden="true" width={10} height={10} className="shrink-0">
-    <rect width={10} height={10} fill={cssColor(color)} opacity={0.4} />
-    <rect width={10} height={CAP} fill={cssColor(color)} />
-  </svg>
-);
+function Swatch({ color }: { color: DitherColor }) {
+  return (
+    <svg aria-hidden="true" width={10} height={10} className="shrink-0">
+      <rect width={10} height={10} fill={cssColor(color)} opacity={0.4} />
+      <rect width={10} height={CAP} fill={cssColor(color)} />
+    </svg>
+  );
+}
 
-const resolveHighlight = (
+function resolveHighlight(
   highlight: NonNullable<BarChartProps<unknown>["highlight"]>,
   totals: readonly number[]
-): number | null => {
+): number | null {
   if (totals.length === 0 || highlight === "none") {
     return null;
   }
@@ -109,7 +114,7 @@ const resolveHighlight = (
     return totals.indexOf(Math.max(...totals));
   }
   return highlight >= 0 && highlight < totals.length ? highlight : null;
-};
+}
 
 interface Bar {
   key: string;
@@ -125,7 +130,7 @@ interface Bar {
  * default `gradient` fill a bar is densest at its top and thins toward
  * the axis. The highlighted bar, or the scrubbed one, fills in solid.
  */
-export const BarChart = <T,>({
+export function BarChart<T,>({
   data,
   x,
   series,
@@ -145,7 +150,7 @@ export const BarChart = <T,>({
   animate = true,
   format,
   ...props
-}: BarChartProps<T>) => {
+}: BarChartProps<T>) {
   const stacked = layout !== "grouped";
   const formatValue = useMemo(() => toFormatter(format), [format]);
   const { values, totals, scale } = useMemo(() => {
@@ -192,19 +197,19 @@ export const BarChart = <T,>({
   }, [layout, data, series, colors, formatValue, values]);
 
   // The value written above a bar: the tallest in a group, or the stack's total.
-  const peakAt = (index: number | null) => {
+  function peakAt(index: number | null) {
     if (index === null) {
       return 0;
     }
     return layout === "grouped"
       ? Math.max(...(values[index] ?? [0]))
       : (totals[index] ?? 0);
-  };
+  }
 
-  const barsAt = (
+  function barsAt(
     index: number,
     { band, xAt, yAt }: Pick<ChartContext, "band" | "xAt" | "yAt">
-  ): Bar[] => {
+  ): Bar[] {
     const row = values[index] ?? [];
     const zero = yAt(0);
     if (stacked) {
@@ -251,16 +256,17 @@ export const BarChart = <T,>({
         y: Math.min(base, end),
       };
     });
-  };
+  }
 
   // A gradient is anchored at each bar's own top, so every bar gets a
   // light clone of its series' ramp that only moves the origin.
-  const barFill = (uid: string, bar: Bar, index: number) =>
-    fill === "gradient"
+  function barFill(uid: string, bar: Bar, index: number) {
+    return fill === "gradient"
       ? `url(#${uid}-b${index}-${bar.seriesIndex})`
       : `url(#${fillId(uid, bar.seriesIndex)})`;
+  }
 
-  const marks = (context: ChartContext) => {
+  function marks(context: ChartContext) {
     const {
       uid,
       cell: px,
@@ -408,29 +414,31 @@ export const BarChart = <T,>({
         )}
       </>
     );
-  };
+  }
 
   // The scrubbed column fills in solid, fading up over the dither.
-  const activeMarks = (index: number, context: ChartContext) => (
-    <g
-      key={index}
-      clipPath={`url(#${context.uid}-bar-clip)`}
-      className="opacity-100 transition-opacity duration-150 ease-out motion-reduce:transition-none starting:opacity-0"
-    >
-      {barsAt(index, context).map((bar) => (
-        <rect
-          key={bar.key}
-          x={bar.x}
-          y={bar.y}
-          width={bar.width}
-          height={bar.height}
-          fill={cssColor(context.colorOf(bar.seriesIndex))}
-          opacity={context.opacityOf(bar.seriesIndex)}
-          shapeRendering="crispEdges"
-        />
-      ))}
-    </g>
-  );
+  function activeMarks(index: number, context: ChartContext) {
+    return (
+      <g
+        key={index}
+        clipPath={`url(#${context.uid}-bar-clip)`}
+        className="opacity-100 transition-opacity duration-150 ease-out motion-reduce:transition-none starting:opacity-0"
+      >
+        {barsAt(index, context).map((bar) => (
+          <rect
+            key={bar.key}
+            x={bar.x}
+            y={bar.y}
+            width={bar.width}
+            height={bar.height}
+            fill={cssColor(context.colorOf(bar.seriesIndex))}
+            opacity={context.opacityOf(bar.seriesIndex)}
+            shapeRendering="crispEdges"
+          />
+        ))}
+      </g>
+    );
+  }
 
   return (
     <CartesianChart
@@ -465,4 +473,4 @@ export const BarChart = <T,>({
       {marks}
     </CartesianChart>
   );
-};
+}

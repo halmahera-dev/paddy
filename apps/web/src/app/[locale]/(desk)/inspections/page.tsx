@@ -8,7 +8,7 @@ import { PageHeader } from "@/features/shell/components/page-header";
 import { getDictionary, toLocale } from "@/lib/i18n";
 
 export default function InspectionsPage({ params }: PageProps<"/[locale]/inspections">) {
-  return params.then(function renderInspections({ locale: rawLocale }) {
+  return params.then(({ locale: rawLocale }) => {
     const locale = toLocale(rawLocale);
     return (
       <>

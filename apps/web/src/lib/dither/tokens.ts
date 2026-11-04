@@ -68,20 +68,21 @@ export const DEFAULT_PALETTE = [
   "--dither-ink",
 ] as const satisfies DitherPalette;
 
-const isColorName = (value: string): value is DitherColorName =>
-  Object.hasOwn(DITHER_COLORS, value);
+function isColorName(value: string): value is DitherColorName {
+  return Object.hasOwn(DITHER_COLORS, value);
+}
 
 /**
  * A CSS colour for any `DitherColor`: `"green"` becomes
  * `"var(--dither-color-green, <fallback>)"`, `"--chart-1"` becomes `"var(--chart-1)"`,
  * and anything else passes through.
  */
-export const cssColor = (value: DitherColor): string => {
+export function cssColor(value: DitherColor): string {
   if (isColorName(value)) {
     return `var(${DITHER_COLORS[value]}, ${FALLBACKS[value]})`;
   }
   return value.startsWith("--") ? `var(${value})` : value;
-};
+}
 
 /**
  * Motion tokens shared by every component: one ease-out curve and three

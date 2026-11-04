@@ -14,7 +14,7 @@ export function Faq({ t }: { t: Dictionary["landing"] }) {
       <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-8 lg:grid-cols-3 lg:gap-16">
         <SectionHeading title={t.faq.title}>{t.faq.lead}</SectionHeading>
         <Accordion className="lg:col-span-2">
-          {t.faq.items.map(function renderQuestion(item) {
+          {t.faq.items.map((item) => {
             return (
               <AccordionItem key={item.question} value={item.question}>
                 <AccordionTrigger>{item.question}</AccordionTrigger>

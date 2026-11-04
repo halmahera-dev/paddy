@@ -38,13 +38,13 @@ export const metadata: Metadata = {
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return locales.map(function toParams(locale) {
+  return locales.map((locale) => {
     return { locale };
   });
 }
 
 export default function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {
-  return params.then(function renderLayout({ locale }) {
+  return params.then(({ locale }) => {
     if (!hasLocale(locale)) {
       notFound();
     }

@@ -47,7 +47,7 @@ export function InterferogramLayer({ pair }: { pair: InterferogramPair }) {
   }, [map, isLoaded, pair]);
 
   useEffect(() => {
-    return function removeInterferogram() {
+    return () => {
       if (!map?.getStyle()) {
         return;
       }

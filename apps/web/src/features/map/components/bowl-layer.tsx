@@ -24,7 +24,7 @@ function circle(center: [number, number], radiusM: number) {
   const [longitude, latitude] = center;
   const latitudeRadius = radiusM / metersPerDegree;
   const longitudeRadius = latitudeRadius / Math.cos((latitude * Math.PI) / 180);
-  const ring = Array.from({ length: circleSteps + 1 }, function toPoint(_, step) {
+  const ring = Array.from({ length: circleSteps + 1 }, (_, step) => {
     const angle = (step / circleSteps) * Math.PI * 2;
     return [longitude + longitudeRadius * Math.cos(angle), latitude + latitudeRadius * Math.sin(angle)];
   });
@@ -114,7 +114,7 @@ export function BowlLayer({
   }, [map, isLoaded, bowls, years, withBan]);
 
   useEffect(() => {
-    return function removeBowls() {
+    return () => {
       if (!map?.getStyle()) {
         return;
       }

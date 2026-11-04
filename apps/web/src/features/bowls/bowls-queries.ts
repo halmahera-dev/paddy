@@ -39,11 +39,11 @@ export function getBowlSeries(bowlId: string) {
   return seed.bowls.find((bowl) => bowl.id === bowlId)?.series ?? null;
 }
 
-export const getBowls = cache(async function getBowls(): Promise<Bowl[]> {
+async function loadBowls(): Promise<Bowl[]> {
   const rows = await db.select().from(inspection);
   const rowByBowlId = new Map(rows.map((row) => [row.bowlId, row]));
 
-  return getPublicBowls().map(function withInspection(bowl) {
+  return getPublicBowls().map((bowl) => {
     const row = rowByBowlId.get(bowl.id);
     return {
       ...bowl,
@@ -54,7 +54,9 @@ export const getBowls = cache(async function getBowls(): Promise<Bowl[]> {
       note: row?.note ?? null,
     };
   });
-});
+}
+
+export const getBowls = cache(loadBowls);
 
 export async function getBowl(bowlId: string) {
   const bowls = await getBowls();

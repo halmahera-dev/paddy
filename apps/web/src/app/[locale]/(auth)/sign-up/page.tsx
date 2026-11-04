@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default function SignUpPage({ params }: PageProps<"/[locale]/sign-up">) {
-  return params.then(function renderSignUp({ locale }) {
+  return params.then(({ locale }) => {
     const t = getDictionary(toLocale(locale));
     return (
       <div className="space-y-8">

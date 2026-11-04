@@ -10,7 +10,7 @@ export async function InspectionBoard({ locale }: { locale: Locale }) {
   const t = dictionary.bowls;
   const bowls = (await getBowls()).filter((bowl) => bowl.status !== "dismissed");
   const visitTextByBowlId = Object.fromEntries(
-    bowls.flatMap(function toVisitText(bowl) {
+    bowls.flatMap((bowl) => {
       if (!bowl.assignee || !bowl.visitDate) {
         return [];
       }

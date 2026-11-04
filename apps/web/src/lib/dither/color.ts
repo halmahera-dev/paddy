@@ -10,7 +10,7 @@ const DEFAULT_CELL = 3;
 
 let probe: CanvasRenderingContext2D | null = null;
 
-const getProbe = () => {
+function getProbe() {
   if (!probe) {
     const canvas = document.createElement("canvas");
     canvas.width = 1;
@@ -18,7 +18,7 @@ const getProbe = () => {
     probe = canvas.getContext("2d", { willReadFrequently: true });
   }
   return probe;
-};
+}
 
 /**
  * Resolve a colour to sRGB. CSS variables resolve in the context of `el`
@@ -26,7 +26,7 @@ const getProbe = () => {
  * the browser understands works, including oklch, because the colour is
  * painted into a 1x1 canvas and read back.
  */
-export const resolveColor = (value: DitherColor, el?: Element | null): Rgba => {
+export function resolveColor(value: DitherColor, el?: Element | null): Rgba {
   const host = el ?? document.documentElement;
   const span = document.createElement("span");
   span.style.color = cssColor(value);
@@ -44,16 +44,16 @@ export const resolveColor = (value: DitherColor, el?: Element | null): Rgba => {
   context.fillRect(0, 0, 1, 1);
   const [r = 0, g = 0, b = 0, a = 0] = context.getImageData(0, 0, 1, 1).data;
   return [r / 255, g / 255, b / 255, a / 255];
-};
+}
 
 /** The dither cell size in CSS pixels, read from `--dither-cell` on `el`. */
-export const readDitherCell = (el?: Element | null): number => {
+export function readDitherCell(el?: Element | null): number {
   const host = el ?? document.documentElement;
   const value = Number.parseFloat(
     getComputedStyle(host).getPropertyValue("--dither-cell")
   );
   return Number.isFinite(value) && value > 0 ? value : DEFAULT_CELL;
-};
+}
 
 const themeListeners = new Set<() => void>();
 let themeObserver: MutationObserver | null = null;
@@ -63,7 +63,7 @@ let themeObserver: MutationObserver | null = null;
  * how next-themes and most theme switchers swap palettes. One observer is
  * shared by every subscriber. Returns the unsubscribe function.
  */
-export const subscribeToTheme = (listener: () => void): (() => void) => {
+export function subscribeToTheme(listener: () => void): (() => void) {
   themeListeners.add(listener);
   if (!themeObserver) {
     themeObserver = new MutationObserver(() => {
@@ -83,7 +83,7 @@ export const subscribeToTheme = (listener: () => void): (() => void) => {
       themeObserver = null;
     }
   };
-};
+}
 
 const DEFAULT_NAMES = ["--dither-ink", "--dither-paper"] as const;
 
@@ -116,8 +116,9 @@ export function useDitherColors(
 
   useEffect(() => {
     const list = key === "" ? [] : key.split("|");
-    const read = () =>
-      setColors(list.map((name) => resolveColor(name, el?.current)));
+    function read() {
+      return setColors(list.map((name) => resolveColor(name, el?.current)));
+    }
     read();
     return subscribeToTheme(read);
   }, [el, key]);

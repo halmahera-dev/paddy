@@ -26,7 +26,7 @@ export function Hero({
       <div className="pointer-events-none relative z-10 mx-auto flex max-w-6xl items-center px-4 pt-2 pb-8 sm:px-8 lg:min-h-160 lg:pt-32 lg:pb-12">
         <div data-hero-text className="pointer-events-auto grid justify-items-start gap-6 lg:w-[30rem]">
           <h1 className="relative type-display-xl text-balance">
-            {headline.split(" ").map(function renderWord(word, index) {
+            {headline.split(" ").map((word, index) => {
               return (
                 <React.Fragment key={index}>
                   {index > 0 && " "}

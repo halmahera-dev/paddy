@@ -30,7 +30,7 @@ export function BowlActions({
   const [isMoving, startMoving] = useTransition();
 
   function move(nextStatus: "lead" | "dismissed") {
-    startMoving(async function runMove() {
+    startMoving(async () => {
       const result = await moveBowl({ bowlId: bowl.id, status: nextStatus });
       if (!result.ok) {
         toast.error(result.error);

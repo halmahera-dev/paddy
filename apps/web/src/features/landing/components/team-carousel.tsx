@@ -21,7 +21,7 @@ export function TeamCarousel({ members, chooseLabel }: { members: Member[]; choo
 
   const isPaused = isPointerInside || isFocusInside || !isInView;
 
-  useEffect(function pauseWhenOffscreen() {
+  useEffect(() => {
     const list = listRef.current;
     if (!list) return;
     const observer = new IntersectionObserver(([entry]) => setIsInView(entry.isIntersecting), {
@@ -33,7 +33,7 @@ export function TeamCarousel({ members, chooseLabel }: { members: Member[]; choo
 
   // On phones the row scrolls sideways, so keep the focused portrait visible.
   useEffect(
-    function scrollActiveIntoRow() {
+    () => {
       const list = listRef.current;
       const item = list?.children[activeIndex];
       if (!list || !item || list.scrollWidth <= list.clientWidth) return;
@@ -56,7 +56,7 @@ export function TeamCarousel({ members, chooseLabel }: { members: Member[]; choo
     <div
       className="mx-auto max-w-6xl"
       onFocusCapture={() => setIsFocusInside(true)}
-      onBlurCapture={function resumeWhenFocusLeaves(event) {
+      onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setIsFocusInside(false);
       }}
     >
@@ -66,7 +66,7 @@ export function TeamCarousel({ members, chooseLabel }: { members: Member[]; choo
         onPointerLeave={() => setIsPointerInside(false)}
         className="flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-4 sm:scroll-px-8 sm:px-8 lg:h-112 lg:overflow-visible lg:pb-0"
       >
-        {members.map(function renderMember(member, index) {
+        {members.map((member, index) => {
           return (
             <li
               key={member.name}
@@ -106,7 +106,7 @@ export function TeamCarousel({ members, chooseLabel }: { members: Member[]; choo
         data-paused={isPaused}
         className="mt-6 flex justify-center"
       >
-        {members.map(function renderIndicator(member, index) {
+        {members.map((member, index) => {
           const isActive = index === activeIndex;
           return (
             <button

@@ -16,7 +16,7 @@ export function Problem({ t }: { t: Dictionary["landing"] }) {
         </Reveal>
 
         <Reveal as="ol" className="mt-8 grid gap-8 md:grid-cols-3 md:gap-12">
-          {t.problem.facts.map(function renderFact(fact, index) {
+          {t.problem.facts.map((fact, index) => {
             return (
               <li key={fact.name} className="grid content-start gap-2">
                 <p className="type-label-mono text-muted-foreground">

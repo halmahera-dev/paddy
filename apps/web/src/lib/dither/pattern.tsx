@@ -17,7 +17,7 @@ const pathCache = new Map<string, string>();
  * One SVG path covering the inked cells of one matrix tile, in cell units.
  * Runs of neighbouring cells in a row merge into one rectangle.
  */
-export const ditherPath = (level: number, matrix: DitherMatrix = "bayer4") => {
+export function ditherPath(level: number, matrix: DitherMatrix = "bayer4") {
   const key = `${matrix}:${level}`;
   const cached = pathCache.get(key);
   if (cached !== undefined) {
@@ -39,7 +39,7 @@ export const ditherPath = (level: number, matrix: DitherMatrix = "bayer4") => {
   }
   pathCache.set(key, path);
   return path;
-};
+}
 
 export interface DitherMaskOptions {
   /** Threshold matrix. Default `"bayer4"`. */
@@ -56,16 +56,16 @@ export interface DitherMaskOptions {
  * A CSS `mask-image` value: one matrix tile with the cells below `level`
  * filled. Paint the element with the ink colour and mask it.
  */
-export const ditherMask = (
+export function ditherMask(
   level: number,
   { matrix = "bayer4", cell }: DitherMaskOptions = {}
-) => {
+) {
   const { size } = getThresholdMap(matrix);
   const dimensions =
     cell === undefined ? "" : ` width="${size * cell}" height="${size * cell}"`;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}"${dimensions} shape-rendering="crispEdges"><path d="${ditherPath(level, matrix)}"/></svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
-};
+}
 
 export interface DitherMaskStyleOptions {
   /** Threshold matrix. Default `"bayer4"`. */
@@ -82,13 +82,13 @@ export interface DitherMaskStyleOptions {
  * <div className="bg-dither-ink" style={ditherMaskStyle(0.5)} />
  * ```
  */
-export const ditherMaskStyle = (
+export function ditherMaskStyle(
   level: number,
   {
     matrix = "bayer4",
     cell = "var(--dither-cell)",
   }: DitherMaskStyleOptions = {}
-): CSSProperties => {
+): CSSProperties {
   const { size } = getThresholdMap(matrix);
   const image = ditherMask(level, { matrix });
   const tile =
@@ -101,7 +101,7 @@ export const ditherMaskStyle = (
     maskRepeat: "repeat",
     maskSize: tile,
   };
-};
+}
 
 export interface DitherPatternProps {
   /** The id to reference, as in `fill="url(#id)"`. */
@@ -123,14 +123,14 @@ export interface DitherPatternProps {
  * and fill shapes with `url(#id)`. Colours accept CSS variables, so the
  * fill follows the theme.
  */
-export const DitherPattern = ({
+export function DitherPattern({
   id,
   level,
   matrix = "bayer4",
   cell = 3,
   color = "--dither-ink",
   background,
-}: DitherPatternProps) => {
+}: DitherPatternProps) {
   const { size } = getThresholdMap(matrix);
   const tile = size * cell;
   return (
@@ -155,4 +155,4 @@ export const DitherPattern = ({
       />
     </pattern>
   );
-};
+}

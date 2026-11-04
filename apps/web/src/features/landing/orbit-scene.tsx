@@ -127,14 +127,14 @@ export function OrbitScene({ className }: { className?: string }) {
   const inView = useInView(wrapper);
   const still = useStillness();
 
-  const draw = React.useCallback(function draw() {
+  const draw = React.useCallback(() => {
     const context = canvas.current?.getContext("2d");
     const current = scene.current;
     if (!context || !current.palette) return;
     drawScene(context, current, current.palette);
   }, []);
 
-  const kick = useLoop(function tick(dt, calm) {
+  const kick = useLoop((dt, calm) => {
     const current = scene.current;
     current.calm = calm;
     current.burnLeft = Math.max(0, current.burnLeft - dt);
@@ -170,7 +170,7 @@ export function OrbitScene({ className }: { className?: string }) {
   }, inView && !still);
 
   React.useEffect(
-    function watchLayoutAndTheme() {
+    () => {
       const wrapperNode = wrapper.current;
       const canvasNode = canvas.current;
       const probeNode = probe.current;
@@ -233,7 +233,7 @@ export function OrbitScene({ className }: { className?: string }) {
       const themeObserver = new MutationObserver(readTheme);
       themeObserver.observe(document.documentElement, { attributeFilter: ["class"] });
       wide.addEventListener("change", layout);
-      return function stopWatching() {
+      return () => {
         resizeObserver.disconnect();
         themeObserver.disconnect();
         wide.removeEventListener("change", layout);
@@ -261,15 +261,17 @@ export function OrbitScene({ className }: { className?: string }) {
   function glitchHeadline() {
     const text = wrapper.current?.parentElement?.querySelector<HTMLElement>("[data-hero-text]");
     if (!text || still) return;
+    const headline = text;
     // Remove and reflow first, so a second click restarts the burst.
-    delete text.dataset.glitch;
-    void text.offsetWidth;
-    text.dataset.glitch = "";
-    text.addEventListener("animationend", function stopGlitch(event) {
+    delete headline.dataset.glitch;
+    void headline.offsetWidth;
+    headline.dataset.glitch = "";
+    function stopGlitch(event: AnimationEvent) {
       if (event.animationName !== "glitch-burst") return;
-      delete text.dataset.glitch;
-      text.removeEventListener("animationend", stopGlitch);
-    });
+      delete headline.dataset.glitch;
+      headline.removeEventListener("animationend", stopGlitch);
+    }
+    headline.addEventListener("animationend", stopGlitch);
   }
 
   return (
@@ -318,7 +320,7 @@ function countGlyphs(share: number) {
 
 function buildGlyphs(share: number) {
   const glyphs: Glyph[] = [];
-  RINGS.forEach(function addRing(ring, ringIndex) {
+  RINGS.forEach((ring, ringIndex) => {
     const slots = Math.round(ring.glyphs * share);
     for (let slot = 0; slot < slots; slot++) {
       glyphs.push({
@@ -340,7 +342,7 @@ function buildWireframe() {
   const steps = 48;
 
   function curve(pointAt: (t: number) => Vec3) {
-    return Array.from({ length: steps + 1 }, function curvePoint(_, step) {
+    return Array.from({ length: steps + 1 }, (_, step) => {
       return rotateZ(rotateX(pointAt(step / steps), -0.35), 0.3);
     });
   }
@@ -505,7 +507,7 @@ function glyphAtlas(current: Scene, palette: Palette) {
   context.fillStyle = palette.glyph;
   context.textAlign = "center";
   context.textBaseline = "middle";
-  Array.from(CHARACTERS).forEach(function drawCharacter(character, index) {
+  Array.from(CHARACTERS).forEach((character, index) => {
     context.fillText(character, index * cell + cell / 2, cell / 2);
   });
   current.atlas = { key, canvas, cell };
@@ -525,8 +527,8 @@ function drawMoon(
   const { center, scale, pointer } = current;
   const nearMoon = Math.hypot(pointer.x - center.x, pointer.y - center.y) < scale + HOVER_REACH;
   const moonHover = nearMoon ? hover : null;
-  const curves = WIREFRAME.map(function projectCurve(curve) {
-    return curve.map(function projectPoint(point) {
+  const curves = WIREFRAME.map((curve) => {
+    return curve.map((point) => {
       const turned = onMoon(current, point);
       return { ...project(current, turned), front: turned[2] >= 0 };
     });
@@ -543,7 +545,7 @@ function drawMoon(
   strokeSide(false, 0.2);
   drawCore(context, current, palette);
   strokeSide(true, 0.7);
-  const outline = Array.from({ length: 97 }, function outlinePoint(_, step) {
+  const outline = Array.from({ length: 97 }, (_, step) => {
     const angle = (step / 96) * Math.PI * 2;
     return { x: center.x + Math.cos(angle) * scale, y: center.y + Math.sin(angle) * scale };
   });
@@ -563,12 +565,12 @@ function drawCore(context: CanvasRenderingContext2D, current: Scene, palette: Pa
   context.globalCompositeOperation = palette.additive ? "lighter" : "source-over";
   context.globalAlpha = Math.min(1, (palette.additive ? 0.4 : 0.3) + burn * 0.5);
   const haloRadius = radius * 2.4;
-  [palette.coreBrand, palette.coreIndigo].forEach(function drawHalo(stops, index) {
+  [palette.coreBrand, palette.coreIndigo].forEach((stops, index) => {
     const side = index === 0 ? 0.5 : -0.5;
     const x = center.x + towardBrand.x * side;
     const y = center.y + towardBrand.y * side;
     const halo = context.createRadialGradient(x, y, 0, x, y, haloRadius);
-    CORE_FALLOFF.forEach(function addStop([offset], stopIndex) {
+    CORE_FALLOFF.forEach(([offset], stopIndex) => {
       halo.addColorStop(offset, stops[stopIndex]!);
     });
     context.fillStyle = halo;
@@ -636,7 +638,7 @@ function strokeLine(
   context.globalAlpha = alpha;
   context.strokeStyle = palette.line;
   context.beginPath();
-  points.forEach(function addPoint(point, index) {
+  points.forEach((point, index) => {
     if (!point) return;
     if (points[index - 1]) context.lineTo(point.x, point.y);
     else context.moveTo(point.x, point.y);
@@ -648,7 +650,7 @@ function strokeLine(
   context.save();
   context.strokeStyle = hover;
   context.shadowBlur = HOVER_BLUR;
-  points.forEach(function glowSegment(point, index) {
+  points.forEach((point, index) => {
     const previous = points[index - 1];
     if (!point || !previous) return;
     const middle = { x: (point.x + previous.x) / 2, y: (point.y + previous.y) / 2 };
@@ -671,7 +673,7 @@ function readPalette(probe: HTMLElement, canvas: HTMLCanvasElement): Palette {
     return getComputedStyle(probe).color;
   }
   function falloff(value: string) {
-    return CORE_FALLOFF.map(function stopColor([, opacity]) {
+    return CORE_FALLOFF.map(([, opacity]) => {
       return color(`color-mix(in oklab, ${value} ${opacity}%, transparent)`);
     });
   }

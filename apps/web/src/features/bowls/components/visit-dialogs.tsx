@@ -37,7 +37,7 @@ function useSave(onOpenChange: (open: boolean) => void, savedMessage: string) {
   const [isSaving, startSaving] = useTransition();
 
   function save(action: () => Promise<{ ok: true } | { ok: false; error: string }>) {
-    startSaving(async function runAction() {
+    startSaving(async () => {
       const result = await action();
       if (!result.ok) {
         toast.error(result.error);

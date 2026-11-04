@@ -70,7 +70,7 @@ function RankChange({ bowl, kind, text }: { bowl: Bowl; kind: ChangeKind; text: 
 
 function meanByIndex(seriesList: { mm: number }[][]) {
   const length = Math.min(...seriesList.map((series) => series.length));
-  return Array.from({ length }, function meanAt(_, index) {
+  return Array.from({ length }, (_, index) => {
     const total = seriesList.reduce((sum, series) => sum + series[index].mm, 0);
     return Math.round(total / seriesList.length);
   });
@@ -93,7 +93,7 @@ export async function TodayOverview({ locale }: { locale: Locale }) {
   const nextPassDate = new Date(Date.parse(latestPassDate) + passIntervalDays * 86_400_000);
   const nextPassTemplate = nextPassDate.getTime() > Date.now() ? t.nextPassFuture : t.nextPassLate;
 
-  const seriesList = activeBowls.flatMap(function toSeries(bowl) {
+  const seriesList = activeBowls.flatMap((bowl) => {
     const series = getBowlSeries(bowl.id);
     return series ? [series] : [];
   });
@@ -106,7 +106,7 @@ export async function TodayOverview({ locale }: { locale: Locale }) {
     (_, passIndex) => activeBowls.filter((bowl) => bowl.firstSeenPass <= passIndex).length,
   );
 
-  const changes = bowls.flatMap(function toChange(bowl) {
+  const changes = bowls.flatMap((bowl) => {
     const change = describeChange(bowl, latestPassIndex, t);
     return change ? [{ bowl, ...change }] : [];
   });

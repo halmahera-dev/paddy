@@ -53,7 +53,7 @@ export interface FillPatternProps {
  * fill shapes with `url(#id)`. To reuse one ramp at several positions (one
  * per bar), reference it with `<pattern id="b2" href="#id" y={top} />`.
  */
-export const FillPattern = ({
+export function FillPattern({
   id,
   fill,
   color = "ink",
@@ -62,7 +62,7 @@ export const FillPattern = ({
   floor = 0.0625,
   matrix = "bayer4",
   ramp,
-}: FillPatternProps) => {
+}: FillPatternProps) {
   const ink = { fill: cssColor(color) };
   if (fill === "solid") {
     return (
@@ -125,7 +125,7 @@ export const FillPattern = ({
       <path d={tile.path} transform={`scale(${cell})`} style={ink} />
     </pattern>
   );
-};
+}
 
 export interface BloomGroupProps extends ComponentProps<"g"> {
   bloom: Bloom;
@@ -135,12 +135,12 @@ export interface BloomGroupProps extends ComponentProps<"g"> {
  * An SVG group drawn as a glow: put solid copies of your shapes inside
  * and render it before (under) the real fills. Renders nothing when off.
  */
-export const BloomGroup = ({ bloom, style, ...props }: BloomGroupProps) => {
+export function BloomGroup({ bloom, style, ...props }: BloomGroupProps) {
   const layer = bloomLayerStyle(bloom);
   return layer === undefined ? null : (
     <g aria-hidden="true" {...props} style={{ ...layer, ...style }} />
   );
-};
+}
 
 export type BloomBoxProps = ComponentProps<"div"> & {
   /** Glow colour: a palette name or any CSS colour. Default `ink`. */
@@ -152,11 +152,13 @@ export type BloomBoxProps = ComponentProps<"div"> & {
  * A wrapper that glows around whatever it holds, in `color`. A CSS
  * drop-shadow, so it follows dithered cells and transparent gaps.
  */
-export const BloomBox = ({
+export function BloomBox({
   color = "ink",
   bloom,
   style,
   ...props
-}: BloomBoxProps) => (
-  <div {...props} style={{ filter: bloomFilter(color, bloom), ...style }} />
-);
+}: BloomBoxProps) {
+  return (
+    <div {...props} style={{ filter: bloomFilter(color, bloom), ...style }} />
+  );
+}

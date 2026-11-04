@@ -33,7 +33,7 @@ export function SinkingFigure({ t }: { t: Dictionary["landing"]["problem"]["figu
   const clock = useRef(0);
   const isInView = useInView(stageRef);
 
-  const kick = useLoop(function step(dt, isCalm) {
+  const kick = useLoop((dt, isCalm) => {
     clock.current += dt;
     const goal = target ?? (isCalm ? START_LEVEL : tourAt(clock.current));
     level.current = follow(level.current, goal, dt, FOLLOW_SECONDS, isCalm);
@@ -54,7 +54,7 @@ export function SinkingFigure({ t }: { t: Dictionary["landing"]["problem"]["figu
           className="iso-svg"
         >
           <path className="iso-halo" d={PARTS.halo} />
-          {PARTS.feet.map(function renderFoot(foot, index) {
+          {PARTS.feet.map((foot, index) => {
             return <Solid key={index} paths={foot} tone="lo" />;
           })}
           <Solid paths={PARTS.base} tone="lo" />
@@ -74,7 +74,7 @@ export function SinkingFigure({ t }: { t: Dictionary["landing"]["problem"]["figu
           </g>
 
           <g className="iso-solid" data-seamless="">
-            {scene.cells.map(function renderCell(cell, index) {
+            {scene.cells.map((cell, index) => {
               if (cell.kind === "water") {
                 return (
                   <path key={index} className="sinking-water" d={cell.d} />
@@ -87,7 +87,7 @@ export function SinkingFigure({ t }: { t: Dictionary["landing"]["problem"]["figu
           <Line d={scene.edges.back} tone="mid" />
           <Line d={scene.edges.right} tone="hi" />
           <g opacity={scene.crackOpacity}>
-            {scene.cracks.map(function renderCrack(crack, index) {
+            {scene.cracks.map((crack, index) => {
               return <Line key={index} d={crack} tone="mid" />;
             })}
           </g>
@@ -99,7 +99,7 @@ export function SinkingFigure({ t }: { t: Dictionary["landing"]["problem"]["figu
             <path className="fill-chart-3/10" d={scene.front.dry} />
             <path className="fill-chart-2/35" d={scene.front.wet} />
             <Dots points={PARTS.sand} size={0.45} tone="lo" />
-            {scene.front.clayLines.map(function renderClayLine(line, index) {
+            {scene.front.clayLines.map((line, index) => {
               return <Line key={index} d={line} tone="faint" />;
             })}
             <Line d={scene.front.clayLine} tone="lo" />
@@ -111,12 +111,12 @@ export function SinkingFigure({ t }: { t: Dictionary["landing"]["problem"]["figu
             <Line d={scene.front.rightEdge} tone="hi" />
             <Line d={PARTS.depthRuler.minor} tone="lo" />
             <Line d={PARTS.depthRuler.major} tone="mid" />
-            {scene.front.inflow.map(function renderInflow(line, index) {
+            {scene.front.inflow.map((line, index) => {
               return <Line key={index} d={line} tone="blue" flow free />;
             })}
           </g>
 
-          {PARTS.houses.map(function renderHouse(house, index) {
+          {PARTS.houses.map((house, index) => {
             return (
               <g key={house.key} transform={scene.houses[index]}>
                 <Solid paths={house.body} tone="mid" />
@@ -177,7 +177,7 @@ export function SinkingFigure({ t }: { t: Dictionary["landing"]["problem"]["figu
             min={0}
             max={100}
             value={facts.percent}
-            onChange={function changePumping(event) {
+            onChange={(event) => {
               setTarget(Number(event.target.value) / 100);
               kick();
             }}

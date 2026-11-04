@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default function SignInPage({ params }: PageProps<"/[locale]/sign-in">) {
-  return params.then(function renderSignIn({ locale }) {
+  return params.then(({ locale }) => {
     const t = getDictionary(toLocale(locale));
     return (
       <div className="space-y-8">

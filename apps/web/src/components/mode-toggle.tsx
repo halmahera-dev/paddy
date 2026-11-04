@@ -16,12 +16,12 @@ export function ModeToggle() {
   const { theme, setTheme } = useTheme();
 
   React.useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "D") {
         event.preventDefault();
         setTheme(theme === "dark" ? "light" : "dark");
       }
-    };
+    }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);

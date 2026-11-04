@@ -18,14 +18,14 @@ export function PassCycle({ t }: { t: Dictionary["landing"] }) {
         <SectionHeading title={t.passCycle.title} isSplit>{t.passCycle.lead}</SectionHeading>
 
         <div className="mt-12 grid gap-6">
-          {weeks.map(function renderWeek(days, weekIndex) {
+          {weeks.map((days, weekIndex) => {
             return (
               <div key={weekIndex} className="grid gap-3">
                 <p className="type-label-mono text-muted-foreground">
                   {fill(t.passCycle.week, { n: weekIndex + 1 })}
                 </p>
                 <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-7">
-                  {days.map(function renderDay(day) {
+                  {days.map((day) => {
                     const milestone = milestones[String(day) as keyof typeof milestones];
                     const isReview = reviewDays.includes(day);
                     const isHighlight = day === highlightDay;

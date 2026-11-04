@@ -95,7 +95,7 @@ export function DataTable<TData extends RowData>({
           <TableHeader>
             {table.getHeaderGroups().map((group) => (
               <TableRow key={group.id}>
-                {group.headers.map(function renderHead(header) {
+                {group.headers.map((header) => {
                   const sorted = header.column.getIsSorted();
                   const layout = columnLayout[header.column.id];
                   return (
@@ -150,7 +150,7 @@ export function DataTable<TData extends RowData>({
                     : undefined
                 }
               >
-                {row.getAllCells().map(function renderCell(cell) {
+                {row.getAllCells().map((cell) => {
                   const layout = columnLayout[cell.column.id];
                   return (
                     <TableCell

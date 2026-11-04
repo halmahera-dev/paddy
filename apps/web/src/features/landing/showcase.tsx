@@ -43,7 +43,7 @@ export function Showcase({
   const activeStep = t.showcase.steps[activeIndex];
   const { Screen, activeNav } = steps[activeIndex];
 
-  useEffect(function pauseWhenOffscreen() {
+  useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
     const observer = new IntersectionObserver(([entry]) => setIsInView(entry.isIntersecting), {
@@ -65,7 +65,7 @@ export function Showcase({
       onPointerEnter={() => setIsPointerInside(true)}
       onPointerLeave={() => setIsPointerInside(false)}
       onFocusCapture={() => setIsFocusInside(true)}
-      onBlurCapture={function resumeWhenFocusLeaves(event) {
+      onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setIsFocusInside(false);
       }}
     >
@@ -76,14 +76,14 @@ export function Showcase({
 
         <div className="mt-12 grid gap-8 lg:grid-cols-12 lg:gap-12">
           <ol data-paused={isPaused} className="grid content-start lg:col-span-5">
-            {t.showcase.steps.map(function renderStep(step, index) {
+            {t.showcase.steps.map((step, index) => {
               const isActive = index === activeIndex;
               return (
                 <li key={step.name} className="relative border-b border-border first:border-t">
                   <button
                     type="button"
                     aria-current={isActive ? "step" : undefined}
-                    onClick={function chooseStep() {
+                    onClick={() => {
                       setActiveIndex(index);
                       setIsAutoplaying(false);
                     }}
@@ -121,7 +121,7 @@ export function Showcase({
                   <AppLogo />
                   {t.brand}
                 </span>
-                {navOrder.map(function renderNavItem(key) {
+                {navOrder.map((key) => {
                   return (
                     <span
                       key={key}
@@ -197,7 +197,7 @@ function RankScreen() {
 
   return (
     <ul className="grid gap-2 p-4">
-      {bowls.map(function renderBowl(bowl, index) {
+      {bowls.map((bowl, index) => {
         const isTarget = index === 0;
         return (
           <li
@@ -264,11 +264,11 @@ function InspectScreen() {
 
   return (
     <div className="grid grid-cols-3 gap-3 p-4">
-      {columns.map(function renderColumn(column) {
+      {columns.map((column) => {
         return (
           <div key={column.title} className="grid content-start gap-2">
             <p className="type-label-mono text-muted-foreground">{column.title}</p>
-            {column.items.map(function renderItem(item) {
+            {column.items.map((item) => {
               return (
                 <p
                   key={item}

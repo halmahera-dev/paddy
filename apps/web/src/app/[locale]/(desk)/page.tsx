@@ -7,7 +7,7 @@ import { TodayOverview, TodayOverviewSkeleton } from "@/features/today/component
 import { getDictionary, toLocale } from "@/lib/i18n";
 
 export default function TodayPage({ params }: PageProps<"/[locale]">) {
-  return params.then(function renderToday({ locale: rawLocale }) {
+  return params.then(({ locale: rawLocale }) => {
     const locale = toLocale(rawLocale);
     const t = getDictionary(locale);
     return (

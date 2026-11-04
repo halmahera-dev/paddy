@@ -36,12 +36,12 @@ export function HopFigure() {
   const legs = 4;
   const centerZ = padTop + legs + 4;
   const arc = pathThrough(
-    Array.from({ length: 49 }, function arcAt(_, index): Point3 {
+    Array.from({ length: 49 }, (_, index): Point3 => {
       const t = index / 48;
       return [-PAD_X + 2 * PAD_X * t, 0, centerZ + APEX * 4 * t * (1 - t)];
     }),
   );
-  const lamps = Array.from({ length: DAYS }, function lampAt(_, index) {
+  const lamps = Array.from({ length: DAYS }, (_, index) => {
     const x = -19 + (index * 38) / (DAYS - 1);
     const reached = arc.fractions[Math.round(((x + PAD_X) / (2 * PAD_X)) * 48)];
     return { index, x, reached };
@@ -64,14 +64,14 @@ export function HopFigure() {
   const bezelTop = baseTop + 22;
   const glassBottom = baseTop + 2.5;
   const glassFace = 48.3;
-  const padLights = Array.from({ length: 6 }, function lightAt(_, index): [number, number] {
+  const padLights = Array.from({ length: 6 }, (_, index): [number, number] => {
     const angle = (index / 6) * Math.PI * 2;
     return [PAD_X + Math.cos(angle) * 6.6, Math.sin(angle) * 6.6];
   });
-  const screws = corners(moon, 6).map(function onMoon([x, y]): Point3 {
+  const screws = corners(moon, 6).map(([x, y]): Point3 => {
     return [x, y, floorTop];
   });
-  const planetIcon = Array.from({ length: 24 }, function iconAt(_, index): Point3 {
+  const planetIcon = Array.from({ length: 24 }, (_, index): Point3 => {
     const angle = (index / 24) * Math.PI * 2;
     return [glassFace, -3.6 + Math.cos(angle) * 3, glassBottom + 10.4 + Math.sin(angle) * 3];
   });
@@ -82,7 +82,7 @@ export function HopFigure() {
         <Solid paths={cylinder(x, 0, 8.4, floorTop, 1.6, P, 40, 0.3)} tone="mid" />
         <Line d={ring(x, 0, 6, padTop, P, 32)} tone="faint" />
         <Line d={ring(x, 0, 3, padTop, P, 24)} tone="faint" />
-        {[45, 135, 225, 315].map(function lug(degrees) {
+        {[45, 135, 225, 315].map((degrees) => {
           const angle = (degrees * Math.PI) / 180;
           return (
             <g key={degrees}>
@@ -112,7 +112,7 @@ export function HopFigure() {
         {[
           [-2.4, -2.4],
           [2.4, -2.4],
-        ].map(function backLeg([x, y]) {
+        ].map(([x, y]) => {
           return (
             <Solid
               key={`${x}${y}`}
@@ -143,7 +143,7 @@ export function HopFigure() {
         {[
           [-2.4, 2.4],
           [2.4, 2.4],
-        ].map(function frontLeg([x, y]) {
+        ].map(([x, y]) => {
           return (
             <Solid
               key={`${x}${y}`}
@@ -167,7 +167,7 @@ export function HopFigure() {
       {slab(moon, FLOOR, 3, "lo")}
       <Line d={planOutline(insetPlan(moon, 3), floorTop, P)} tone="faint" />
       <Dots points={pointsAt(screws, P)} size={0.45} tone="mid" />
-      {craters.map(function crater(item) {
+      {craters.map((item) => {
         return (
           <g key={`${item.x}${item.y}`}>
             <Solid
@@ -179,21 +179,21 @@ export function HopFigure() {
           </g>
         );
       })}
-      {rocks.map(function rock([x, y, r]) {
+      {rocks.map(([x, y, r]) => {
         return (
           <Solid key={`${x}${y}`} paths={G.sphereOf([x, y, floorTop + r * 0.6], r, P)} tone="lo" />
         );
       })}
       {pad(-PAD_X, "launch")}
       {pad(PAD_X, "landing")}
-      {padLights.map(function offLight([x, y]) {
+      {padLights.map(([x, y]) => {
         return (
           <Solid key={`${x}${y}`} paths={G.sphereOf([x, y, padTop + 0.4], 0.8, P)} tone="lo" />
         );
       })}
       <Line
         d={pathOf(
-          Array.from({ length: 49 }, function traceAt(_, index) {
+          Array.from({ length: 49 }, (_, index) => {
             const t = index / 48;
             return iso([-PAD_X + 2 * PAD_X * t, 0, centerZ + APEX * 4 * t * (1 - t)], P);
           }),
@@ -201,7 +201,7 @@ export function HopFigure() {
         tone="faint"
         dotted
       />
-      {lamps.map(function renderLamp(lamp) {
+      {lamps.map((lamp) => {
         return (
           <g key={lamp.index}>
             <Solid paths={cylinder(lamp.x, 0, 0.6, floorTop, 3, P, 10)} tone="mid" crease="none" />
@@ -237,7 +237,7 @@ export function HopFigure() {
         tone="lo"
       />
       <g className="hts-sprint">
-        {lamps.map(function renderLit(lamp) {
+        {lamps.map((lamp) => {
           const style = { "--at": lamp.reached } as React.CSSProperties;
           return (
             <g key={lamp.index} className="hts-cell" style={style}>
@@ -261,7 +261,7 @@ export function HopFigure() {
               tone="hi"
             />
           </Glow>
-          {padLights.map(function onLight([x, y]) {
+          {padLights.map(([x, y]) => {
             return (
               <Solid key={`${x}${y}`} paths={G.sphereOf([x, y, padTop + 0.4], 0.8, P)} tone="hi" />
             );
@@ -274,7 +274,7 @@ export function HopFigure() {
       <Line d={faceBox("x", glassFace, -5, 5, glassBottom + 14, glassBottom + 16)} tone="lo" />
       <Line
         d={pathOf(
-          planetIcon.map(function project(point) {
+          planetIcon.map((point) => {
             return iso(point, P);
           }),
           true,

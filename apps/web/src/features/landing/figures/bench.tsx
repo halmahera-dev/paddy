@@ -64,7 +64,7 @@ export function faceBox(
           [fixed, from, top],
         ];
   return pathOf(
-    corners.map(function project(point) {
+    corners.map((point) => {
       return iso(point, P);
     }),
     true,
@@ -72,7 +72,7 @@ export function faceBox(
 }
 
 export function pathThrough(points: Point3[]) {
-  const flat = points.map(function project(point) {
+  const flat = points.map((point) => {
     return iso(point, P);
   });
   const lengths = [0];
@@ -86,7 +86,7 @@ export function pathThrough(points: Point3[]) {
   const total = lengths[lengths.length - 1];
   return {
     d: pathOf(flat),
-    fractions: lengths.map(function fractionOf(length) {
+    fractions: lengths.map((length) => {
       return length / total;
     }),
   };
@@ -133,7 +133,7 @@ export function Bench({
   label: string;
   children: React.ReactNode;
 }) {
-  const screws = corners(BENCH, 8).map(function onFloor([x, y]): Point3 {
+  const screws = corners(BENCH, 8).map(([x, y]): Point3 => {
     return [x, y, FLOOR];
   });
   const paint = {

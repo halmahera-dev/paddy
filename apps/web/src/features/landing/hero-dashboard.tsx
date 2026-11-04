@@ -32,7 +32,7 @@ export function HeroDashboard({ nav }: { nav: Dictionary["nav"] }) {
               <AppLogo />
               LANDAS
             </p>
-            {items.map(function renderItem(item) {
+            {items.map((item) => {
               return (
                 <p
                   key={item.title}

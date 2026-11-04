@@ -9,7 +9,7 @@ export function DataStaysYours({ t }: { t: Dictionary["landing"] }) {
         <div>
           <SectionHeading title={t.data.title}>{t.data.lead}</SectionHeading>
           <ul className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2">
-            {t.data.claims.map(function renderClaim(claim) {
+            {t.data.claims.map((claim) => {
               return (
                 <li key={claim.name} className="grid content-start gap-1 border-t pt-4">
                   <p className="font-medium">{claim.name}</p>
@@ -29,7 +29,7 @@ export function DataStaysYours({ t }: { t: Dictionary["landing"] }) {
       <div className="mx-auto mt-16 max-w-6xl px-4 sm:px-8">
         <p className="type-label-mono text-muted-foreground">{t.data.stackLabel}</p>
         <ul className="mt-4 flex flex-wrap gap-x-10 gap-y-3 font-heading text-xl font-medium tracking-tight text-faint-foreground">
-          {t.data.stack.map(function renderTool(tool) {
+          {t.data.stack.map((tool) => {
             return <li key={tool}>{tool}</li>;
           })}
         </ul>

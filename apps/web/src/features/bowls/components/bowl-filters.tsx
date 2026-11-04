@@ -66,7 +66,7 @@ export function BowlFilters({
     setFilters(next);
     clearTimeout(searchTimer.current);
     const query = toQuery(next);
-    startTransition(function replaceUrl() {
+    startTransition(() => {
       router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
     });
   }
