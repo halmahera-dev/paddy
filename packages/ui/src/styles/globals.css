@@ -193,17 +193,6 @@
   transition-timing-function: var(--ease-in-out), var(--ease-out);
 }
 
-/* A device frame that changes between phone and laptop. */
-@utility transition-device {
-  transition-property: width, height, border-radius;
-  transition-duration: 500ms;
-  transition-timing-function: var(--ease-in-out);
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-}
-
 @utility type-display-xl {
   font-family: var(--font-heading);
   font-size: clamp(3rem, 5vw + 1.5rem, 4.5rem);
@@ -222,7 +211,7 @@
 
 @utility type-headline {
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 3vw + 1rem, 3rem);
+  font-size: clamp(2.25rem, 3.4vw + 1rem, 3.5rem);
   font-weight: 510;
   line-height: 1;
   letter-spacing: -0.022em;
@@ -386,23 +375,6 @@
   vertical-align: -0.05em;
 }
 
-/* A dot field that fades out at the edges, like a map of islands. */
-@utility dot-field {
-  background-image: radial-gradient(currentColor 1.2px, transparent 1.6px);
-  background-size: 14px 14px;
-  mask-image: radial-gradient(ellipse 70% 45% at 55% 40%, black, transparent);
-}
-
-/* A static near-white glow. A plain gradient: no blur filter, no animation, one paint. */
-@utility neutral-glow {
-  background-image: radial-gradient(
-    closest-side,
-    color-mix(in oklab, var(--color-white) 45%, transparent),
-    color-mix(in oklab, var(--color-white) 28%, transparent) 15%,
-    transparent
-  );
-}
-
 /*
  * A 1px rose and indigo ring that follows the pointer.
  * Set --glow-x and --glow-y on the element. Plain gradients: no blur filter.
@@ -472,13 +444,23 @@
     radial-gradient(circle at 18% 27%, currentColor 0.7px, transparent 1.3px),
     radial-gradient(circle at 73% 61%, currentColor 0.6px, transparent 1.2px),
     radial-gradient(circle at 41% 83%, currentColor 1px, transparent 1.6px),
-    radial-gradient(circle at 87% 12%, currentColor 0.5px, transparent 1.1px);
+    radial-gradient(circle at 87% 12%, currentColor 0.5px, transparent 1.1px),
+    radial-gradient(circle at 32% 49%, currentColor 0.6px, transparent 1.2px),
+    radial-gradient(circle at 64% 91%, currentColor 0.5px, transparent 1.1px),
+    radial-gradient(circle at 9% 68%, currentColor 0.8px, transparent 1.4px),
+    radial-gradient(circle at 55% 8%, currentColor 0.5px, transparent 1.1px),
+    radial-gradient(circle at 92% 77%, currentColor 1.2px, transparent 1.8px);
   background-size:
     131px 131px,
     197px 197px,
     283px 283px,
-    109px 109px;
-  mask-image: radial-gradient(ellipse 75% 70% at 65% 50%, black 20%, transparent);
+    109px 109px,
+    79px 79px,
+    151px 151px,
+    233px 233px,
+    89px 89px,
+    349px 349px;
+  mask-image: radial-gradient(ellipse 90% 85% at 65% 50%, black 30%, transparent);
 }
 
 /* A copy of a headline that glitches in short steps. Add glitch-mirror to flip its direction. */

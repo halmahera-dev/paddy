@@ -77,7 +77,7 @@ The type scale is a set of `type-*` utilities in `packages/ui/src/styles/globals
 | ----------------- | ------------------------------------------------ | ------------------------------------------------- |
 | `type-display-xl` | clamp 48–72px / 1 / 510 / -0.022em · Inter       | Large page hero                                   |
 | `type-display`    | clamp 40–64px / 1 / 510 / -0.022em · Inter       | Page hero. Second line in `text-muted-foreground` |
-| `type-headline`   | clamp 32–48px / 1 / 510 / -0.022em · Inter       | Section heads                                     |
+| `type-headline`   | clamp 36–56px / 1 / 510 / -0.022em · Inter       | Section heads                                     |
 | `type-title`      | 20px / 1.3 / 590 / -0.012em · Inter              | Card and block titles                             |
 | `type-lead`       | clamp 18–24px / 1.33 / 400 / -0.011em · Inter    | Intro paragraphs                                  |
 | body              | 15px / 1.6 / 400 / -0.011em · Inter              | Body copy                                         |
