@@ -23,8 +23,8 @@ export function Hero({
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 star-field text-muted-foreground opacity-60"
       />
-      <div className="pointer-events-none relative z-10 mx-auto flex max-w-6xl items-center px-4 pt-2 pb-8 sm:px-8 lg:min-h-176 lg:pt-40 lg:pb-24">
-        <div data-hero-text className="pointer-events-auto grid justify-items-start gap-6 lg:w-5/12">
+      <div className="pointer-events-none relative z-10 mx-auto flex max-w-6xl items-center px-4 pt-2 pb-8 sm:px-8 lg:min-h-160 lg:pt-32 lg:pb-12">
+        <div data-hero-text className="pointer-events-auto grid justify-items-start gap-6 lg:w-[30rem]">
           <h1 className="relative type-display-xl text-balance">
             {headline.split(" ").map(function renderWord(word, index) {
               return (
@@ -46,7 +46,18 @@ export function Hero({
               {headline}
             </span>
           </h1>
-          <p className="max-w-md rise-in type-lead text-muted-foreground">{t.hero.body}</p>
+          <p className="max-w-md rise-in type-lead text-muted-foreground">
+            {t.hero.body.before}
+            <a
+              href="https://nisar.jpl.nasa.gov/"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-xs border-b-2 border-brand/40 bg-brand/15 px-0.5 text-foreground transition-colors duration-160 ease-out hover:bg-brand/25"
+            >
+              {t.hero.body.nisar}
+            </a>
+            {t.hero.body.after}
+          </p>
           <div className="mt-2 flex rise-in flex-wrap items-center gap-3">
             <Button nativeButton={false} render={<Link href={`/${locale}/sign-in`} />}>
               {common.signIn}
@@ -56,9 +67,6 @@ export function Hero({
                 {common.tryAsGuest}
               </Button>
             </form>
-            <Button variant="link" nativeButton={false} render={<Link href="#showcase" />}>
-              {t.hero.seeWork}
-            </Button>
           </div>
         </div>
       </div>

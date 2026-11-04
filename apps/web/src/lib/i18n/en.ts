@@ -44,9 +44,12 @@ export const en = {
       faq: "FAQ",
     },
     hero: {
-      title: "Radar from orbit. Bowls on the ground.",
-      body: "LANDAS reads NISAR radar over North Jakarta and ranks the bowls where the ground sinks fastest, so regulators can send inspectors first.",
-      seeWork: "See how it works →",
+      title: "Radar for sinking ground.",
+      body: {
+        before: "",
+        nisar: "NISAR",
+        after: " radar ranks the bowls where North Jakarta sinks fastest.",
+      },
     },
     seeMap: "See the public map →",
     attribution:
@@ -57,156 +60,73 @@ export const en = {
       data: "Data",
       copyright: "© 2026 LANDAS",
     },
+    problem: {
+      title: "The ground sinks. The pumps stay hidden.",
+      lead: "North Jakarta drops several centimeters a year. Some bowls drop more than 10.",
+      figure: {
+        pumpLabel: "Pumping",
+        water: "Water left under the pump",
+        overPump: "Ground over the pump",
+        perYear: "cm a year",
+        belowSea: "Below the sea",
+        aboveSea: "Above the sea",
+        note: "An illustration with example rates. Drag the slider to run the pump.",
+        description:
+          "A cut through the ground. A pump pulls water out of the aquifer and into a tank. As the water drains, the ground above the pump sinks into a bowl, houses lean, and the bowl fills with sea water.",
+      },
+      facts: [
+        {
+          label: "Cause",
+          name: "Deep pumps empty the aquifer",
+          body: "The ground above a heavy pump settles into a bowl. Deep groundwater pumping is the main cause.",
+        },
+        {
+          label: "Gap",
+          name: "The ban is hard to enforce",
+          body: "Pumping is banned in large zones (Pergub 93/2021). Piped water reaches only about 60% of the city.",
+        },
+        {
+          label: "Blind spot",
+          name: "No city-wide view",
+          body: "Regulators cannot see where the ground still sinks, which bowls point to pumping, or when the sea reaches a street.",
+        },
+      ],
+      handoff: "Few inspectors. Many bowls. Where should they go first?",
+    },
     showcase: {
-      prefix: "LANDAS helps you",
-      and: "and",
+      title: "Follow one bowl from radar to visit.",
+      lead: "This is the regulator flow on the desk. Each step uses the same site, Bowl 04.",
+      exampleNote: "Example data. Real numbers load from NISAR jobs.",
+      stepLabel: "Step {n}",
       dataNote: "A bowl is a lead for inspection, not a name.",
       dataLink: "How we treat people and data →",
-      builds: [
+      steps: [
         {
-          label: "Map",
-          phrase: "see the sink",
-          capability: "Public map",
-          body: "Open the globe, fly to North Jakarta, and read ground motion against the sea.",
-          screenDescription: "A laptop map of North Jakarta with ground-motion colors and bowls.",
+          name: "See where it sinks",
+          body: "Open the public map. Radar colors show ground motion. One bowl glows on the north coast.",
+          screenDescription: "A map of North Jakarta with ground-motion bowls. Bowl 04 is marked.",
         },
         {
-          label: "Rank",
-          phrase: "rank the bowls",
-          capability: "Bowl list",
-          body: "Bowls are sorted by how fast they sink, so the worst sites rise to the top.",
-          screenDescription: "A phone list of ranked bowls with rates in mm per year.",
+          name: "Rank the bowls",
+          body: "Bowls sort by how fast they sink. Bowl 04 rises to the top.",
+          screenDescription: "A bowl list sorted by rate. Bowl 04 is first at 112 mm per year.",
         },
         {
-          label: "Today",
-          phrase: "track each pass",
-          capability: "NISAR heartbeat",
-          body: "See the latest pass, the next due date, and what changed since last time.",
-          screenDescription: "A laptop today view with pass dates and bowl rank changes.",
+          name: "Open the evidence",
+          body: "Read the rate and the radar source. It is a lead, not proof of a pump.",
+          screenDescription: "A bowl page with a rate chart from Sentinel-1 and NISAR.",
         },
         {
-          label: "Inspect",
-          phrase: "plan the visit",
-          capability: "Inspection desk",
-          body: "Schedule a visit, move a card, and record whether a pump was found.",
-          screenDescription: "A phone inspection board with lead, scheduled, and inspected columns.",
+          name: "Plan the visit",
+          body: "Move the card to Scheduled. An inspector goes to the site.",
+          screenDescription: "An inspection board. Bowl 04 sits in the Scheduled column.",
+        },
+        {
+          name: "Check the next pass",
+          body: "Record what the visit found. The next 12-day pass shows if the bowl slowed.",
+          screenDescription: "A today view. After the visit, Bowl 04 slowed from 112 to 78 mm per year.",
         },
       ],
-    },
-    whatWeBuild: {
-      title: "One desk for the sinking city.",
-      lead: "Six jobs on the same radar story. Each one starts with a problem regulators already have.",
-      cards: [
-        {
-          name: "Radar bowls",
-          line: "Find where the ground drops faster than the ground around it.",
-          bullets: [
-            "NISAR interferograms over North Jakarta",
-            "Bowl outlines on an 80 m grid",
-            "Rates in mm per year",
-            "Links to the raw GUNW evidence",
-          ],
-        },
-        {
-          name: "Ranked leads",
-          line: "Send inspectors to the worst bowls first.",
-          bullets: [
-            "Sort by rate, depth, and change after the ban",
-            "Filter by kecamatan and status",
-            "Open the chart for one bowl",
-            "Share a link to the same view",
-          ],
-        },
-        {
-          name: "Public map",
-          line: "Let anyone see why a street floods sooner.",
-          bullets: [
-            "Globe to North Jakarta in 3D",
-            "Ground motion and sea plane",
-            "Year slider for a simple projection",
-            "No sign-in for the public view",
-          ],
-        },
-        {
-          name: "Today desk",
-          line: "Know what changed since the last pass.",
-          bullets: [
-            "Active bowl count",
-            "Fastest sinking rate",
-            "Rank moves after a new pass",
-            "Next NISAR due date",
-          ],
-        },
-        {
-          name: "Inspections",
-          line: "Turn a lead into a visit and an outcome.",
-          bullets: [
-            "Schedule an inspector and a date",
-            "Kanban columns for the visit flow",
-            "Record pump found, no pump, or natural",
-            "Keep notes with the outcome",
-          ],
-        },
-        {
-          name: "Evidence",
-          line: "Show the radar behind every number.",
-          bullets: [
-            "Pass dates and track id",
-            "Browse interferogram pairs",
-            "Sentinel-1 history before the ban",
-            "Clear synthetic-data labels when needed",
-          ],
-        },
-      ],
-    },
-    whoWeWorkWith: {
-      title: "Who LANDAS serves",
-      lead: "Regulators first. National staff second. The public can look without an account.",
-      buyers: [
-        {
-          name: "Groundwater regulators",
-          line: "Enforce the ban with few inspectors.",
-          problem: "Too many streets sink, and the team is small.",
-          lead: "LANDAS ranks the bowls",
-          solution: "by how fast they drop, so visits go to the worst sites first.",
-          result: "The desk keeps the schedule and the outcome.",
-        },
-        {
-          name: "National monitoring staff",
-          line: "One view of coastal subsidence.",
-          problem: "CORS stations sit far apart, and city detail is hard to see.",
-          lead: "LANDAS shows North Jakarta",
-          solution: "with NISAR rates, bowl outlines, and pass dates on one map.",
-          result: "Staff can open a city and read the numbers.",
-        },
-        {
-          name: "The public",
-          line: "Understand why a street sinks.",
-          problem: "The story lives in reports that few people open.",
-          lead: "The public map",
-          solution: "flies to North Jakarta and shows ground motion against the sea.",
-          result: "No decision tool, and no personal names.",
-        },
-      ],
-    },
-    selectedWork: {
-      title: "The story on the map.",
-      lead: "North Jakarta is the first city LANDAS reads end to end.",
-      featuredLabel: "Featured · North Jakarta",
-      featuredTitle: "One coast. Many bowls. Fresh radar every 12 days.",
-      problemLabel: "Problem",
-      problem:
-        "Some streets sink more than 10 cm each year, and inspectors cannot visit every site.",
-      resultLabel: "Result",
-      result:
-        "LANDAS turns NISAR pairs into ranked bowls, a public map, and a desk for visits.",
-      facts: [
-        { value: "10+ cm/yr", text: "Some streets in North Jakarta sink this fast every year." },
-        { value: "12 days", text: "NISAR passes over Jakarta again after this many days." },
-        { value: "No names", text: "A bowl is an area to inspect, and it never names a person." },
-      ],
-      mapCaption:
-        "Example screen. A map of North Jakarta with three bowls. The fastest bowl is marked.",
     },
     howToStart: {
       title: "Three ways to start.",
@@ -279,6 +199,20 @@ export const en = {
         "Radar pairs stay in the open archive path. Personal names never enter the bowl record.",
       figureServers: "Public radar · open basemap",
       figureOutside: "Personal data",
+    },
+    team: {
+      title: "The five people on the work.",
+      lead: "Five people build LANDAS together.",
+      chooseLabel: "Choose a team member",
+      showMember: "Show {name}",
+      portraitOf: "Portrait of {name}",
+      members: [
+        { name: "Nadya", title: "Product & Business Lead" },
+        { name: "Ariq", title: "Product Design Engineer" },
+        { name: "Zaki", title: "Research Lead" },
+        { name: "Akmal", title: "AI & Software Engineer" },
+        { name: "Falif", title: "Data Engineer" },
+      ],
     },
     faq: {
       title: "Questions.",

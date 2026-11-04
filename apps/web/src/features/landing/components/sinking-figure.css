@@ -1,0 +1,9 @@
+.sinking-water {
+  fill: color-mix(in srgb, var(--chart-2) 35%, var(--card));
+  stroke: color-mix(in srgb, var(--chart-2) 35%, var(--card));
+  stroke-width: 0.4;
+}
+
+.sinking-stream .iso-line {
+  stroke-width: 1.6;
+}

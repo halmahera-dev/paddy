@@ -4,7 +4,7 @@ import "@/features/landing/data-stays-yours.css";
 
 export function DataStaysYours({ t }: { t: Dictionary["landing"] }) {
   return (
-    <section id="data" className="scroll-mt-24 py-20 sm:py-28">
+    <section id="data" className="scroll-mt-24 py-24 sm:py-32">
       <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-8 lg:grid-cols-2 lg:items-center lg:gap-16">
         <div>
           <SectionHeading title={t.data.title}>{t.data.lead}</SectionHeading>

@@ -1,21 +1,37 @@
 "use client";
 
+import { Badge } from "@hollou/ui/components/badge";
 import { Button } from "@hollou/ui/components/button";
 import { cn } from "@hollou/ui/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import * as React from "react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { BlurInHeading } from "@/components/blur-in-heading";
-import type { Dictionary, Locale } from "@/lib/i18n";
+import { AppLogo } from "@/components/app-logo";
+import { SectionHeading } from "@/features/landing/components/section-heading";
+import { fill, type Dictionary, type Locale } from "@/lib/i18n";
 
-type Device = "phone" | "laptop";
+type NavKey = keyof Dictionary["nav"];
 
-const devices: Device[] = ["laptop", "phone", "laptop", "phone"];
-const Screens = [MapScreen, RankScreen, TodayScreen, InspectScreen] as const;
+const steps: { Screen: () => React.ReactNode; activeNav: NavKey }[] = [
+  { Screen: MapScreen, activeNav: "map" },
+  { Screen: RankScreen, activeNav: "bowls" },
+  { Screen: EvidenceScreen, activeNav: "bowls" },
+  { Screen: InspectScreen, activeNav: "inspections" },
+  { Screen: TodayScreen, activeNav: "today" },
+];
 
-export function Showcase({ locale, t }: { locale: Locale; t: Dictionary["landing"] }) {
+const navOrder: NavKey[] = ["today", "bowls", "inspections", "map"];
+
+export function Showcase({
+  locale,
+  t,
+  nav,
+}: {
+  locale: Locale;
+  t: Dictionary["landing"];
+  nav: Dictionary["nav"];
+}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPointerInside, setIsPointerInside] = useState(false);
   const [isFocusInside, setIsFocusInside] = useState(false);
@@ -23,11 +39,9 @@ export function Showcase({ locale, t }: { locale: Locale; t: Dictionary["landing
   const [isAutoplaying, setIsAutoplaying] = useState(true);
   const sectionRef = useRef<HTMLElement>(null);
 
-  const builds = t.showcase.builds;
   const isPaused = isPointerInside || isFocusInside || !isInView;
-  const activeBuild = builds[activeIndex];
-  const ActiveScreen = Screens[activeIndex] ?? MapScreen;
-  const activeDevice = devices[activeIndex] ?? "laptop";
+  const activeStep = t.showcase.steps[activeIndex];
+  const { Screen, activeNav } = steps[activeIndex];
 
   useEffect(function pauseWhenOffscreen() {
     const section = sectionRef.current;
@@ -39,15 +53,15 @@ export function Showcase({ locale, t }: { locale: Locale; t: Dictionary["landing
     return () => observer.disconnect();
   }, []);
 
-  function showNextBuild() {
-    setActiveIndex((index) => (index + 1) % builds.length);
+  function showNextStep() {
+    setActiveIndex((index) => (index + 1) % steps.length);
   }
 
   return (
     <section
       ref={sectionRef}
       id="showcase"
-      className="scroll-mt-24 py-20 sm:py-28"
+      className="scroll-mt-24 py-24 sm:py-32"
       onPointerEnter={() => setIsPointerInside(true)}
       onPointerLeave={() => setIsPointerInside(false)}
       onFocusCapture={() => setIsFocusInside(true)}
@@ -56,72 +70,79 @@ export function Showcase({ locale, t }: { locale: Locale; t: Dictionary["landing
       }}
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-8">
-        <BlurInHeading data-paused={isPaused} className="max-w-4xl type-headline text-balance">
-          {t.showcase.prefix}{" "}
-          {builds.map(function renderPhrase(build, index) {
-            const isActive = index === activeIndex;
-            const isLast = index === builds.length - 1;
-            return (
-              <Fragment key={build.label}>
-                {isLast ? `${t.showcase.and} ` : null}
-                <button
-                  type="button"
-                  aria-pressed={isActive}
-                  onClick={function choosePhrase() {
-                    setActiveIndex(index);
-                    setIsAutoplaying(false);
-                  }}
-                  className={cn(
-                    "cursor-pointer text-left transition-colors focus-visible:outline-2 focus-visible:outline-ring",
-                    isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  <span className="relative whitespace-nowrap">
-                    {build.phrase}
-                    {isActive ? (
-                      <span
-                        key={activeIndex}
-                        aria-hidden
-                        onAnimationEnd={isAutoplaying ? showNextBuild : undefined}
-                        className={cn(
-                          "absolute inset-x-0 bottom-1 h-0.5 origin-left rounded-full bg-brand",
-                          isAutoplaying && "autoplay-progress",
-                        )}
-                      />
-                    ) : null}
-                  </span>
-                  <span className="text-foreground">{isLast ? "." : ","}</span>
-                </button>{" "}
-              </Fragment>
-            );
-          })}
-        </BlurInHeading>
+        <SectionHeading title={t.showcase.title} isSplit>
+          {t.showcase.lead}
+        </SectionHeading>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-3 lg:items-center">
-          <div className="grid gap-2">
-            <p className="type-label-mono text-muted-foreground">{activeBuild.capability}</p>
-            <p className="type-lead text-muted-foreground">{activeBuild.body}</p>
-          </div>
+        <div className="mt-12 grid gap-8 lg:grid-cols-12 lg:gap-12">
+          <ol data-paused={isPaused} className="grid content-start lg:col-span-5">
+            {t.showcase.steps.map(function renderStep(step, index) {
+              const isActive = index === activeIndex;
+              return (
+                <li key={step.name} className="relative border-b border-border first:border-t">
+                  <button
+                    type="button"
+                    aria-current={isActive ? "step" : undefined}
+                    onClick={function chooseStep() {
+                      setActiveIndex(index);
+                      setIsAutoplaying(false);
+                    }}
+                    className={cn(
+                      "grid w-full cursor-pointer gap-1 py-4 text-left transition-colors duration-160 ease-out focus-visible:outline-2 focus-visible:outline-ring",
+                      isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    <span className="type-label-mono">
+                      {fill(t.showcase.stepLabel, { n: index + 1 })}
+                    </span>
+                    <span className="type-title">{step.name}</span>
+                    <span className="text-muted-foreground">{step.body}</span>
+                  </button>
+                  {isActive ? (
+                    <span
+                      key={activeIndex}
+                      aria-hidden
+                      onAnimationEnd={isAutoplaying ? showNextStep : undefined}
+                      className={cn(
+                        "absolute inset-x-0 -bottom-px h-0.5 origin-left bg-brand",
+                        isAutoplaying && "autoplay-progress",
+                      )}
+                    />
+                  ) : null}
+                </li>
+              );
+            })}
+          </ol>
 
-          <div className="@container relative flex h-136 flex-col items-center justify-center lg:col-span-2">
-            <div className="absolute inset-x-0 inset-y-10 overflow-hidden rounded-3xl bg-background">
-              <Image
-                src="/planet.webp"
-                alt=""
-                fill
-                sizes="(min-width: 1024px) 48rem, 100vw"
-                className="object-cover object-right-top"
-              />
-            </div>
-            <div aria-hidden className="absolute -inset-x-6 inset-y-0 neutral-glow lg:-inset-x-20" />
-            <DeviceFrame device={activeDevice}>
-              <div key={activeIndex} className="size-full fade-in">
-                <p className="sr-only">{activeBuild.screenDescription}</p>
+          <div className="grid content-start gap-3 lg:col-span-7">
+            <div className="flex h-112 flex-col overflow-hidden rounded-4xl border bg-card">
+              <div className="flex items-center gap-1 border-b border-border px-3 py-2">
+                <span className="hidden items-center gap-2 pr-3 font-heading text-sm font-semibold sm:flex">
+                  <AppLogo />
+                  {t.brand}
+                </span>
+                {navOrder.map(function renderNavItem(key) {
+                  return (
+                    <span
+                      key={key}
+                      className={cn(
+                        "rounded-full px-3 py-1 text-sm",
+                        key === activeNav ? "bg-accent text-foreground" : "text-muted-foreground",
+                      )}
+                    >
+                      {nav[key]}
+                    </span>
+                  );
+                })}
+              </div>
+              <div key={activeIndex} className="relative min-h-0 flex-1 fade-in">
+                <p className="sr-only">{activeStep.screenDescription}</p>
                 <div aria-hidden inert className="size-full">
-                  <ActiveScreen />
+                  <Screen />
                 </div>
               </div>
-            </DeviceFrame>
+            </div>
+            <p className="type-label-mono text-muted-foreground">{t.showcase.exampleNote}</p>
           </div>
         </div>
 
@@ -130,11 +151,7 @@ export function Showcase({ locale, t }: { locale: Locale; t: Dictionary["landing
           <Button variant="link" nativeButton={false} render={<Link href="#data" />}>
             {t.showcase.dataLink}
           </Button>
-          <Button
-            variant="link"
-            nativeButton={false}
-            render={<Link href={`/${locale}/map`} />}
-          >
+          <Button variant="link" nativeButton={false} render={<Link href={`/${locale}/map`} />}>
             {t.seeMap}
           </Button>
         </div>
@@ -143,70 +160,28 @@ export function Showcase({ locale, t }: { locale: Locale; t: Dictionary["landing
   );
 }
 
-function DeviceFrame({ device, children }: { device: Device; children: React.ReactNode }) {
-  const isPhone = device === "phone";
-
-  return (
-    <div
-      data-device={device}
-      style={
-        {
-          "--device-width": isPhone ? "18rem" : "calc(100% - 3rem)",
-          "--device-height": isPhone ? "32rem" : "20rem",
-          "--device-radius": isPhone ? "2.75rem" : "1rem",
-          "--screen-width": isPhone ? "16.75rem" : "calc(100cqw - 4rem)",
-          "--screen-height": isPhone ? "30.75rem" : "19rem",
-          "--screen-radius": isPhone ? "2.125rem" : "0.5rem",
-        } as React.CSSProperties
-      }
-      className="group/device dark relative z-10 h-(--device-height) w-(--device-width) transition-device"
-    >
-      <div className="absolute inset-0 overflow-hidden rounded-(--device-radius) bg-background shadow-card-lg ring-1 ring-border transition-device">
-        <div className="absolute top-1/2 left-1/2 h-(--screen-height) w-(--screen-width) -translate-1/2 overflow-hidden rounded-(--screen-radius) bg-card text-foreground">
-          {children}
-        </div>
-        <span className="absolute top-4 left-1/2 h-6 w-20 -translate-x-1/2 rounded-full bg-background transition-opacity group-data-[device=laptop]/device:opacity-0" />
-      </div>
-      <span className="absolute -inset-x-6 top-full h-3 rounded-b-xl bg-surface-raised transition-opacity group-data-[device=phone]/device:opacity-0" />
-    </div>
-  );
-}
-
-function AppBar({ title, detail }: { title: string; detail: string }) {
-  return (
-    <div className="flex items-center gap-3 border-b border-border px-4 py-3">
-      <span className="size-7 shrink-0 rounded-full bg-linear-to-br from-brand to-chart-2" />
-      <div className="min-w-0">
-        <p className="truncate text-sm font-medium">{title}</p>
-        <p className="truncate text-xs text-muted-foreground">{detail}</p>
-      </div>
-    </div>
-  );
-}
-
 function MapScreen() {
   return (
-    <div className="relative flex size-full flex-col text-xs">
-      <AppBar title="Public map" detail="North Jakarta · NISAR" />
-      <div className="relative flex-1 overflow-hidden bg-background">
-        <div aria-hidden className="absolute inset-0 dot-field text-muted-foreground opacity-50" />
-        <span
-          aria-hidden
-          className="absolute top-1/3 left-1/4 size-16 rounded-full bg-brand/30 blur-xl"
-        />
-        <span
-          aria-hidden
-          className="absolute top-1/2 left-1/2 size-24 -translate-x-1/2 rounded-full bg-chart-2/25 blur-2xl"
-        />
-        <div className="absolute inset-x-3 bottom-3 rounded-xl border border-border bg-card/90 p-3 backdrop-blur-sm">
-          <p className="font-medium">Ground motion</p>
-          <p className="mt-1 text-muted-foreground">Fastest bowls sit along the north coast.</p>
-          <div className="mt-3 flex h-2 overflow-hidden rounded-full">
-            <span className="flex-1 bg-chart-2" />
-            <span className="flex-1 bg-brand" />
-            <span className="flex-1 bg-chart-4" />
-          </div>
-        </div>
+    <div className="absolute inset-y-0 left-0 aspect-3/2 min-w-full">
+      <Image
+        src="/landing/map-3d-light.jpg"
+        alt=""
+        fill
+        sizes="(min-width: 1024px) 700px, 100vw"
+        className="object-cover dark:hidden"
+      />
+      <Image
+        src="/landing/map-3d.jpg"
+        alt=""
+        fill
+        sizes="(min-width: 1024px) 700px, 100vw"
+        className="hidden object-cover dark:block"
+      />
+      <div className="absolute top-2/5 left-3/10 grid -translate-1/2 justify-items-center gap-2">
+        <span className="size-20 rounded-full border-2 border-brand bg-brand/15" />
+        <span className="absolute top-full mt-2 rounded-full border bg-card px-3 py-1 text-sm font-medium whitespace-nowrap">
+          Bowl 04
+        </span>
       </div>
     </div>
   );
@@ -214,69 +189,67 @@ function MapScreen() {
 
 function RankScreen() {
   const bowls = [
-    { name: "Bowl 04 · Penjaringan", rate: "112", rank: "1" },
-    { name: "Bowl 11 · Pademangan", rate: "97", rank: "2" },
-    { name: "Bowl 02 · Koja", rate: "84", rank: "3" },
-    { name: "Bowl 19 · Tanjung Priok", rate: "71", rank: "4" },
+    { name: "Bowl 04 · Penjaringan", rate: "112" },
+    { name: "Bowl 11 · Pademangan", rate: "97" },
+    { name: "Bowl 02 · Koja", rate: "84" },
+    { name: "Bowl 19 · Tanjung Priok", rate: "71" },
   ];
 
   return (
-    <div className="flex size-full flex-col pt-8 text-xs">
-      <AppBar title="Bowls" detail="Sorted by rate · mm/yr" />
-      <ul className="flex flex-1 flex-col gap-2 overflow-hidden p-3">
-        {bowls.map(function renderBowl(bowl) {
-          return (
-            <li
-              key={bowl.name}
-              className="flex items-center justify-between gap-3 rounded-2xl border border-border px-3 py-2.5"
-            >
-              <div className="min-w-0">
-                <p className="truncate text-sm font-medium">{bowl.name}</p>
-                <p className="text-muted-foreground">Rank {bowl.rank}</p>
-              </div>
-              <p className="shrink-0 tabular-nums text-brand-text">{bowl.rate}</p>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <ul className="grid gap-2 p-4">
+      {bowls.map(function renderBowl(bowl, index) {
+        const isTarget = index === 0;
+        return (
+          <li
+            key={bowl.name}
+            className={cn(
+              "flex items-center justify-between gap-3 rounded-2xl border px-4 py-3",
+              isTarget ? "border-brand bg-surface-raised" : "border-border",
+            )}
+          >
+            <div className="flex min-w-0 items-center gap-3">
+              <span className="w-4 font-mono text-xs text-muted-foreground tabular-nums">
+                {index + 1}
+              </span>
+              <p className="truncate text-sm font-medium">{bowl.name}</p>
+            </div>
+            <p className="shrink-0 text-sm tabular-nums text-brand-text">
+              {bowl.rate} <span className="text-muted-foreground">mm/yr</span>
+            </p>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
-function TodayScreen() {
-  const changes = [
-    { text: "Bowl 04 moved from 3 to 1", tone: "up" as const },
-    { text: "Bowl 19 found in the latest pass", tone: "new" as const },
-    { text: "Bowl 07 dropped from 2 to 5", tone: "down" as const },
-  ];
-
+function EvidenceScreen() {
   return (
-    <div className="flex size-full flex-col text-xs">
-      <AppBar title="Today" detail="Pass 12 · due in 4 days" />
-      <div className="flex flex-1 flex-col gap-3 overflow-hidden p-4">
-        <div className="grid grid-cols-2 gap-2">
-          <div className="rounded-2xl border border-border p-3">
-            <p className="text-muted-foreground">Active bowls</p>
-            <p className="mt-1 type-title tabular-nums">24</p>
-          </div>
-          <div className="rounded-2xl border border-border p-3">
-            <p className="text-muted-foreground">Fastest rate</p>
-            <p className="mt-1 type-title tabular-nums text-brand-text">112</p>
-          </div>
+    <div className="grid gap-4 p-4 sm:p-6">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="type-title">Bowl 04</p>
+          <p className="type-caption text-muted-foreground">Penjaringan</p>
         </div>
-        <p className="font-medium">Changed since the last pass</p>
-        <ul className="grid gap-2">
-          {changes.map(function renderChange(change) {
-            return (
-              <li
-                key={change.text}
-                className="rounded-xl border border-border px-3 py-2 text-sm text-muted-foreground"
-              >
-                {change.text}
-              </li>
-            );
-          })}
-        </ul>
+        <Badge variant="outline">Lead, not proof</Badge>
+      </div>
+      <p className="font-heading text-4xl font-medium tracking-tight tabular-nums">
+        −112 <span className="type-caption text-muted-foreground">mm/yr</span>
+      </p>
+      <svg viewBox="0 0 400 120" fill="none" className="w-full" strokeLinecap="round">
+        <path d="M0 14 C60 18 100 30 150 44 S190 56 200 58" className="stroke-chart-2" strokeWidth="2" />
+        <path d="M200 58 C250 72 300 84 400 106" className="stroke-brand" strokeWidth="2" />
+        <line x1="200" x2="200" y1="0" y2="120" strokeDasharray="3 4" className="stroke-border" />
+      </svg>
+      <div className="flex gap-4 type-label-mono text-muted-foreground">
+        <span className="flex items-center gap-2">
+          <span className="size-2 rounded-full bg-chart-2" />
+          Sentinel-1
+        </span>
+        <span className="flex items-center gap-2">
+          <span className="size-2 rounded-full bg-brand" />
+          NISAR
+        </span>
       </div>
     </div>
   );
@@ -284,33 +257,57 @@ function TodayScreen() {
 
 function InspectScreen() {
   const columns = [
-    { title: "Lead", items: ["Bowl 04", "Bowl 11"] },
-    { title: "Scheduled", items: ["Bowl 02"] },
+    { title: "Lead", items: ["Bowl 11", "Bowl 02"] },
+    { title: "Scheduled", items: ["Bowl 04"] },
     { title: "Inspected", items: ["Bowl 19"] },
   ];
 
   return (
-    <div className="flex size-full flex-col pt-8 text-xs">
-      <AppBar title="Inspections" detail="Drag a card to move it" />
-      <div className="flex flex-1 gap-2 overflow-hidden p-3">
-        {columns.map(function renderColumn(column) {
-          return (
-            <div key={column.title} className="flex min-w-0 flex-1 flex-col gap-2">
-              <p className="type-label-mono text-muted-foreground">{column.title}</p>
-              {column.items.map(function renderItem(item) {
-                return (
-                  <div
-                    key={item}
-                    className="rounded-xl border border-border bg-secondary px-2 py-2 text-sm font-medium"
-                  >
-                    {item}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
+    <div className="grid grid-cols-3 gap-3 p-4">
+      {columns.map(function renderColumn(column) {
+        return (
+          <div key={column.title} className="grid content-start gap-2">
+            <p className="type-label-mono text-muted-foreground">{column.title}</p>
+            {column.items.map(function renderItem(item) {
+              return (
+                <p
+                  key={item}
+                  className={cn(
+                    "rounded-xl border px-3 py-3 text-sm font-medium",
+                    item === "Bowl 04" ? "border-brand bg-surface-raised" : "border-border",
+                  )}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function TodayScreen() {
+  return (
+    <div className="grid gap-4 p-4 sm:p-6">
+      <div className="flex items-center justify-between gap-3">
+        <p className="type-title">Pass 13</p>
+        <Badge variant="brand">Pump found</Badge>
       </div>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-2xl border border-border p-4">
+          <p className="type-caption text-muted-foreground">Pass 12 · Bowl 04</p>
+          <p className="mt-1 font-heading text-3xl font-medium tabular-nums">112</p>
+        </div>
+        <div className="rounded-2xl border border-brand p-4">
+          <p className="type-caption text-muted-foreground">Pass 13 · Bowl 04</p>
+          <p className="mt-1 font-heading text-3xl font-medium tabular-nums text-brand-text">78</p>
+        </div>
+      </div>
+      <p className="rounded-xl border border-border px-4 py-3 text-sm text-muted-foreground">
+        Bowl 04 slowed after the visit. Bowl 11 is next.
+      </p>
     </div>
   );
 }

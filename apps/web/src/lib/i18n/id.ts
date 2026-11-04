@@ -46,9 +46,12 @@ export const id: Dictionary = {
       faq: "Tanya jawab",
     },
     hero: {
-      title: "Radar dari orbit. Cekungan di tanah.",
-      body: "LANDAS membaca radar NISAR di atas Jakarta Utara dan mengurutkan cekungan yang paling cepat turun, agar regulator dapat mengirim petugas lebih dulu.",
-      seeWork: "Lihat cara kerjanya →",
+      title: "Radar untuk tanah turun.",
+      body: {
+        before: "Radar ",
+        nisar: "NISAR",
+        after: " mengurutkan cekungan Jakarta Utara yang paling cepat turun.",
+      },
     },
     seeMap: "Lihat peta publik →",
     attribution:
@@ -59,156 +62,73 @@ export const id: Dictionary = {
       data: "Data",
       copyright: "© 2026 LANDAS",
     },
+    problem: {
+      title: "Tanah turun. Pompa tetap tersembunyi.",
+      lead: "Jakarta Utara turun beberapa sentimeter per tahun. Beberapa cekungan turun lebih dari 10.",
+      figure: {
+        pumpLabel: "Pemompaan",
+        water: "Air tersisa di bawah pompa",
+        overPump: "Tanah di atas pompa",
+        perYear: "cm per tahun",
+        belowSea: "Di bawah laut",
+        aboveSea: "Di atas laut",
+        note: "Ilustrasi dengan laju contoh. Geser penggeser untuk menjalankan pompa.",
+        description:
+          "Potongan tanah. Sebuah pompa menarik air dari akuifer ke dalam tangki. Saat air habis, tanah di atas pompa turun menjadi cekungan, rumah miring, dan cekungan terisi air laut.",
+      },
+      facts: [
+        {
+          label: "Penyebab",
+          name: "Pompa dalam menguras akuifer",
+          body: "Tanah di atas pompa besar turun menjadi cekungan. Pemompaan air tanah dalam adalah penyebab utama.",
+        },
+        {
+          label: "Celah",
+          name: "Larangan sulit ditegakkan",
+          body: "Pemompaan dilarang di zona luas (Pergub 93/2021). Air perpipaan baru menjangkau sekitar 60% kota.",
+        },
+        {
+          label: "Titik buta",
+          name: "Tidak ada pandangan se-kota",
+          body: "Regulator tidak bisa melihat di mana tanah masih turun, cekungan mana yang menunjuk ke pemompaan, atau kapan laut mencapai jalan.",
+        },
+      ],
+      handoff: "Inspektur sedikit. Cekungan banyak. Ke mana mereka pergi lebih dulu?",
+    },
     showcase: {
-      prefix: "LANDAS membantu Anda",
-      and: "dan",
+      title: "Ikuti satu cekungan dari radar sampai kunjungan.",
+      lead: "Ini alur regulator di meja kerja. Setiap langkah memakai lokasi yang sama, Cekungan 04.",
+      exampleNote: "Data contoh. Angka asli dimuat dari pekerjaan NISAR.",
+      stepLabel: "Langkah {n}",
       dataNote: "Cekungan adalah petunjuk inspeksi, bukan nama orang.",
       dataLink: "Cara kami menjaga orang dan data →",
-      builds: [
+      steps: [
         {
-          label: "Peta",
-          phrase: "melihat penurunan",
-          capability: "Peta publik",
-          body: "Buka globe, terbang ke Jakarta Utara, dan baca gerak tanah terhadap laut.",
-          screenDescription: "Peta laptop Jakarta Utara dengan warna gerak tanah dan cekungan.",
+          name: "Lihat di mana tanah turun",
+          body: "Buka peta publik. Warna radar menunjukkan gerak tanah. Satu cekungan menyala di pantai utara.",
+          screenDescription: "Peta Jakarta Utara dengan cekungan gerak tanah. Cekungan 04 ditandai.",
         },
         {
-          label: "Peringkat",
-          phrase: "mengurutkan cekungan",
-          capability: "Daftar cekungan",
-          body: "Cekungan diurutkan menurut kecepatan turun, sehingga lokasi terburuk naik ke atas.",
-          screenDescription: "Daftar ponsel cekungan berperingkat dengan laju mm per tahun.",
+          name: "Urutkan cekungan",
+          body: "Cekungan diurutkan menurut kecepatan turun. Cekungan 04 naik ke atas.",
+          screenDescription: "Daftar cekungan menurut laju. Cekungan 04 pertama dengan 112 mm per tahun.",
         },
         {
-          label: "Hari ini",
-          phrase: "melacak setiap lintasan",
-          capability: "Detak NISAR",
-          body: "Lihat lintasan terbaru, tanggal berikutnya, dan apa yang berubah sejak terakhir.",
-          screenDescription: "Tampilan hari ini di laptop dengan tanggal lintasan dan perubahan peringkat.",
+          name: "Buka bukti",
+          body: "Baca laju dan sumber radar. Ini petunjuk, bukan bukti adanya pompa.",
+          screenDescription: "Halaman cekungan dengan grafik laju dari Sentinel-1 dan NISAR.",
         },
         {
-          label: "Inspeksi",
-          phrase: "merencanakan kunjungan",
-          capability: "Meja inspeksi",
-          body: "Jadwalkan kunjungan, pindahkan kartu, dan catat apakah pompa ditemukan.",
-          screenDescription: "Papan inspeksi ponsel dengan kolom petunjuk, terjadwal, dan sudah diperiksa.",
+          name: "Rencanakan kunjungan",
+          body: "Pindahkan kartu ke Terjadwal. Seorang inspektur pergi ke lokasi.",
+          screenDescription: "Papan inspeksi. Cekungan 04 ada di kolom Terjadwal.",
+        },
+        {
+          name: "Periksa lintasan berikutnya",
+          body: "Catat temuan kunjungan. Lintasan 12 hari berikutnya menunjukkan apakah cekungan melambat.",
+          screenDescription: "Tampilan hari ini. Setelah kunjungan, Cekungan 04 melambat dari 112 ke 78 mm per tahun.",
         },
       ],
-    },
-    whatWeBuild: {
-      title: "Satu meja untuk kota yang turun.",
-      lead: "Enam pekerjaan pada cerita radar yang sama. Masing-masing dimulai dari masalah yang sudah dihadapi regulator.",
-      cards: [
-        {
-          name: "Cekungan radar",
-          line: "Temukan tempat tanah turun lebih cepat dari tanah di sekitarnya.",
-          bullets: [
-            "Interferogram NISAR di atas Jakarta Utara",
-            "Garis cekungan pada kisi 80 m",
-            "Laju dalam mm per tahun",
-            "Tautan ke bukti GUNW mentah",
-          ],
-        },
-        {
-          name: "Petunjuk berperingkat",
-          line: "Kirim petugas ke cekungan terburuk lebih dulu.",
-          bullets: [
-            "Urutkan menurut laju, kedalaman, dan perubahan setelah larangan",
-            "Saring menurut kecamatan dan status",
-            "Buka grafik untuk satu cekungan",
-            "Bagikan tautan ke tampilan yang sama",
-          ],
-        },
-        {
-          name: "Peta publik",
-          line: "Biarkan siapa saja melihat mengapa jalan banjir lebih cepat.",
-          bullets: [
-            "Globe ke Jakarta Utara dalam 3D",
-            "Gerak tanah dan bidang laut",
-            "Penggeser tahun untuk proyeksi sederhana",
-            "Tanpa masuk untuk tampilan publik",
-          ],
-        },
-        {
-          name: "Meja hari ini",
-          line: "Tahu apa yang berubah sejak lintasan terakhir.",
-          bullets: [
-            "Jumlah cekungan aktif",
-            "Laju penurunan tercepat",
-            "Perubahan peringkat setelah lintasan baru",
-            "Tanggal NISAR berikutnya",
-          ],
-        },
-        {
-          name: "Inspeksi",
-          line: "Ubah petunjuk menjadi kunjungan dan hasil.",
-          bullets: [
-            "Jadwalkan petugas dan tanggal",
-            "Kolom kanban untuk alur kunjungan",
-            "Catat pompa ditemukan, tidak ada pompa, atau alami",
-            "Simpan catatan bersama hasil",
-          ],
-        },
-        {
-          name: "Bukti",
-          line: "Tunjukkan radar di balik setiap angka.",
-          bullets: [
-            "Tanggal lintasan dan id track",
-            "Pasangan interferogram untuk dilihat",
-            "Riwayat Sentinel-1 sebelum larangan",
-            "Label data sintetis yang jelas bila perlu",
-          ],
-        },
-      ],
-    },
-    whoWeWorkWith: {
-      title: "Siapa yang dilayani LANDAS",
-      lead: "Regulator lebih dulu. Staf nasional kedua. Publik dapat melihat tanpa akun.",
-      buyers: [
-        {
-          name: "Regulator air tanah",
-          line: "Tegakkan larangan dengan sedikit petugas.",
-          problem: "Terlalu banyak jalan yang turun, dan timnya kecil.",
-          lead: "LANDAS mengurutkan cekungan",
-          solution: "menurut kecepatan turun, sehingga kunjungan pergi ke lokasi terburuk lebih dulu.",
-          result: "Meja menyimpan jadwal dan hasil.",
-        },
-        {
-          name: "Staf pemantauan nasional",
-          line: "Satu tampilan penurunan pantai.",
-          problem: "Stasiun CORS berjauhan, dan detail kota sulit dilihat.",
-          lead: "LANDAS menunjukkan Jakarta Utara",
-          solution: "dengan laju NISAR, garis cekungan, dan tanggal lintasan pada satu peta.",
-          result: "Staf dapat membuka kota dan membaca angkanya.",
-        },
-        {
-          name: "Publik",
-          line: "Pahami mengapa sebuah jalan turun.",
-          problem: "Ceritanya ada di laporan yang jarang dibuka.",
-          lead: "Peta publik",
-          solution: "terbang ke Jakarta Utara dan menunjukkan gerak tanah terhadap laut.",
-          result: "Bukan alat keputusan, dan tanpa nama orang.",
-        },
-      ],
-    },
-    selectedWork: {
-      title: "Cerita di peta.",
-      lead: "Jakarta Utara adalah kota pertama yang LANDAS baca dari ujung ke ujung.",
-      featuredLabel: "Unggulan · Jakarta Utara",
-      featuredTitle: "Satu pantai. Banyak cekungan. Radar baru setiap 12 hari.",
-      problemLabel: "Masalah",
-      problem:
-        "Beberapa jalan turun lebih dari 10 cm setiap tahun, dan petugas tidak dapat mengunjungi setiap lokasi.",
-      resultLabel: "Hasil",
-      result:
-        "LANDAS mengubah pasangan NISAR menjadi cekungan berperingkat, peta publik, dan meja kunjungan.",
-      facts: [
-        { value: "10+ cm/thn", text: "Beberapa jalan di Jakarta Utara turun secepat ini setiap tahun." },
-        { value: "12 hari", text: "NISAR melintas di atas Jakarta lagi setelah selang waktu ini." },
-        { value: "Tanpa nama", text: "Cekungan adalah area untuk diperiksa dan tidak pernah menyebut nama orang." },
-      ],
-      mapCaption:
-        "Contoh layar. Peta Jakarta Utara dengan tiga cekungan. Cekungan tercepat ditandai.",
     },
     howToStart: {
       title: "Tiga cara memulai.",
@@ -281,6 +201,20 @@ export const id: Dictionary = {
         "Pasangan radar tetap di jalur arsip terbuka. Nama orang tidak pernah masuk catatan cekungan.",
       figureServers: "Radar publik · peta dasar terbuka",
       figureOutside: "Data pribadi",
+    },
+    team: {
+      title: "Lima orang di balik karya ini.",
+      lead: "Lima orang membangun LANDAS bersama.",
+      chooseLabel: "Pilih anggota tim",
+      showMember: "Tampilkan {name}",
+      portraitOf: "Potret {name}",
+      members: [
+        { name: "Nadya", title: "Product & Business Lead" },
+        { name: "Ariq", title: "Product Design Engineer" },
+        { name: "Zaki", title: "Research Lead" },
+        { name: "Akmal", title: "AI & Software Engineer" },
+        { name: "Falif", title: "Data Engineer" },
+      ],
     },
     faq: {
       title: "Pertanyaan.",

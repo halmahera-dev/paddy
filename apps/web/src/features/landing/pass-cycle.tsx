@@ -13,9 +13,9 @@ export function PassCycle({ t }: { t: Dictionary["landing"] }) {
   const milestones = t.passCycle.milestones;
 
   return (
-    <section id="pass-cycle" className="scroll-mt-24 py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-4 sm:px-8">
-        <SectionHeading title={t.passCycle.title}>{t.passCycle.lead}</SectionHeading>
+    <div id="pass-cycle" className="mt-20 scroll-mt-24">
+      <div>
+        <SectionHeading title={t.passCycle.title} isSplit>{t.passCycle.lead}</SectionHeading>
 
         <div className="mt-12 grid gap-6">
           {weeks.map(function renderWeek(days, weekIndex) {
@@ -86,6 +86,6 @@ export function PassCycle({ t }: { t: Dictionary["landing"] }) {
           {t.passCycle.note}
         </p>
       </div>
-    </section>
+    </div>
   );
 }

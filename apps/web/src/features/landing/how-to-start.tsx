@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/features/landing/components/section-heading";
+import { PassCycle } from "@/features/landing/pass-cycle";
 import { HopFigure } from "@/features/landing/figures/hop-figure";
 import { LaunchFigure } from "@/features/landing/figures/launch-figure";
 import { OrreryFigure } from "@/features/landing/figures/orrery-figure";
@@ -22,9 +23,9 @@ export function HowToStart({
   common: Dictionary["common"];
 }) {
   return (
-    <section id="services" className="scroll-mt-24 py-20 sm:py-28">
+    <section id="services" className="scroll-mt-24 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-8">
-        <SectionHeading title={t.howToStart.title}>{t.howToStart.lead}</SectionHeading>
+        <SectionHeading title={t.howToStart.title} isSplit>{t.howToStart.lead}</SectionHeading>
 
         <Reveal
           as="ul"
@@ -83,6 +84,8 @@ export function HowToStart({
             );
           })}
         </Reveal>
+
+        <PassCycle t={t} />
       </div>
     </section>
   );
