@@ -16,29 +16,53 @@ import { useEffect, useRef, useState } from "react";
 
 import { AppLogo } from "@/components/app-logo";
 import { Map, useMap } from "@/components/ui/map";
-import type { PublicBowl } from "@/features/bowls/bowls-queries";
-import { BowlLayer, dropMeters, maxDropMeters, waterExaggeration } from "@/features/map/components/bowl-layer";
+import type { BowlSeries, PublicBowl } from "@/features/bowls/bowls-queries";
+import {
+  BowlLayer,
+  dropMeters,
+  fastRateMmYr,
+  predictionFor,
+  slowRateMmYr,
+} from "@/features/map/components/bowl-layer";
+import { MapBowlDetail } from "@/features/map/components/map-bowl-detail";
+import { MapBowlList } from "@/features/map/components/map-bowl-list";
 import { MapTimeline, usePlayback } from "@/features/map/components/map-timeline";
 import { BuildingsLayer, InterferogramLayer } from "@/features/nisar/components/nisar-layers";
 import { interferogramCatalog } from "@/features/nisar/nisar-catalog";
 import { LanguageSwitch } from "@/features/shell/components/language-switch";
 import { fill, formatDate, type Dictionary, type Locale } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 const globe = { type: "globe" } as const;
 const currentYear = 2026;
 const lastYear = 2050;
 const defaultYear = 2035;
-const yearsPerSecond = 3;
 const passesPerSecond = 1.25;
 const allBowls = "all";
+const maxPitch = 75;
+const positionWriteDelayMs = 300;
 
 type Option = { value: string; label: string };
+type Position = { center: [number, number]; zoom: number };
 
 const overviewCamera = { center: [106.81, -6.13] as [number, number], zoom: 12, pitch: 58, bearing: -20 };
 
-function MapCamera({ bowl }: { bowl: PublicBowl | null }) {
+function parsePosition(value: string | null): Position | null {
+  const parts = value?.split(",").map(Number);
+  if (parts?.length === 3 && parts.every(Number.isFinite)) {
+    return { center: [parts[0], parts[1]], zoom: parts[2] };
+  }
+  return null;
+}
+
+function formatPosition({ center, zoom }: Position) {
+  return `${center[0].toFixed(4)},${center[1].toFixed(4)},${zoom.toFixed(2)}`;
+}
+
+function MapCamera({ bowl, is2d, hasStartPosition }: { bowl: PublicBowl | null; is2d: boolean; hasStartPosition: boolean }) {
   const { map, isLoaded } = useMap();
   const flownTargetRef = useRef<string | null>(null);
+  const isFirstPitchRef = useRef(true);
   const target = bowl?.id ?? "overview";
 
   useEffect(() => {
@@ -47,13 +71,35 @@ function MapCamera({ bowl }: { bowl: PublicBowl | null }) {
     }
     const isIntro = flownTargetRef.current === null;
     flownTargetRef.current = target;
-    const camera = bowl ? { center: bowl.center, zoom: 14, pitch: 55 } : overviewCamera;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      map.jumpTo(camera);
+    if (isIntro && hasStartPosition) {
       return;
     }
-    map.flyTo({ ...camera, duration: isIntro ? 7000 : 2400, essential: true });
-  }, [map, isLoaded, target, bowl]);
+    const camera = bowl ? { center: bowl.center, zoom: 14, pitch: 55 } : overviewCamera;
+    const nextCamera = { ...camera, pitch: is2d ? 0 : camera.pitch };
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      map.jumpTo(nextCamera);
+      return;
+    }
+    map.flyTo({ ...nextCamera, duration: isIntro ? 7000 : 2400, essential: true });
+  }, [map, isLoaded, target, bowl, is2d, hasStartPosition]);
+
+  useEffect(() => {
+    if (!map || !isLoaded) {
+      return;
+    }
+    map.setMaxPitch(is2d ? 0 : maxPitch);
+    const isFirstRun = isFirstPitchRef.current;
+    isFirstPitchRef.current = false;
+    if (isFirstRun && !is2d) {
+      return;
+    }
+    const pitch = is2d ? 0 : overviewCamera.pitch;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      map.jumpTo({ pitch });
+      return;
+    }
+    map.easeTo({ pitch, duration: 600 });
+  }, [map, isLoaded, is2d]);
 
   return null;
 }
@@ -72,27 +118,6 @@ function parsePassIndex(value: string | null, passCount: number) {
     return index;
   }
   return passCount - 1;
-}
-
-const gaugeHeight = 72;
-const personHeightMeters = 1.7;
-
-function DropGauge({ meters, label }: { meters: number; label: string }) {
-  const pixelsPerMeter = gaugeHeight / maxDropMeters;
-  const waterTop = gaugeHeight - Math.min(meters, maxDropMeters) * pixelsPerMeter;
-  const personTop = gaugeHeight - personHeightMeters * pixelsPerMeter;
-  return (
-    <svg viewBox={`0 0 40 ${gaugeHeight}`} className="h-18 w-10 shrink-0" role="img" aria-label={label}>
-      <g className="fill-muted-foreground/60">
-        <circle cx="20" cy={personTop + 4} r="4" />
-        <rect x="14" y={personTop + 9} width="12" height="15" rx="4" />
-        <rect x="15" y={personTop + 22} width="4" height={gaugeHeight - personTop - 22} rx="2" />
-        <rect x="21" y={personTop + 22} width="4" height={gaugeHeight - personTop - 22} rx="2" />
-      </g>
-      <rect x="0" y={waterTop} width="40" height={gaugeHeight - waterTop} className="fill-chart-5/50" />
-      <line x1="0" x2="40" y1={waterTop} y2={waterTop} strokeWidth="1" className="stroke-chart-5" />
-    </svg>
-  );
 }
 
 function HeaderSelect({
@@ -128,25 +153,38 @@ function HeaderSelect({
 export function LandasMap({
   locale,
   bowls,
+  seriesByBowl,
+  banDate,
   labels,
 }: {
   locale: Locale;
   bowls: PublicBowl[];
-  labels: { map: Dictionary["map"]; common: Dictionary["common"] };
+  seriesByBowl: Record<string, BowlSeries>;
+  banDate: string;
+  labels: { map: Dictionary["map"]; bowls: Dictionary["bowls"]; common: Dictionary["common"] };
 }) {
   const t = labels.map;
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const pairs = interferogramCatalog.pairs;
+  const positionTimerRef = useRef(0);
 
   const isBowls = searchParams.get("show") !== "radar";
   const withBan = searchParams.get("ban") !== "off";
+  const is2d = searchParams.get("view") === "2d";
   const selectedBowl = bowls.find((bowl) => bowl.id === searchParams.get("bowl")) ?? null;
+  const [startPosition] = useState(() => parsePosition(searchParams.get("at")));
   const [year, setYear] = useState(() => parseYear(searchParams.get("year")));
   const [passIndex, setPassIndex] = useState(() => parsePassIndex(searchParams.get("pass"), pairs.length));
   const years = year - currentYear;
-  const wholeYear = Math.floor(year);
   const pair = pairs[passIndex];
+  const [lastBowl, setLastBowl] = useState(selectedBowl);
+  if (selectedBowl !== null && selectedBowl !== lastBowl) {
+    setLastBowl(selectedBowl);
+  }
+  const detailBowl = selectedBowl ?? lastBowl;
+  const detailSeries = detailBowl ? seriesByBowl[detailBowl.id] : undefined;
+  const isDetailOpen = isBowls && selectedBowl !== null;
 
   function setParam(name: string, value: string | null) {
     const nextParams = new URLSearchParams(window.location.search);
@@ -158,10 +196,39 @@ export function LandasMap({
     window.history.replaceState(null, "", `${pathname}?${nextParams}`);
   }
 
-  function commitYear(value: number) {
-    const nextYear = Math.floor(value);
+  function rememberPosition(position: Position) {
+    window.clearTimeout(positionTimerRef.current);
+    positionTimerRef.current = window.setTimeout(() => {
+      setParam("at", formatPosition(position));
+    }, positionWriteDelayMs);
+  }
+
+  function selectBowl(bowlId: string | null) {
+    setParam("bowl", bowlId);
+  }
+
+  useEffect(() => {
+    if (!selectedBowl) {
+      return;
+    }
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setParam("bowl", null);
+      }
+    }
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  });
+
+  function changeYear(nextYear: number) {
     setYear(nextYear);
     setParam("year", String(nextYear));
+  }
+
+  function changeBan(nextWithBan: boolean) {
+    setParam("ban", nextWithBan ? null : "off");
   }
 
   function showPass(value: number) {
@@ -174,10 +241,14 @@ export function LandasMap({
     setParam("pass", String(nextIndex));
   }
 
-  const timeline = isBowls
-    ? { value: year, min: currentYear, max: lastYear, unitsPerSecond: yearsPerSecond, onFrame: setYear, onStop: commitYear }
-    : { value: passIndex, min: 0, max: pairs.length - 1, unitsPerSecond: passesPerSecond, onFrame: showPass, onStop: commitPass };
-  const playback = usePlayback(timeline);
+  const playback = usePlayback({
+    value: passIndex,
+    min: 0,
+    max: pairs.length - 1,
+    unitsPerSecond: passesPerSecond,
+    onFrame: showPass,
+    onStop: commitPass,
+  });
 
   function changeShow(value: string) {
     playback.pause();
@@ -186,7 +257,7 @@ export function LandasMap({
 
   function scrub(value: number) {
     playback.pause();
-    timeline.onStop(value);
+    commitPass(value);
   }
 
   function togglePlay() {
@@ -197,8 +268,11 @@ export function LandasMap({
     }
   }
 
+  const baselineYears = defaultYear - currentYear;
   const summaryBowl = selectedBowl ?? bowls.toSorted((a, b) => b.rateAfterBanMmYr - a.rateAfterBanMmYr)[0];
-  const summaryDrop = dropMeters(summaryBowl, years, withBan);
+  const summaryPrediction = predictionFor(summaryBowl.id, selectedBowl?.id ?? null, { years, withBan }, baselineYears);
+  const summaryYear = currentYear + summaryPrediction.years;
+  const summaryDrop = dropMeters(summaryBowl, summaryPrediction.years, summaryPrediction.withBan);
 
   function describeView() {
     if (!isBowls) {
@@ -208,11 +282,11 @@ export function LandasMap({
         days: Math.round((Date.parse(pair.secondaryDate) - Date.parse(pair.referenceDate)) / 86_400_000),
       });
     }
-    const values = { name: summaryBowl.name, meters: summaryDrop.toFixed(2), year: wholeYear };
-    if (withBan) {
+    const values = { name: summaryBowl.name, meters: summaryDrop.toFixed(2), year: summaryYear };
+    if (summaryPrediction.withBan) {
       return fill(t.bowlSummary, values);
     }
-    const extra = summaryDrop - dropMeters(summaryBowl, years, true);
+    const extra = summaryDrop - dropMeters(summaryBowl, summaryPrediction.years, true);
     return fill(t.noBanSummary, { ...values, extra: extra.toFixed(2) });
   }
 
@@ -240,10 +314,18 @@ export function LandasMap({
               { value: allBowls, label: t.northJakarta },
               ...bowls.map((bowl) => ({ value: bowl.id, label: bowl.name })),
             ]}
-            onChange={(value) => setParam("bowl", value === allBowls ? null : value)}
+            onChange={(value) => selectBowl(value === allBowls ? null : value)}
           />
         )}
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-3">
+          <label className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Switch
+              size="sm"
+              checked={is2d}
+              onCheckedChange={(checked) => setParam("view", checked ? "2d" : null)}
+            />
+            {t.view2d}
+          </label>
           <LanguageSwitch locale={locale} label={labels.common.switchLanguage} />
           <Button size="sm" nativeButton={false} render={<Link href={`/${locale}`} />}>
             {labels.common.openDesk}
@@ -254,74 +336,110 @@ export function LandasMap({
         </p>
       </header>
 
-      <div className="relative flex-1">
-        <Map center={[112, -2]} zoom={2.6} projection={globe} maxPitch={75}>
-          <BuildingsLayer />
-          {isBowls ? (
-            <BowlLayer
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+        <div className="relative min-h-0 flex-1">
+          <Map
+            center={startPosition?.center ?? [112, -2]}
+            zoom={startPosition?.zoom ?? 2.6}
+            pitch={startPosition && !is2d ? overviewCamera.pitch : 0}
+            bearing={startPosition ? overviewCamera.bearing : 0}
+            projection={globe}
+            maxPitch={maxPitch}
+            onViewportChange={rememberPosition}
+          >
+            <BuildingsLayer />
+            {isBowls ? (
+              <BowlLayer
+                bowls={bowls}
+                years={years}
+                withBan={withBan}
+                baselineYears={baselineYears}
+                selectedBowlId={selectedBowl?.id ?? null}
+                onSelect={selectBowl}
+                onDeselect={() => selectBowl(null)}
+              />
+            ) : (
+              <InterferogramLayer pair={pair} />
+            )}
+            <MapCamera bowl={selectedBowl} is2d={is2d} hasStartPosition={startPosition !== null} />
+          </Map>
+          <div
+            className={`absolute top-4 left-4 flex max-w-64 flex-col gap-2 glass rounded-4xl border border-transparent p-3 text-xs text-muted-foreground shadow-md ${selectedBowl ? "max-lg:hidden" : ""}`}
+          >
+            {isBowls ? (
+              <>
+                <div className="h-2 rounded-full bg-linear-to-r from-rate-slow via-rate-middle to-rate-fast" />
+                <div className="flex justify-between tabular-nums">
+                  <span>{slowRateMmYr} mm/yr</span>
+                  <span>{fastRateMmYr} mm/yr</span>
+                </div>
+                <p>{fill(t.rateLegend, { year: defaultYear })}</p>
+              </>
+            ) : (
+              <>
+                <div className="phase-cycle-legend h-2 rounded-full" />
+                <p>{t.phaseLegend}</p>
+              </>
+            )}
+          </div>
+          {isBowls && (
+            <MapBowlList
               bowls={bowls}
+              selectedBowlId={selectedBowl?.id ?? null}
               years={years}
               withBan={withBan}
-              selectedBowlId={selectedBowl?.id ?? null}
-              onSelect={(bowlId) => setParam("bowl", bowlId)}
+              baselineYears={baselineYears}
+              onSelect={selectBowl}
+              title={t.listTitle}
+              rankTemplate={t.rankLabel}
+              showLabel={t.showList}
+              hideLabel={t.hideList}
             />
-          ) : (
-            <InterferogramLayer pair={pair} />
           )}
-          <MapCamera bowl={selectedBowl} />
-        </Map>
-        <div className="absolute top-4 left-4 flex max-w-64 flex-col gap-2 glass rounded-4xl border border-transparent p-3 text-xs text-muted-foreground shadow-md">
-          {isBowls ? (
-            <>
-              <div className="h-2 rounded-full bg-linear-to-r from-chart-3 to-chart-4" />
-              <div className="flex justify-between tabular-nums">
-                <span>0 m</span>
-                <span>{maxDropMeters} m</span>
-              </div>
-              <p>{fill(t.dropLegend, { year: wholeYear })}</p>
-              <div className="flex items-end gap-3 border-t pt-2">
-                <DropGauge meters={summaryDrop} label={fill(t.personScale, { name: summaryBowl.name })} />
-                <div className="flex flex-col gap-1">
-                  <span className="type-title text-foreground tabular-nums">−{summaryDrop.toFixed(2)} m</span>
-                  <span>{summaryBowl.name}</span>
-                  <span>{fill(t.waterScale, { scale: waterExaggeration })}</span>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="phase-cycle-legend h-2 rounded-full" />
-              <p>{t.phaseLegend}</p>
-            </>
+          {!isBowls && (
+            <MapTimeline
+              isPlaying={playback.isPlaying}
+              onTogglePlay={togglePlay}
+              playLabel={t.play}
+              pauseLabel={t.pause}
+              sliderLabel={t.pass}
+              min={0}
+              max={pairs.length - 1}
+              value={passIndex}
+              onValueChange={scrub}
+              valueLabel={`${passIndex + 1}/${pairs.length}`}
+            >
+              <p className="text-xs text-muted-foreground tabular-nums">
+                {formatDate(locale, pair.referenceDate)} – {formatDate(locale, pair.secondaryDate)}
+              </p>
+            </MapTimeline>
           )}
         </div>
-        <MapTimeline
-          isPlaying={playback.isPlaying}
-          onTogglePlay={togglePlay}
-          playLabel={t.play}
-          pauseLabel={t.pause}
-          sliderLabel={isBowls ? t.year : t.pass}
-          min={timeline.min}
-          max={timeline.max}
-          value={timeline.value}
-          onValueChange={scrub}
-          valueLabel={isBowls ? String(wholeYear) : `${passIndex + 1}/${pairs.length}`}
-        >
-          {isBowls ? (
-            <label className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Switch
-                size="sm"
-                checked={withBan}
-                onCheckedChange={(checked) => setParam("ban", checked ? null : "off")}
+        {isBowls ? (
+          <div
+            inert={!isDetailOpen}
+            className={cn(
+              "overflow-hidden transition-panel-resize md:shrink-0",
+              isDetailOpen ? "h-2/5 md:h-auto md:w-md" : "h-0 md:w-0",
+            )}
+          >
+            {detailBowl && detailSeries ? (
+              <MapBowlDetail
+                key={detailBowl.id}
+                locale={locale}
+                bowl={detailBowl}
+                series={detailSeries}
+                banDate={banDate}
+                year={year}
+                withBan={withBan}
+                onYearChange={changeYear}
+                onBanChange={changeBan}
+                onClose={() => selectBowl(null)}
+                labels={labels}
               />
-              {t.banScenario}
-            </label>
-          ) : (
-            <p className="text-xs text-muted-foreground tabular-nums">
-              {formatDate(locale, pair.referenceDate)} – {formatDate(locale, pair.secondaryDate)}
-            </p>
-          )}
-        </MapTimeline>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </div>
   );

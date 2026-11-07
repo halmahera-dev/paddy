@@ -108,7 +108,7 @@ export function MapTimeline({
   children: ReactNode;
 }) {
   return (
-    <div className="absolute inset-x-4 bottom-4 mx-auto flex max-w-lg flex-col gap-2 rounded-4xl border border-transparent glass p-3 shadow-md">
+    <div className="fade-in absolute inset-x-4 bottom-4 mx-auto flex max-w-lg flex-col gap-2 rounded-4xl border border-transparent glass p-3 shadow-md">
       <div className="flex items-center gap-3">
         <Button
           size="icon-sm"

@@ -39,6 +39,10 @@ export function getBowlSeries(bowlId: string) {
   return seed.bowls.find((bowl) => bowl.id === bowlId)?.series ?? null;
 }
 
+export function getBowlSeriesById() {
+  return Object.fromEntries(seed.bowls.map((bowl) => [bowl.id, bowl.series]));
+}
+
 async function loadBowls(): Promise<Bowl[]> {
   const rows = await db.select().from(inspection);
   const rowByBowlId = new Map(rows.map((row) => [row.bowlId, row]));
