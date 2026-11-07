@@ -1,5 +1,10 @@
+import { Alert, AlertDescription } from "@hollou/ui/components/alert";
 import { Badge } from "@hollou/ui/components/badge";
+import { Button } from "@hollou/ui/components/button";
+import { InformationCircleIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Skeleton } from "@hollou/ui/components/skeleton";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { banDate, getBowl, getBowlSeries } from "@/features/bowls/bowls-queries";
@@ -26,9 +31,19 @@ export async function BowlDetail({ locale, bowlId }: { locale: Locale; bowlId: s
         <p className="text-sm text-muted-foreground">
           {bowl.kecamatan}, {t.rank.toLowerCase()} {bowl.rank}
         </p>
-        <p className="w-fit rounded-full bg-brand/12 px-3 py-1 text-sm text-brand-text">
-          {dictionary.common.leadLabel}
-        </p>
+        <Alert>
+          <HugeiconsIcon icon={InformationCircleIcon} strokeWidth={2} />
+          <AlertDescription>{dictionary.common.leadLabel}</AlertDescription>
+        </Alert>
+        <Button
+          variant="link"
+          size="sm"
+          className="w-fit"
+          nativeButton={false}
+          render={<Link href={`/${locale}/map?bowl=${bowl.id}`} />}
+        >
+          {t.openOnMap} →
+        </Button>
       </div>
 
       <section className="flex flex-col gap-2">
