@@ -34,6 +34,9 @@
   --chart-3: #d4a72c;
   --chart-4: #3d9a6c;
   --chart-5: #3fa7a7;
+  --rate-slow: #4fbf8a;
+  --rate-middle: #d4a72c;
+  --rate-fast: #e0773a;
   --shadow-ambient: rgb(38 37 30 / 0.1);
   --shadow-outline: rgb(38 37 30 / 0.05);
   --hair-alpha: 8%;
@@ -54,6 +57,9 @@
   --chart-3: #f2c94c;
   --chart-4: #f0716c;
   --chart-5: #83dcdc;
+  --rate-slow: #5ccf9a;
+  --rate-middle: #e6c55a;
+  --rate-fast: #f08a4b;
   --shadow-ambient: color-mix(in srgb, var(--background) 60%, transparent);
   --shadow-outline: color-mix(in srgb, var(--background) 40%, transparent);
 }
@@ -99,6 +105,9 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
+  --color-rate-slow: var(--rate-slow);
+  --color-rate-middle: var(--rate-middle);
+  --color-rate-fast: var(--rate-fast);
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
@@ -183,6 +192,15 @@
     &:active:not([aria-haspopup]) {
       scale: 0.97;
     }
+  }
+}
+
+/* A side panel that opens and closes by size. Reduced motion jumps straight to the end. */
+@utility transition-panel-resize {
+  @media (prefers-reduced-motion: no-preference) {
+    transition-property: width, height;
+    transition-duration: 300ms;
+    transition-timing-function: var(--ease-in-out);
   }
 }
 
@@ -344,6 +362,34 @@
 /* A new screen fades in when it replaces the last one. */
 @utility fade-in {
   animation: fade-in 240ms var(--ease-out) both;
+}
+
+/* A <details> opens and closes smoothly. Browsers without ::details-content keep the instant toggle. */
+@utility details-reveal {
+  interpolate-size: allow-keywords;
+
+  &::details-content {
+    height: 0;
+    opacity: 0;
+    overflow: clip;
+    transition:
+      height 200ms var(--ease-in-out),
+      opacity 200ms var(--ease-out),
+      content-visibility 200ms allow-discrete;
+  }
+
+  &[open]::details-content {
+    height: auto;
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::details-content {
+      transition:
+        opacity 160ms var(--ease-out),
+        content-visibility 160ms allow-discrete;
+    }
+  }
 }
 
 /* The orbit canvas shows after its first frame, not before. */
